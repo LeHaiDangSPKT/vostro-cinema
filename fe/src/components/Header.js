@@ -1,5 +1,6 @@
 import * as React from "react";
 import Logo from "../imgs/logo.png";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const toggleModal = (nameModal) => {
@@ -10,31 +11,36 @@ export default function Header() {
     <header>
       <nav className="navbar navbar-expand-lg bg-transparent">
         <div className="container-fluid">
-          <a className="text-white navbar-brand" href="/">
+          <Link className="text-white navbar-brand" to="/">
             <img src={Logo} alt="" width="150" height="80" />
-          </a>
+          </Link>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item me-3">
-                <a className="text-white nav-link" href="">
-                  Mua vé
-                </a>
+                <Link className="text-white nav-link" to="/">
+                  Trang chủ
+                </Link>
               </li>
               <li className="nav-item me-3">
-                <a className="text-white nav-link" href="">
+                <Link className="text-white nav-link" to="/buy-ticket">
+                  Đặt vé
+                </Link>
+              </li>
+              <li className="nav-item me-3">
+                <Link className="text-white nav-link" to="/calender">
                   Lịch chiếu
-                </a>
+                </Link>
               </li>
               <li className="nav-item me-3">
-                <a className="text-white nav-link" href="">
+                <Link className="text-white nav-link" to="/system">
                   Hệ thống rạp
-                </a>
+                </Link>
               </li>
               <li className="nav-item me-3">
-                <a className="text-white nav-link" href="">
+                <Link className="text-white nav-link" to="/recruit">
                   Tuyển dụng
-                </a>
+                </Link>
               </li>
             </ul>
             <div className="d-flex">
@@ -84,6 +90,9 @@ export default function Header() {
               ></button>
             </div>
             <div className="modal-body">
+              <div className="mb-3 text-center">
+                <img src={Logo} alt="" width="150" height="80" />
+              </div>
               <div className="mb-3">
                 <label htmlFor="username" className="form-label">
                   Tên đăng nhập
@@ -158,42 +167,43 @@ export default function Header() {
               ></button>
             </div>
             <div className="modal-body">
-              <form>
-                <div className="mb-3">
-                  <label htmlFor="username-sign-in" className="form-label">
-                    Tên đăng nhập
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="username-sign-in"
-                    aria-describedby="emailHelp"
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="password-sign-in" className="form-label">
-                    Mật khẩu
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password-sign-in"
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <label
-                    htmlFor="password-confirm-passwor"
-                    className="form-label"
-                  >
-                    Nhập lại mật khẩu
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="confirm-password"
-                  ></input>
-                </div>
-              </form>
+              <div className="mb-3 text-center">
+                <img src={Logo} alt="" width="150" height="80" />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="username-sign-in" className="form-label">
+                  Tên đăng nhập
+                </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="username-sign-in"
+                  aria-describedby="emailHelp"
+                ></input>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="password-sign-in" className="form-label">
+                  Mật khẩu
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password-sign-in"
+                ></input>
+              </div>
+              <div className="mb-3">
+                <label
+                  htmlFor="password-confirm-passwor"
+                  className="form-label"
+                >
+                  Nhập lại mật khẩu
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="confirm-password"
+                ></input>
+              </div>
             </div>
             <div className="modal-footer d-flex justify-content-between">
               <div>

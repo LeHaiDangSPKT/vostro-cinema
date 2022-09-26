@@ -1,0 +1,56 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.App {
+    background-image: url('../imgs/bg-back.jpg');
+    background-position: top;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+//Main
+.custom-hover {
+    border-bottom: 3px solid transparent;
+    transition: all 0.4s ease;
+}
+.custom-hover:hover, .custom-hover-active {
+    cursor: pointer;
+    color: #198754;
+    border-bottom: 3px solid #198754 ;
+}
+.slick-slide > div {
+    margin: 0 5px;
+}
+
+//BookSeat
+.seat {
+    list-style-type: none;
+    flex-wrap: wrap;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    li {
+        padding: 10px 30px;
+        margin: 2px 3px;
+        border-bottom: 5px solid #198754;
+    }
+    li:hover {
+        background-color: #198754;
+        cursor: pointer;
+        transition: all 0.4s ease;
+    }
+    .double-seat {
+        padding: 10px 67px;
+        border-bottom: 5px solid #dc3545;
+    }
+}
+
+.border-bottom-seat {
+    border-bottom: 5px solid#ffc107 !important
+}
