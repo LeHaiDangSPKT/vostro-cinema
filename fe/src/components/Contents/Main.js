@@ -3,9 +3,8 @@ import Test from "../../imgs/test-1.jpg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import BookTicket from "../Book/BookTicket";
-import BookSeat from "../Book/BookSeat";
-import BookService from "../Book/BookService";
+import { BookSeat, BookService, BookTicket } from "../Book";
+import Search from "../Search";
 
 export default function Main() {
   const liStateFilms = document.getElementsByClassName("state-film");
@@ -82,7 +81,7 @@ export default function Main() {
       {/* State films */}
       <div>
         <ul
-          className="d-flex justify-content-center mt-4 text-white fs-5 ul-state-fimls"
+          className="d-flex justify-content-center text-white fs-5 ul-state-fimls"
           style={{ margin: "0 auto", listStyleType: "none" }}
         >
           <li
@@ -190,6 +189,9 @@ export default function Main() {
           </div>
         </Slider>
       </div>
+
+      {/* Search */}
+      <Search />
 
       {/* Đặt vé */}
       <div className="w-75" style={{ margin: "0 auto" }}>
