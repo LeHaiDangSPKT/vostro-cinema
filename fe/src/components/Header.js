@@ -2,8 +2,15 @@ import * as React from "react";
 import Logo from "../imgs/logo.png";
 import { Link } from "react-router-dom";
 import Toast from "./Toast";
+import * as bootstrap from "bootstrap";
 
 export default function Header() {
+  const singIn = () => {
+    window.bootstrap = bootstrap;
+    const toastLiveExample = document.getElementById("signIn");
+    const toast = new bootstrap.Toast(toastLiveExample);
+    toast.show();
+  };
   const toggleModal = (nameModal) => {
     document.getElementById(`btn-${nameModal}`).click();
   };
@@ -43,6 +50,11 @@ export default function Header() {
                   Tuyển dụng
                 </Link>
               </li>
+              <li className="nav-item me-3">
+                <Link className="text-white nav-link" to="/feedback">
+                  Góp ý
+                </Link>
+              </li>
             </ul>
             <div className="d-flex">
               <button
@@ -62,6 +74,36 @@ export default function Header() {
               >
                 Đăng nhập
               </button>
+              <div className="dropdown-center">
+                <button
+                  className="d-flex align-items-center text-light bg-transparent justify-content-center "
+                  style={{ minWidth: "220px" }}
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <span className="me-2">Lê Hải Đăng</span>
+                  <div
+                    className="bg-success rounded-5"
+                    style={{ margin: "auto 0" }}
+                  >
+                    <i className="fa-solid fa-user fs-4 p-3"></i>
+                  </div>
+                </button>
+                <ul className="dropdown-menu w-100">
+                  <li>
+                    <a className="dropdown-item" href="/me/manager-info">
+                      Quản lý thông tin cá nhân
+                    </a>
+                  </li>
+
+                  <li>
+                    <button className="dropdown-item text-danger">
+                      Đăng xuất
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -199,7 +241,7 @@ export default function Header() {
                   ></input>
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Enmail:</label>
+                  <label className="form-label">Email:</label>
                   <input
                     type="email"
                     className="form-control"
@@ -210,7 +252,7 @@ export default function Header() {
                 <div className="mb-3">
                   <label className="form-label">Số điện thoại:</label>
                   <input
-                    type="text"
+                    type="tel"
                     className="form-control"
                     id="phone"
                     required
@@ -227,7 +269,7 @@ export default function Header() {
                   ></input>
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Mật khẩu</label>
+                  <label className="form-label">Mật khẩu:</label>
                   <input
                     type="password"
                     className="form-control"
@@ -236,7 +278,7 @@ export default function Header() {
                   ></input>
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Nhập lại mật khẩu</label>
+                  <label className="form-label">Nhập lại mật khẩu:</label>
                   <input
                     type="password"
                     className="form-control"
@@ -267,7 +309,7 @@ export default function Header() {
                   <button
                     type="submit"
                     className="btn btn-outline-success"
-                    id="liveToastBtn"
+                    onClick={(e) => singIn()}
                   >
                     Đăng ký tài khoản
                   </button>
@@ -277,7 +319,7 @@ export default function Header() {
           </div>
         </div>
       </form>
-      <Toast text="Bạn đã đăng ký thành công" bg="bg-success" />
+      <Toast text="Bạn đã đăng ký thành công" bg="bg-success" id="signIn" />
     </header>
   );
 }

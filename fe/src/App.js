@@ -8,7 +8,10 @@ import {
   System,
   Recruit,
   ResetPassword,
+  Feedback,
 } from "./components/Contents";
+
+import { ManagerInfo, History } from "./components/Me";
 import { Routes, Route } from "react-router-dom";
 
 import "./styles/App.scss";
@@ -16,17 +19,18 @@ import "./styles/App.scss";
 import RemoveSpecialCharacters from "./utils/RemoveSpecialCharacters";
 function App() {
   const dict = {
-    Recruit: { src: <Recruit /> },
     BuyTicket: { src: <BuyTicket /> },
     Calender: { src: <Calender /> },
     System: { src: <System /> },
     Recruit: { src: <Recruit /> },
+    Feedback: { src: <Feedback /> },
     ResetPassword: { src: <ResetPassword /> },
+    ManagerInfo: { src: <ManagerInfo /> },
+    History: { src: <History /> },
   };
-  const Test = () => {
+  const Element = () => {
     let params = useParams();
     params = RemoveSpecialCharacters(params.slug);
-    console.log(params);
     return dict[params].src;
   };
   return (
@@ -34,8 +38,9 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/:slug" element={<Test />} />
-        <Route path="/password/:slug" element={<Test />} />
+        <Route path="/:slug" element={<Element />} />
+        <Route path="/password/:slug" element={<Element />} />
+        <Route path="/me/:slug" element={<Element />} />
       </Routes>
       <Footer />
     </div>

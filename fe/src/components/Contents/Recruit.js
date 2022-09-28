@@ -1,7 +1,16 @@
 import React from "react";
 import Recruit_img from "../../imgs/recruit-main.png";
-
+import Toast from "../Toast";
+import * as bootstrap from "bootstrap";
 export default function Recruit() {
+  const SendCV = (e) => {
+    if (e.target.value.split(".").pop() !== "pdf") {
+      window.bootstrap = bootstrap;
+      const toastLiveExample = document.getElementById("checkFile");
+      const toast = new bootstrap.Toast(toastLiveExample);
+      toast.show();
+    }
+  };
   return (
     <div className="bg-light w-75 rounded-2" style={{ margin: "0 auto" }}>
       <div className="p-4">
@@ -32,51 +41,76 @@ export default function Recruit() {
         <h3 className="text-center text-success mt-4">
           NỘP ĐƠN ỨNG TUYỂN NGAY BẠN ƠI !!!
         </h3>
-        <div className="w-75" style={{ margin: "0 auto" }}>
-          <div className="mb-3">
-            <label className="form-label">Họ và tên:</label>
-            <input type="text" className="form-control" id="fullname"></input>
+        <form>
+          <div className="w-75" style={{ margin: "0 auto" }}>
+            <div className="mb-3">
+              <label className="form-label">Họ và tên:</label>
+              <input
+                type="text"
+                className="form-control"
+                id="recruit-fullname"
+                required
+              ></input>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Số điện thoại:</label>
+              <input
+                type="tel"
+                className="form-control"
+                id="recruit-phone"
+                required
+                minLength="10"
+              ></input>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Email:</label>
+              <input
+                type="email"
+                className="form-control"
+                id="recruit-email"
+                required
+              ></input>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Ứng tuyển tại rạp:</label>
+              <select className="form-control" id="recruit-place" required>
+                <option value="">Choose...</option>
+                <option value="">Nơi 1</option>
+                <option value="">Nơi 2</option>
+                <option value="">Nơi 3</option>
+              </select>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Chức vụ ứng tuyển:</label>
+              <select className="form-control" id="recruit-role" required>
+                <option value="">Choose...</option>
+                <option value="">Vị trí 1</option>
+                <option value="">Vị trí 2</option>
+                <option value="">Vị trí 3</option>
+              </select>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">
+                Gừi CV của bạn (chỉ chấp nhận file .pdf):
+              </label>
+              <input
+                type="file"
+                className="form-control"
+                id="recruit-cv"
+                required
+                onChange={(e) => SendCV(e)}
+              ></input>
+            </div>
+            <button
+              type="submit"
+              className="btn btn-success w-75 d-flex justify-content-center"
+              style={{ margin: "0 auto" }}
+              onClick={(e) => SendCV()}
+            >
+              Nộp hồ sơ
+            </button>
           </div>
-          <div className="mb-3">
-            <label className="form-label">Số điện thoại:</label>
-            <input type="phone" className="form-control" id="phone"></input>
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Email:</label>
-            <input type="email" className="form-control" id="email"></input>
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Ứng tuyển tại rạp:</label>
-            <select className="form-control" id="place">
-              <option defaultValue>Choose...</option>
-              <option value="">Nơi 1</option>
-              <option value="">Nơi 2</option>
-              <option value="">Nơi 3</option>
-            </select>
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Chức vụ ứng tuyển:</label>
-            <select className="form-control" id="role">
-              <option defaultValue>Choose...</option>
-              <option value="">Vị trí 1</option>
-              <option value="">Vị trí 2</option>
-              <option value="">Vị trí 3</option>
-            </select>
-          </div>
-          <div className="mb-3">
-            <label className="form-label">
-              Gừi CV của bạn (chỉ chấp nhận file .pdf):
-            </label>
-            <input type="file" className="form-control" id="cv"></input>
-          </div>
-          <button
-            type="button"
-            className="btn btn-success w-75 d-flex justify-content-center"
-            style={{ margin: "0 auto" }}
-          >
-            Nộp hồ sơ
-          </button>
-        </div>
+        </form>
         <div
           className="w-75 mt-4 rounded-4 border border-3 border-danger"
           style={{ margin: "0 auto" }}
@@ -105,6 +139,7 @@ export default function Recruit() {
           </div>
         </div>
       </div>
+      <Toast text="File CV phải là file PDF" bg="bg-danger" id="checkFile" />
     </div>
   );
 }
