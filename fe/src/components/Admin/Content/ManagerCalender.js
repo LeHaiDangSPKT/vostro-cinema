@@ -5,7 +5,7 @@ export default function ManagerCalender() {
     <div className="bg-light">
       <div className="p-4 w-75" style={{ margin: "0 auto" }}>
         <h3 className="text-center text-success mt-2">
-          Tất cả các suát chiếu trong ngày
+          TẤT CẢ CÁC SUẤT CHIẾU TRONG NGÀY
         </h3>
         <div className="d-flex flex-wrap justify-content-center align-items-center">
           <div className="admin-calender bg-secondary text-light rounded-2">

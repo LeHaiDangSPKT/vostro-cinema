@@ -16,7 +16,7 @@ export default function ManagerUser() {
       <div className="bg-light rounded-2" style={{ margin: "0 auto" }}>
         <div className="p-4">
           <h3 className="text-center text-success mt-2">
-            Tất cả các khách hàng
+            TẤT CẢ CÁC KHÁCH HÀNG
           </h3>
           <div className="d-flex mt-4">
             <div className="w-75">
