@@ -1,6 +1,6 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { useParams } from "react-router-dom";
+import { useParams, Routes, Route } from "react-router-dom";
 import {
   Main,
   BuyTicket,
@@ -12,12 +12,10 @@ import {
 } from "./components/Contents";
 
 import { ManagerInfo, History } from "./components/Me";
-import { Routes, Route } from "react-router-dom";
-
 import "./styles/App.scss";
 
 import RemoveSpecialCharacters from "./utils/RemoveSpecialCharacters";
-function App() {
+function AppUser() {
   const dict = {
     BuyTicket: { src: <BuyTicket /> },
     Calender: { src: <Calender /> },
@@ -47,4 +45,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppUser;

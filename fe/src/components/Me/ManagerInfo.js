@@ -2,7 +2,6 @@ import React from "react";
 import Toast from "../Toast";
 import * as bootstrap from "bootstrap";
 import $ from "jquery";
-import { Link } from "react-router-dom";
 export default function ManagerInfo() {
   // const [value, setValue] = React.useState("Lê Hải Đăng");
   const UpdateSuccess = () => {

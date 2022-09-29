@@ -54,3 +54,50 @@
 .border-bottom-seat {
     border-bottom: 5px solid#ffc107 !important
 }
+
+
+//Admin-Calender
+.admin-calender {
+    position: relative;
+    width: 160px;
+    padding: 18px 0;
+    text-align: center;
+    margin: 5px;
+    font-size: large;
+    cursor: pointer;
+    input {
+        border: none;
+        background-color: transparent;
+    }
+}   
+.update-and-delete {
+    position: absolute;
+    top: 20px;
+    width: 160px;
+    display: flex;
+    border-radius: 5px;
+    justify-content: space-around;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s linear;
+    .btn-hover {
+        width: 100%;
+        padding: 20px 0;
+        border-color: transparent;
+    }
+    .btn-hover:hover > i {
+        color: white;
+    }
+    .btn-hover:first-child {
+        background-color: #ffc107;
+    }
+    .btn-hover:last-child {
+        background-color: #dc3545;
+    }
+}
+.admin-calender:hover .update-and-delete{
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0, -20px);
+}
