@@ -1,0 +1,81 @@
+## MODEL
+ADMIN {
+	TenDangNhap: String
+	MatKhau: String
+}
+
+RAP {
+    Ten: String,
+    DiaChi: String,
+	Mota: String,
+    Phong: Array
+}
+
+PHIM {
+    TenPhim: String,
+    ThoiLuong: Number,
+    NgayBatDau: Date,
+    NgayKetThuc: Date,
+    Trailer: String,
+   	Anh: String,
+   	MoTa: String,
+    TheLoai: Array,
+	CacSuatChieu: Array,
+    MaRap: Array, 
+	Phong: Array,
+}
+
+KHUYENMAI {
+	TenKhuyenMai: String
+	PhanTramKhuyenMai: Number,
+	NgayBatDau: Date,
+	NgayKetThuc: Date,
+}
+
+KHACHHANG {
+	TenKhachHang: String,
+	SoDienThoai: String,
+	Email: String,
+	NgaySinh: Date,
+	TenDangNhap: String,
+    MatKhau: String,
+    MaHoaDon: Array,
+}
+
+VE {
+	MaKhachHang: String,
+	LoaiGhe: String,
+	TenGhe: String,
+    Gia: Number,
+    NgayMua: Date,
+    MaRap: String,
+    TenPhong: String,
+    TenPhim: String,
+    GioChieu: Date,
+}
+
+GOPY {
+	MaKhachHang: String,
+	NoiDung: String,
+	CheDo: String,
+}
+
+HOADON {
+	MaKhachHang: String,
+	MaRap: String
+	TenPhong: String,
+	SuatChieu: String,
+	GiaVe: Number
+	DichVu: [
+        {
+            TenDichVu:
+            SoLuong: 
+        }
+    ]
+    KhuyenMai: String,
+	TongTien: Number
+	ThoiGian: Date
+}
+
+
+

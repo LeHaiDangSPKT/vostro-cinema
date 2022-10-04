@@ -32,8 +32,8 @@ function AppAdmin() {
     <div className="App">
       <Header />
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/:slug" element={<Element />} />
+        <Route path="/admin" element={<Main />} />
+        <Route path="/admin/:slug" element={<Element />} />
       </Routes>
       <Footer />
     </div>

@@ -1,15 +1,59 @@
 import * as React from "react";
 import Logo from "../imgs/logo.png";
 import { Link } from "react-router-dom";
-import Toast from "./Toast";
-import * as bootstrap from "bootstrap";
-
+import Axios from "axios";
 export default function Header() {
-  const singIn = () => {
-    window.bootstrap = bootstrap;
-    const toastLiveExample = document.getElementById("signIn");
-    const toast = new bootstrap.Toast(toastLiveExample);
-    toast.show();
+  const [newAccount, setNewAccount] = React.useState({
+    name: "",
+    phoneNumber: "",
+    email: "",
+    dateOfBirthday: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+    billId: [],
+  });
+
+  const handleChange = (e) => {
+    setNewAccount({ ...newAccount, [e.target.name]: e.target.value });
+  };
+
+  //Nếu có tg làm thêm chức năng gửi OTP xác nhận SĐT có tồn tại
+  const signIn = (e) => {
+    e.preventDefault();
+    if (newAccount.password == newAccount.confirmPassword) {
+      Axios.post("http://localhost:5000/user/signIn", {
+        name: newAccount.name,
+        phoneNumber: newAccount.phoneNumber,
+        email: newAccount.email,
+        dateOfBirthday: newAccount.dateOfBirthday,
+        username: newAccount.username,
+        password: newAccount.password,
+      })
+        .then(function (response) {
+          alert("Đăng ký tài khoản thành công !");
+        })
+        .catch(function (error) {
+          alert(error.response.data);
+        });
+    } else {
+      alert("Mật khẩu nhập lại không khớp");
+    }
+  };
+
+  const logIn = (e) => {
+    e.preventDefault();
+    Axios.post("http://localhost:5000/user/logIn", {
+      username: newAccount.username,
+      password: newAccount.password,
+    })
+      .then(function (response) {
+        localStorage.setItem("login", "tamthoi");
+        document.location.href = "/";
+      })
+      .catch(function (error) {
+        alert(error.response.data);
+      });
   };
   const toggleModal = (nameModal) => {
     document.getElementById(`btn-${nameModal}`).click();
@@ -50,67 +94,81 @@ export default function Header() {
                   Tuyển dụng
                 </Link>
               </li>
-              <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/feedback">
-                  Góp ý
-                </Link>
-              </li>
+              {localStorage.getItem("login") && (
+                <li className="nav-item me-3">
+                  <Link className="text-white nav-link" to="/feedback">
+                    Góp ý
+                  </Link>
+                </li>
+              )}
             </ul>
             <div className="d-flex">
-              <button
-                className="btn btn-outline-success me-3"
-                data-bs-toggle="modal"
-                data-bs-target="#signIn"
-                id="btn-sign-in"
-              >
-                Đăng kí
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-success me-3"
-                data-bs-toggle="modal"
-                data-bs-target="#login"
-                id="btn-login"
-              >
-                Đăng nhập
-              </button>
-              <div className="dropdown-center">
-                <button
-                  className="d-flex align-items-center text-light bg-transparent justify-content-center "
-                  style={{ minWidth: "220px" }}
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <span className="me-2">Lê Hải Đăng</span>
-                  <div
-                    className="bg-success rounded-5"
-                    style={{ margin: "auto 0" }}
+              {!localStorage.getItem("login") ? (
+                <>
+                  <button
+                    className="btn btn-outline-success me-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#signIn"
+                    id="btn-sign-in"
                   >
-                    <i className="fa-solid fa-user fs-4 p-3"></i>
-                  </div>
-                </button>
-                <ul className="dropdown-menu w-100">
-                  <li>
-                    <a className="dropdown-item" href="/me/manager-info">
-                      Quản lý thông tin cá nhân
-                    </a>
-                  </li>
+                    Đăng kí
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-success me-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#login"
+                    id="btn-login"
+                  >
+                    Đăng nhập
+                  </button>
+                </>
+              ) : (
+                <div className="dropdown-center">
+                  <button
+                    className="d-flex align-items-center text-light bg-transparent justify-content-center "
+                    style={{ minWidth: "220px" }}
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span className="me-2">Lê Hải Đăng</span>
+                    <div
+                      className="bg-success rounded-5"
+                      style={{ margin: "auto 0" }}
+                    >
+                      <i className="fa-solid fa-user fs-4 p-3"></i>
+                    </div>
+                  </button>
+                  <ul className="dropdown-menu w-100">
+                    <li>
+                      <a className="dropdown-item" href="/me/manager-info">
+                        Quản lý thông tin cá nhân
+                      </a>
+                    </li>
 
-                  <li>
-                    <button className="dropdown-item text-danger">
-                      Đăng xuất
-                    </button>
-                  </li>
-                </ul>
-              </div>
+                    <li>
+                      <button
+                        className="dropdown-item "
+                        onClick={(e) => {
+                          localStorage.removeItem("login");
+                        }}
+                      >
+                        <a className="dropdown-item text-danger p-0" href="/">
+                          Đăng xuất
+                        </a>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </nav>
 
       {/* <!-- Modal Đăng Nhập  --> */}
-      <form>
+      <form onSubmit={(e) => logIn(e)}>
         <div
           className="modal fade"
           id="login"
@@ -146,6 +204,8 @@ export default function Header() {
                     className="form-control"
                     id="username-login"
                     required
+                    name="username"
+                    onChange={(e) => handleChange(e)}
                   ></input>
                 </div>
                 <div className="mb-3">
@@ -157,6 +217,8 @@ export default function Header() {
                     className="form-control"
                     id="password-login"
                     required
+                    name="password"
+                    onChange={(e) => handleChange(e)}
                   ></input>
                 </div>
                 <div className="mb-3">
@@ -171,7 +233,6 @@ export default function Header() {
                   <button
                     type="button"
                     className="btn btn-outline-success"
-                    data-bs-dismiss="modal"
                     onClick={() => toggleModal("sign-in")}
                   >
                     {`<< Đăng ký`}
@@ -195,7 +256,7 @@ export default function Header() {
         </div>
       </form>
       {/* <!-- Modal Đăng Kí  --> */}
-      <form>
+      <form onSubmit={(e) => signIn(e)}>
         <div
           className="modal fade"
           id="signIn"
@@ -228,7 +289,9 @@ export default function Header() {
                     type="text"
                     className="form-control"
                     id="fullname"
+                    name="name"
                     required
+                    onChange={(e) => handleChange(e)}
                   ></input>
                 </div>
                 <div className="mb-3">
@@ -237,16 +300,20 @@ export default function Header() {
                     type="date"
                     className="form-control"
                     id="dob"
+                    name="dateOfBirthday"
                     required
+                    onChange={(e) => handleChange(e)}
                   ></input>
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Email:</label>
                   <input
                     type="email"
+                    name="email"
                     className="form-control"
                     id="email"
                     required
+                    onChange={(e) => handleChange(e)}
                   ></input>
                 </div>
                 <div className="mb-3">
@@ -255,7 +322,9 @@ export default function Header() {
                     type="tel"
                     className="form-control"
                     id="phone"
+                    name="phoneNumber"
                     required
+                    onChange={(e) => handleChange(e)}
                     minLength="10"
                   ></input>
                 </div>
@@ -263,18 +332,22 @@ export default function Header() {
                   <label className="form-label">Tên tài khoản:</label>
                   <input
                     type="text"
+                    name="username"
                     className="form-control"
                     id="username-signin"
                     required
+                    onChange={(e) => handleChange(e)}
                   ></input>
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Mật khẩu:</label>
                   <input
                     type="password"
+                    name="password"
                     className="form-control"
                     id="password-signin"
                     required
+                    onChange={(e) => handleChange(e)}
                   ></input>
                 </div>
                 <div className="mb-3">
@@ -283,6 +356,8 @@ export default function Header() {
                     type="password"
                     className="form-control"
                     id="confirm-password"
+                    name="confirmPassword"
+                    onChange={(e) => handleChange(e)}
                     required
                   ></input>
                 </div>
@@ -306,11 +381,7 @@ export default function Header() {
                   >
                     Huỷ
                   </button>
-                  <button
-                    type="submit"
-                    className="btn btn-outline-success"
-                    onClick={(e) => singIn()}
-                  >
+                  <button type="submit" className="btn btn-outline-success">
                     Đăng ký tài khoản
                   </button>
                 </div>
@@ -319,7 +390,6 @@ export default function Header() {
           </div>
         </div>
       </form>
-      <Toast text="Bạn đã đăng ký thành công" bg="bg-success" id="signIn" />
     </header>
   );
 }

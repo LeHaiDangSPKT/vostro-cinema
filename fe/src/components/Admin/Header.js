@@ -7,47 +7,56 @@ export default function Header() {
     <header>
       <nav className="navbar navbar-expand-lg bg-transparent">
         <div className="container-fluid">
-          <Link className="text-white navbar-brand" to="/">
+          <Link className="text-white navbar-brand" to="/admin">
             <img src={Logo} alt="" width="150" height="80" />
           </Link>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/">
+                <Link className="text-white nav-link" to="/admin">
                   Trang chủ
                 </Link>
               </li>
               <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/manager-user">
+                <Link className="text-white nav-link" to="/admin/manager-user">
                   Quản lý khách hàng
                 </Link>
               </li>
               <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/manager-calender">
+                <Link
+                  className="text-white nav-link"
+                  to="/admin/manager-calender"
+                >
                   Quản lý suất chiếu
                 </Link>
               </li>
               <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/manager-films">
+                <Link className="text-white nav-link" to="/admin/manager-films">
                   Quản lý phim
                 </Link>
               </li>
               <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/manager-ticket">
+                <Link
+                  className="text-white nav-link"
+                  to="/admin/manager-ticket"
+                >
                   Quản lý giá vé
                 </Link>
               </li>
               <li className="nav-item me-3">
                 <Link
                   className="text-white nav-link"
-                  to="/manager-food-and-drink"
+                  to="/admin/manager-food-and-drink"
                 >
                   Quản lý thực đơn
                 </Link>
               </li>
               <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/manager-dashboard">
+                <Link
+                  className="text-white nav-link"
+                  to="/admin/manager-dashboard"
+                >
                   Thống kê doanh thu
                 </Link>
               </li>
