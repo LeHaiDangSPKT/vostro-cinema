@@ -9,6 +9,7 @@ import {
   ManagerTicket,
   ManagerFoodAndDrink,
   ManagerDashboard,
+  ManagerTheaterRoom,
 } from "./components/Admin/Content";
 import "./styles/App.scss";
 import RemoveSpecialCharacters from "./utils/RemoveSpecialCharacters";
@@ -22,6 +23,7 @@ function AppAdmin() {
     ManagerTicket: { src: <ManagerTicket /> },
     ManagerFoodAndDrink: { src: <ManagerFoodAndDrink /> },
     ManagerDashboard: { src: <ManagerDashboard /> },
+    ManagerTheaterRoom: { src: <ManagerTheaterRoom /> },
   };
   const Element = () => {
     let params = useParams();

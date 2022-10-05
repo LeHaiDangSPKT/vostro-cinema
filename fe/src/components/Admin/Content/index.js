@@ -6,6 +6,7 @@ import ManagerFilms from "./ManagerFilms";
 import ManagerTicket from "./ManagerTicket";
 import ManagerFoodAndDrink from "./ManagerFoodAndDrink";
 import ManagerDashboard from "./ManagerDashboard";
+import ManagerTheaterRoom from "./ManagerTheaterRoom";
 
 export {
   Main,
@@ -16,4 +17,5 @@ export {
   ManagerTicket,
   ManagerFoodAndDrink,
   ManagerDashboard,
+  ManagerTheaterRoom,
 };

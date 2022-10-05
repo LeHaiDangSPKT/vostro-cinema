@@ -3,6 +3,8 @@ import Poster from "../../../imgs/test-2.jpg";
 import $ from "jquery";
 import Toast from "../../Toast";
 import * as bootstrap from "bootstrap";
+import FileBase64 from "react-file-base64";
+
 export default function FilmDetails() {
   const UpdateSuccess = () => {
     window.bootstrap = bootstrap;
@@ -195,7 +197,7 @@ export default function FilmDetails() {
         aria-labelledby="addLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="addLabel">
@@ -209,8 +211,8 @@ export default function FilmDetails() {
               ></button>
             </div>
             <form>
-              <div class="modal-body">
-                <div className="mb-3">
+              <div class="modal-body row">
+                <div className="col-md-6 mb-3">
                   <label className="form-label">Tên phim:</label>
                   <input
                     type="text"
@@ -219,26 +221,15 @@ export default function FilmDetails() {
                     required
                   ></input>
                 </div>
-                <div className="mb-3">
+                <div className="col-md-6 mb-3">
                   <label className="form-label">Thể loại:</label>
-                  <select className="form-control" id="type" required>
-                    <option value="">Choose</option>
-                    <option value="">Thể loại 1</option>
-                    <option value="">Thể loại 2</option>
-                    <option value="">Thể loại 3</option>
-                    <option value="">Thể loại 4</option>
-                  </select>
+                  <input type="text" className="form-control" required></input>
                 </div>
-                <div className="mb-3">
+                <div className="col-md-6 mb-3">
                   <label className="form-label">Thời lượng:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="lenght"
-                    required
-                  ></input>
+                  <input type="text" className="form-control" required></input>
                 </div>
-                <div className="mb-3">
+                <div className="col-md-6 mb-3">
                   <label className="form-label">Link Trailer:</label>
                   <input
                     type="text"
@@ -247,7 +238,16 @@ export default function FilmDetails() {
                     required
                   ></input>
                 </div>
-                <div className="mb-3">
+
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Ngày bắt đầu:</label>
+                  <input type="date" className="form-control" required></input>
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Ngày kết thúc:</label>
+                  <input type="date" className="form-control" required></input>
+                </div>
+                <div className="col-md-6 mb-3">
                   <label className="form-label">Mô tả:</label>
                   <textarea
                     type="text"
@@ -255,6 +255,19 @@ export default function FilmDetails() {
                     id="link"
                     required
                   ></textarea>
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label me-2">Poster phim:</label>
+                  <FileBase64
+                    accept="image/*"
+                    multiple={false}
+                    type="file"
+                    required
+
+                    // onDone={({ base64 }) =>
+                    //   setNewWard({ ...newWard, imgWardMain: base64 })
+                    // }
+                  />
                 </div>
               </div>
               <div class="modal-footer">

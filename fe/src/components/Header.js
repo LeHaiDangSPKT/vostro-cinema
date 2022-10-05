@@ -2,7 +2,10 @@ import * as React from "react";
 import Logo from "../imgs/logo.png";
 import { Link } from "react-router-dom";
 import Axios from "axios";
+import Toast from "./Toast";
+import ToastUtils from "../utils/ToastUtils";
 export default function Header() {
+  const [textToast, setTextToast] = React.useState("");
   const [newAccount, setNewAccount] = React.useState({
     name: "",
     phoneNumber: "",
@@ -31,13 +34,16 @@ export default function Header() {
         password: newAccount.password,
       })
         .then(function (response) {
-          alert("Đăng ký tài khoản thành công !");
+          setTextToast("Đăng ký tài khoản thành công !");
+          ToastUtils("signIn-success");
         })
         .catch(function (error) {
-          alert(error.response.data);
+          setTextToast(error.response.data);
+          ToastUtils("signIn-fail");
         });
     } else {
-      alert("Mật khẩu nhập lại không khớp");
+      setTextToast("Mật khẩu nhập lại không khớp");
+      ToastUtils("signIn-fail");
     }
   };
 
@@ -48,11 +54,12 @@ export default function Header() {
       password: newAccount.password,
     })
       .then(function (response) {
-        localStorage.setItem("login", "tamthoi");
+        localStorage.setItem("login", newAccount.username);
         document.location.href = "/";
       })
       .catch(function (error) {
-        alert(error.response.data);
+        setTextToast(error.response.data);
+        ToastUtils("signIn-fail");
       });
   };
   const toggleModal = (nameModal) => {
@@ -381,7 +388,11 @@ export default function Header() {
                   >
                     Huỷ
                   </button>
-                  <button type="submit" className="btn btn-outline-success">
+                  <button
+                    type="submit"
+                    className="btn btn-outline-success"
+                    data-bs-dismiss="modal"
+                  >
                     Đăng ký tài khoản
                   </button>
                 </div>
@@ -390,6 +401,8 @@ export default function Header() {
           </div>
         </div>
       </form>
+      <Toast text={textToast} bg="bg-success" id="signIn-success" />
+      <Toast text={textToast} bg="bg-danger" id="signIn-fail" />
     </header>
   );
 }

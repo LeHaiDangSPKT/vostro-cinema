@@ -101,3 +101,33 @@
     visibility: visible;
     transform: translate(0, -20px);
 }
+
+
+//Film
+.card {
+    cursor: pointer;
+    position: relative;
+    border: none;
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 3;
+        opacity: 0;
+        transition: all ease-in-out 0.5s;
+        color: white;
+        .card-body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    }
+}
+.card:hover .overlay {
+    opacity: 1; 
+}
+

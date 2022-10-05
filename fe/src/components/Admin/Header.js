@@ -19,6 +19,14 @@ export default function Header() {
                 </Link>
               </li>
               <li className="nav-item me-3">
+                <Link
+                  className="text-white nav-link"
+                  to="/admin/manager-theater-room"
+                >
+                  Quản lý rạp - phòng chiếu
+                </Link>
+              </li>
+              <li className="nav-item me-3">
                 <Link className="text-white nav-link" to="/admin/manager-user">
                   Quản lý khách hàng
                 </Link>
@@ -44,14 +52,14 @@ export default function Header() {
                   Quản lý giá vé
                 </Link>
               </li>
-              <li className="nav-item me-3">
+              {/* <li className="nav-item me-3">
                 <Link
                   className="text-white nav-link"
                   to="/admin/manager-food-and-drink"
                 >
                   Quản lý thực đơn
                 </Link>
-              </li>
+              </li> */}
               <li className="nav-item me-3">
                 <Link
                   className="text-white nav-link"

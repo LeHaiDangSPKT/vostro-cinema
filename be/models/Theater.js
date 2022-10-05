@@ -4,10 +4,10 @@ const Schema = mongoose.Schema;
 
 const Theater = new Schema(
   {
-    Name: { type: String },
-    Address: { type: String },
-    Describe: { type: String },
-    Room: { type: Array, default: [] },
+    name: { type: String },
+    address: { type: String },
+    describe: { type: String },
+    room: { type: Array, default: [] },
   },
   {
     timestamps: true,
