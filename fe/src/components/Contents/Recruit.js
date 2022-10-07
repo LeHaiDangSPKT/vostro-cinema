@@ -105,7 +105,6 @@ export default function Recruit() {
               type="submit"
               className="btn btn-success w-75 d-flex justify-content-center"
               style={{ margin: "0 auto" }}
-              onClick={(e) => SendCV()}
             >
               Nộp hồ sơ
             </button>

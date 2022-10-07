@@ -1,9 +1,9 @@
-const TheaterModal = require("../models/Theater");
-
+const TheaterModel = require("../models/Theater");
+const FilmModel = require("../models/Film");
 class Admin {
   //[GET] /admin/getAllTheater
   getAllTheater(req, res, next) {
-    TheaterModal.find({}, (err, result) => {
+    TheaterModel.find({}, (err, result) => {
       if (err) {
         res.json(err);
       } else {
@@ -14,7 +14,7 @@ class Admin {
 
   // [GET] /admin/getOneTheaterById/:id
   getOneTheaterById(req, res, next) {
-    TheaterModal.find({ _id: req.params.id }, (err, result) => {
+    TheaterModel.find({ _id: req.params.id }, (err, result) => {
       if (err) {
         res.json(err);
       } else {
@@ -24,52 +24,85 @@ class Admin {
   }
   // [POST] /admin/addTheaterAndRoom
   addTheaterAndRoom(req, res, next) {
-    TheaterModal.findOne({ name: req.body.name }, (err, result) => {
+    TheaterModel.findOne({ name: req.body.name }, (err, result) => {
       if (result) {
         res.status(404).send("Rạp phim đã tồn tại");
       } else {
         const theater = req.body;
-        const newTheater = new TheaterModal(theater);
+        const newTheater = new TheaterModel(theater);
         newTheater.save();
         res.json(theater);
       }
     });
   }
 
-  // [POST] /user/logIn
-  logIn(req, res, next) {
-    UserModal.findOne(
-      {
-        $and: [
-          { username: req.body.username },
-          { password: req.body.password },
-        ],
-      },
-      (err, result) => {
-        if (result) {
-          res.json(result);
-        } else {
-          res.status(404).send("Tên tài khoản hoặc mật khẩu không đúng");
-          //Không chia trường hợp vì tính bảo mật
-        }
-      }
-    );
-  }
-
-  //[DELETE] /user/deleteTheaterById/:id
+  //[DELETE] /admin/deleteTheaterById/:id
   deleteTheaterById(req, res, next) {
-    TheaterModal.deleteOne({ _id: req.params.id })
+    TheaterModel.deleteOne({ _id: req.params.id })
       .then((result) => res.json(result))
       .catch(next);
   }
 
-  //[PUT] /manager/updateTheaterById/:id
+  //[PUT] /admin/updateTheaterById/:id
   updateTheaterById(req, res, next) {
     var theater = req.body;
     theater.room = req.body.room.map((item) => item);
-    TheaterModal.updateOne({ _id: req.params.id }, theater)
+    TheaterModel.updateOne({ _id: req.params.id }, theater)
       .then((result) => res.json(result))
       .catch(next);
+  }
+
+  // [GET] /admin/getNameAndIdAllTheater
+  getNameAndIdAllTheater(req, res, next) {
+    TheaterModel.find({}, { name: 1 }, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(result);
+      }
+    });
+  }
+
+  // [POST] /admin/addFilm
+  addFilm(req, res, next) {
+    FilmModel.findOne({ name: req.body.name }, (err, result) => {
+      if (result) {
+        res.status(404).send("Phim đã tồn tại");
+      } else {
+        const film = req.body;
+        const newFilm = new FilmModel(film);
+        newFilm.save();
+        res.json(film);
+      }
+    });
+  }
+
+  //[GET] /admin/getAllFilmsById/:id
+  getAllFilmsById(req, res, next) {
+    FilmModel.find({ theaterId: req.params.id }, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(result);
+      }
+    });
+  }
+
+  //[DELETE] /admin/deleteFilmById/:id
+  deleteFilmById(req, res, next) {
+    FilmModel.deleteOne({ _id: req.params.id })
+      .then((result) => res.json(result))
+      .catch(next);
+  }
+
+  updateFilmById(req, res, next) {
+    var film = req.body;
+    film.category = req.body.category.map((item) => item);
+    FilmModel.updateOne({ _id: req.params.id }, film)
+      .then((result) => res.json(result))
+      .catch(() => {
+        res.status(404).send(`Không tìm thấy phim ${req.params.name}`);
+      });
   }
 }
 

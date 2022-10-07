@@ -26,7 +26,13 @@ export default function ManagerTheaterRoom() {
     setNewTheater({ ...newTheater, [e.target.name]: e.target.value });
   };
   const CheckSymbolToArray = (str) => {
-    return str.includes(",") ? str.split(",") : null;
+    var arr = [];
+    if (str.includes(",")) {
+      arr = str.split(",");
+      arr = arr.map((item) => item.trim());
+      return arr;
+    }
+    return null;
   };
   const Add = (e) => {
     e.preventDefault();

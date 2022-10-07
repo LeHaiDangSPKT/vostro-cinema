@@ -27,6 +27,11 @@ export default function Header() {
                 </Link>
               </li>
               <li className="nav-item me-3">
+                <Link className="text-white nav-link" to="/admin/manager-films">
+                  Quản lý phim
+                </Link>
+              </li>
+              <li className="nav-item me-3">
                 <Link className="text-white nav-link" to="/admin/manager-user">
                   Quản lý khách hàng
                 </Link>
@@ -39,11 +44,7 @@ export default function Header() {
                   Quản lý suất chiếu
                 </Link>
               </li>
-              <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/admin/manager-films">
-                  Quản lý phim
-                </Link>
-              </li>
+
               <li className="nav-item me-3">
                 <Link
                   className="text-white nav-link"
