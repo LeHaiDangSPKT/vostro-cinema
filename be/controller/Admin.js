@@ -1,9 +1,10 @@
 const TheaterModel = require("../models/Theater");
 const FilmModel = require("../models/Film");
+const UserModel = require("../models/User");
 class Admin {
   //[GET] /admin/getAllTheater
   getAllTheater(req, res, next) {
-    TheaterModel.find({}, (err, result) => {
+    TheaterModel.find({ state: true }, (err, result) => {
       if (err) {
         res.json(err);
       } else {
@@ -14,7 +15,7 @@ class Admin {
 
   // [GET] /admin/getOneTheaterById/:id
   getOneTheaterById(req, res, next) {
-    TheaterModel.find({ _id: req.params.id }, (err, result) => {
+    TheaterModel.find({ _id: req.params.id, state: true }, (err, result) => {
       if (err) {
         res.json(err);
       } else {
@@ -36,9 +37,9 @@ class Admin {
     });
   }
 
-  //[DELETE] /admin/deleteTheaterById/:id
+  //[UPDATE] /admin/deleteTheaterById/:id
   deleteTheaterById(req, res, next) {
-    TheaterModel.deleteOne({ _id: req.params.id })
+    TheaterModel.updateOne({ _id: req.params.id }, { state: false })
       .then((result) => res.json(result))
       .catch(next);
   }
@@ -54,7 +55,7 @@ class Admin {
 
   // [GET] /admin/getNameAndIdAllTheater
   getNameAndIdAllTheater(req, res, next) {
-    TheaterModel.find({}, { name: 1 }, (err, result) => {
+    TheaterModel.find({ state: true }, { name: 1 }, (err, result) => {
       if (err) {
         res.json(err);
       } else {
@@ -79,7 +80,7 @@ class Admin {
 
   //[GET] /admin/getAllFilmsById/:id
   getAllFilmsById(req, res, next) {
-    FilmModel.find({ theaterId: req.params.id }, (err, result) => {
+    FilmModel.find({ theaterId: req.params.id, state: true }, (err, result) => {
       if (err) {
         res.json(err);
       } else {
@@ -88,13 +89,14 @@ class Admin {
     });
   }
 
-  //[DELETE] /admin/deleteFilmById/:id
+  //[UPDATE] /admin/deleteFilmById/:id
   deleteFilmById(req, res, next) {
-    FilmModel.deleteOne({ _id: req.params.id })
+    FilmModel.updateOne({ _id: req.params.id }, { state: false })
       .then((result) => res.json(result))
       .catch(next);
   }
 
+  //[UPDATE] /admin/updateFilmById/:id
   updateFilmById(req, res, next) {
     var film = req.body;
     film.category = req.body.category.map((item) => item);
@@ -103,6 +105,24 @@ class Admin {
       .catch(() => {
         res.status(404).send(`Không tìm thấy phim ${req.params.name}`);
       });
+  }
+
+  //[GET] /admin/getAllUsers
+  getAllUsers(req, res, next) {
+    UserModel.find({ state: true }, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(result);
+      }
+    });
+  }
+
+  // [UPDATE] //admin/deleteAccountById/:id
+  deleteAccountById(req, res, next) {
+    UserModel.updateOne({ _id: req.params.id }, { state: false })
+      .then((result) => res.json(result))
+      .catch(next);
   }
 }
 

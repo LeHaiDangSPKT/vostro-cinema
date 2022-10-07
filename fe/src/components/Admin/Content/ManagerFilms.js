@@ -46,7 +46,7 @@ export default function ManagerFilms() {
   };
 
   const Delete = () => {
-    Axios.delete(`http://localhost:5000/admin/deleteFilmById/${idFilm}`)
+    Axios.put(`http://localhost:5000/admin/deleteFilmById/${idFilm}`)
       .then(function (response) {
         setCheck(Math.random());
         setTextToast("Đã xoá thành công");

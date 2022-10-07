@@ -1,16 +1,32 @@
 import React from "react";
 import InfoDetails from "./InfoDetails";
-import * as bootstrap from "bootstrap";
-import $ from "jquery";
+import Axios from "axios";
 import Toast from "../../Toast";
-
+import ToastUtils from "../../../utils/ToastUtils";
 export default function ManagerUser() {
-  const DeleteSuccess = (e) => {
-    window.bootstrap = bootstrap;
-    const toastLiveExample = $("#admin-delete");
-    const toast = new bootstrap.Toast(toastLiveExample);
-    toast.show();
+  const [listOfUsers, setListOfUsers] = React.useState([]);
+  const [oneUser, setOneUser] = React.useState({});
+  const [textToast, setTextToast] = React.useState("");
+  const [checked, setChecked] = React.useState(0);
+
+  React.useEffect(() => {
+    Axios.get("http://localhost:5000/admin/getAllUsers").then((response) => {
+      setListOfUsers(response.data);
+      setOneUser(response.data[0]);
+    });
+  }, [checked]);
+  const Delete = () => {
+    console.log(oneUser[0]._id);
+
+    Axios.put(`http://localhost:5000/admin/deleteAccountById/${oneUser[0]._id}`)
+      .then(function (response) {
+        setChecked(Math.random());
+        setTextToast("Đã xoá thành công");
+        ToastUtils("success");
+      })
+      .catch(function (error) {});
   };
+
   return (
     <div>
       <div className="bg-light rounded-2" style={{ margin: "0 auto" }}>
@@ -20,15 +36,13 @@ export default function ManagerUser() {
           </h3>
           <div className="d-flex mt-4">
             <div className="w-75">
-              <table className="table text-center">
+              <table className="table text-center table-hover">
                 <thead>
                   <tr>
                     <th className="table__header" scope="col">
                       #
                     </th>
-                    <th className="table__header" scope="col">
-                      Mã khách hàng
-                    </th>
+
                     <th className="table__header" scope="col">
                       Tên khách hàng
                     </th>
@@ -38,47 +52,47 @@ export default function ManagerUser() {
                     <th className="table__header" scope="col">
                       Email
                     </th>
+                    <th className="table__header" scope="col">
+                      Ngày sinh
+                    </th>
                     <th className="table__header" scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="table__row">
-                    <th>1</th>
-                    <td>Hai dang</td>
-                    <td>hai dang</td>
-                    <td>hai dang</td>
-                    <td>hai dang</td>
-                    <td>
-                      <button
-                        className="btn border-white"
-                        data-bs-toggle="modal"
-                        data-bs-target="#delete"
+                  {listOfUsers.map((item, index) => {
+                    return (
+                      <tr
+                        className="table__row"
+                        key={item._id}
+                        style={{ cursor: "pointer" }}
+                        onClick={(e) =>
+                          setOneUser(
+                            listOfUsers.filter((items) => items._id == item._id)
+                          )
+                        }
                       >
-                        <i class="fa-solid fa-trash-can text-danger"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="table__row">
-                    <th>1</th>
-                    <td>Hai dang</td>
-                    <td>hai dang</td>
-                    <td>hai dang</td>
-                    <td>hai dang</td>
-                    <td>
-                      <button
-                        className="btn border-white"
-                        data-bs-toggle="modal"
-                        data-bs-target="#delete"
-                      >
-                        <i class="fa-solid fa-trash-can text-danger"></i>
-                      </button>
-                    </td>
-                  </tr>
+                        <th>{index + 1}</th>
+                        <td>{item.name}</td>
+                        <td>{item.phoneNumber}</td>
+                        <td>{item.email}</td>
+                        <td>{item.dateOfBirthday.substring(0, 10)}</td>
+                        <td>
+                          <button
+                            className="btn border-white"
+                            data-bs-toggle="modal"
+                            data-bs-target="#delete"
+                          >
+                            <i class="fa-solid fa-trash-can text-danger"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
             <div className="w-25">
-              <InfoDetails />
+              {oneUser[0] && <InfoDetails oneUser={oneUser[0]} />}
             </div>
           </div>
         </div>
@@ -119,7 +133,7 @@ export default function ManagerUser() {
                 type="button"
                 class="btn btn-danger"
                 data-bs-dismiss="modal"
-                onClick={(e) => DeleteSuccess(e)}
+                onClick={(e) => Delete()}
               >
                 Tôi chắn chắn
               </button>
@@ -127,7 +141,8 @@ export default function ManagerUser() {
           </div>
         </div>
       </div>
-      <Toast text="Xoá thành công" bg="bg-success" id="admin-delete" />
+      <Toast text={textToast} bg="bg-danger" id="fail" />
+      <Toast text={textToast} bg="bg-success" id="success" />
     </div>
   );
 }

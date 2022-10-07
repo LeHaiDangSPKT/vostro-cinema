@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const Bill = new Schema(
   {
     MaKhachHang: { type: String },
+    MaPhim: { type: String },
+    TenPhim: { type: String },
     MaRap: { type: String },
     TenPhong: { type: String },
     SuatChieu: { type: String },

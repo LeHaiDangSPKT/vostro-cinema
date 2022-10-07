@@ -8,6 +8,7 @@ const Theater = new Schema(
     address: { type: String },
     describe: { type: String },
     room: { type: Array, default: [] },
+    state: { type: Boolean, default: true },
   },
   {
     timestamps: true,

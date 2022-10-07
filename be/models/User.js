@@ -11,6 +11,7 @@ const User = new Schema(
     username: { type: String },
     password: { type: String },
     billId: { type: Array, default: [] },
+    state: { type: Boolean, default: true },
   },
   {
     timestamps: true,

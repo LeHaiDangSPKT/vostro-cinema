@@ -64,7 +64,7 @@ export default function ManagerTheaterRoom() {
   };
 
   const handleDelete = (e) => {
-    Axios.delete(`http://localhost:5000/admin/deleteTheaterById/${idTheater}`)
+    Axios.put(`http://localhost:5000/admin/deleteTheaterById/${idTheater}`)
       .then(function (response) {
         setChecked(Math.random());
         setTextToast("Đã xoá thành công");

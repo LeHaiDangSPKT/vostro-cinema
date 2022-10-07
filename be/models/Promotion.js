@@ -8,6 +8,7 @@ const Promotion = new Schema(
     Percent: { type: Number },
     StartingDay: { type: Date },
     ClosingDay: { type: Date },
+    state: { type: Boolean, default: true },
   },
   {
     timestamps: true,

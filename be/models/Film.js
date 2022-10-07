@@ -15,6 +15,7 @@ const Film = new Schema(
     theaterId: { type: Array, default: [] },
     showtimes: { type: Array, default: [] },
     room: { type: Array, default: [] },
+    state: { type: Boolean, default: true },
   },
   {
     timestamps: true,
