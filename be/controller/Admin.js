@@ -137,6 +137,41 @@ class Admin {
       }
     });
   }
+
+  //[PUT] /admin/updateChairServiceByName/:name
+  updateChairServiceByName(req, res, next) {
+    ServiceModel.updateOne(
+      { "chair.name": req.body.name },
+      { $set: { "chair.$.price": req.body.price } }
+    )
+      .then((result) => res.json(result))
+      .catch(next);
+  }
+
+  //[GET] /admin/getMenuService
+  getMenuService(req, res, next) {
+    ServiceModel.find({}, { menu: 1 }, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(result);
+      }
+    });
+  }
+
+  //[PUT] /admin/updateMenuService/
+  updateMenuService(req, res, next) {
+    for (const item in req.body) {
+      if (req.body[item] !== 0) {
+        ServiceModel.updateOne(
+          { "menu.name": item },
+          { $set: { "menu.$.price": req.body[item] } }
+        )
+          .then((result) => res.json(result))
+          .catch(next);
+      }
+    }
+  }
 }
 
 module.exports = new Admin();

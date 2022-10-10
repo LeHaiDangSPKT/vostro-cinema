@@ -16,8 +16,6 @@ export default function ManagerUser() {
     });
   }, [checked]);
   const Delete = () => {
-    console.log(oneUser[0]._id);
-
     Axios.put(`http://localhost:5000/admin/deleteAccountById/${oneUser[0]._id}`)
       .then(function (response) {
         setChecked(Math.random());
@@ -92,7 +90,76 @@ export default function ManagerUser() {
               </table>
             </div>
             <div className="w-25">
-              {oneUser[0] && <InfoDetails oneUser={oneUser[0]} />}
+              {oneUser[0] && (
+                <div className="bg-secondary rounded-4 bg-opacity-50 ms-2">
+                  <div className="text-center text-dark p-2">
+                    <i class="fa-solid fa-user fs-1 p-3 bg-success rounded-5"></i>
+                    <h4 className="mt-3">{oneUser[0].name}</h4>
+                    <div className="text-start">
+                      <div className="my-3">
+                        <span className="fw-bold mx-1 ">
+                          Mã khách hàng:
+                          <span className="fw-normal ms-1">
+                            {oneUser[0]._id}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="my-3">
+                        <span className="fw-bold mx-1 ">
+                          Tên khách hàng:{" "}
+                          <span className="fw-normal">{oneUser[0].name}</span>
+                        </span>
+                      </div>
+                      <div className="my-3">
+                        <span className="fw-bold mx-1 ">
+                          Ngày sinh:{" "}
+                          <span className="fw-normal">
+                            {oneUser[0].dateOfBirthday.substring(0, 10)}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="my-3">
+                        <span className="fw-bold mx-1 ">
+                          Số điện thoại:{" "}
+                          <span className="fw-normal">
+                            {oneUser[0].numberPhone}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="my-3">
+                        <span className="fw-bold mx-1 ">
+                          Email:{" "}
+                          <span className="fw-normal">{oneUser[0].email}</span>
+                        </span>
+                      </div>
+                      <div className="my-3">
+                        <span className="fw-bold mx-1 ">
+                          Tài khoản:{" "}
+                          <span className="fw-normal">
+                            {oneUser[0].username}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="my-3">
+                        <span className="fw-bold mx-1 ">
+                          Mật khẩu:{" "}
+                          <span className="fw-normal">
+                            {oneUser[0].password}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="my-3">
+                        <span className="fw-bold mx-1 ">
+                          Ngày tạo:{" "}
+                          <span className="fw-normal">
+                            {oneUser[0].createdAt.substring(0, 10)}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

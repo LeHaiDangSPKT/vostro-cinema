@@ -6,8 +6,7 @@ import {
   ManagerUser,
   ManagerCalender,
   ManagerFilms,
-  ManagerTicket,
-  ManagerFoodAndDrink,
+  ManagerService,
   ManagerDashboard,
   ManagerTheaterRoom,
 } from "./components/Admin/Content";
@@ -20,8 +19,7 @@ function AppAdmin() {
     ManagerUser: { src: <ManagerUser /> },
     ManagerCalender: { src: <ManagerCalender /> },
     ManagerFilms: { src: <ManagerFilms /> },
-    ManagerTicket: { src: <ManagerTicket /> },
-    ManagerFoodAndDrink: { src: <ManagerFoodAndDrink /> },
+    ManagerService: { src: <ManagerService /> },
     ManagerDashboard: { src: <ManagerDashboard /> },
     ManagerTheaterRoom: { src: <ManagerTheaterRoom /> },
   };

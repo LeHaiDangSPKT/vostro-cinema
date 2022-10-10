@@ -3,6 +3,9 @@ import Logo from "../../imgs/logo.png";
 import { Link } from "react-router-dom";
 
 export default function Header() {
+  const handleDropDown = (e) => {
+    console.log(e.target);
+  };
   return (
     <header>
       <nav className="navbar navbar-expand-lg bg-transparent">
@@ -45,30 +48,34 @@ export default function Header() {
                 </Link>
               </li>
 
-              <li className="nav-item me-3">
+              <div class="dropdown">
                 <Link
-                  className="text-white nav-link"
-                  to="/admin/manager-ticket"
+                  class="text-white nav-link"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
                 >
-                  Quản lý giá vé
+                  Khác
                 </Link>
-              </li>
-              {/* <li className="nav-item me-3">
-                <Link
-                  className="text-white nav-link"
-                  to="/admin/manager-food-and-drink"
-                >
-                  Quản lý thực đơn
-                </Link>
-              </li> */}
-              <li className="nav-item me-3">
-                <Link
-                  className="text-white nav-link"
-                  to="/admin/manager-dashboard"
-                >
-                  Thống kê doanh thu
-                </Link>
-              </li>
+
+                <ul class="dropdown-menu">
+                  <li>
+                    <Link
+                      className="text-dark dropdown-item"
+                      to="/admin/manager-dashboard"
+                    >
+                      Thống kê doanh thu
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="text-dark dropdown-item"
+                      to="/admin/manager-service"
+                    >
+                      Quản lý giá dịch vụ
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </ul>
             <div className="d-flex">
               <div className="dropdown-center">
