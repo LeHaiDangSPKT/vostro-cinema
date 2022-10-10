@@ -15,7 +15,7 @@ export default function ManagerTheaterRoom() {
     room: [],
   });
 
-  //Get All Film
+  //Get All Theater
   React.useEffect(() => {
     Axios.get("http://localhost:5000/admin/getAllTheater").then((response) => {
       setListOfTheater(response.data);

@@ -1,6 +1,8 @@
 const TheaterModel = require("../models/Theater");
 const FilmModel = require("../models/Film");
 const UserModel = require("../models/User");
+const ServiceModel = require("../models/Service");
+
 class Admin {
   //[GET] /admin/getAllTheater
   getAllTheater(req, res, next) {
@@ -123,6 +125,17 @@ class Admin {
     UserModel.updateOne({ _id: req.params.id }, { state: false })
       .then((result) => res.json(result))
       .catch(next);
+  }
+
+  //[GET] /admin/getChairService
+  getChairService(req, res, next) {
+    ServiceModel.find({}, { chair: 1 }, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(result);
+      }
+    });
   }
 }
 

@@ -1,8 +1,9 @@
 import React from "react";
-import FilmDetails from "./FilmDetails";
+import FileBase64 from "react-file-base64";
 import Axios from "axios";
 import Toast from "../../Toast";
 import ToastUtils from "../../../utils/ToastUtils";
+import $ from "jquery";
 
 export default function ManagerFilms() {
   const ref = React.useRef(null);
@@ -11,10 +12,25 @@ export default function ManagerFilms() {
   const [listNameTheater, setListNameTheater] = React.useState([]);
   const [id, setId] = React.useState("");
   const [listFilm, setListFilm] = React.useState([]);
-  const [check, setCheck] = React.useState("");
-  const [idFilm, setIdFilm] = React.useState("");
-  const [oneFilm, setOneFilm] = React.useState({});
 
+  const [check, setCheck] = React.useState("");
+  const [checked, setChecked] = React.useState(false);
+  const [checkAdd, setCheckAdd] = React.useState(false);
+  const [idFilm, setIdFilm] = React.useState("");
+  const [oneFilm, setOneFilm] = React.useState({
+    id: "",
+    name: "",
+    duration: 0,
+    startingDay: "",
+    closingDay: "",
+    trailer: "",
+    img: "",
+    describe: "",
+    category: [],
+    showtimes: [],
+    theaterId: [],
+    room: [],
+  });
   React.useEffect(() => {
     Axios.get("http://localhost:5000/admin/getNameAndIdAllTheater").then(
       (response) => {
@@ -29,20 +45,74 @@ export default function ManagerFilms() {
       Axios.get(`http://localhost:5000/admin/getAllFilmsById/${id}`).then(
         (response) => {
           setListFilm(response.data);
-          setOneFilm(response.data[0]);
+          setOneFilm({
+            id: response.data[0]._id,
+            name: response.data[0].name,
+            duration: response.data[0].duration,
+            startingDay: response.data[0].startingDay,
+            closingDay: response.data[0].closingDay,
+            trailer: response.data[0].trailer,
+            img: response.data[0].img,
+            describe: response.data[0].describe,
+            category: response.data[0].category,
+            showtimes: response.data[0].showtimes,
+            theaterId: response.data[0].theaterId,
+            room: response.data[0].room,
+          });
         }
       );
   }, [id, check]);
-  // Passing from child
-  const handleSetCheck = (e) => {
-    setCheck(e);
+
+  const CheckAll = () => {
+    return $("#checkAll").prop("checked")
+      ? ($(".check").prop("checked", true),
+        setOneFilm({
+          ...oneFilm,
+          theaterId: listNameTheater.map((item) => item._id),
+        }))
+      : ($(".check").prop("checked", false),
+        setOneFilm({ ...oneFilm, theaterId: [] }));
   };
-  const handleSetTextToast = (e) => {
-    setTextToast(e.toString());
+  const CheckItem = () => {
+    if (
+      $('input[name="checkItem"]:checked').length === listNameTheater.length
+    ) {
+      $("#checkAll").prop("checked", true);
+    } else {
+      $("#checkAll").prop("checked", false);
+    }
   };
-  const handleSetIdFilm = (e) => {
-    // setIdFilm(e.target.value);
-    console.log(e.target.value);
+  const CheckSymbolToArray = (str) => {
+    var arr = [];
+    if (str.includes(",")) {
+      arr = str.split(",");
+      arr = arr.map((item) => item.trim());
+      return arr;
+    }
+    return null;
+  };
+  const CheckValidate = () => {
+    if (
+      !oneFilm.img.substr(0, 30).toString().includes("jpeg") &&
+      !oneFilm.img.substr(0, 30).toString().includes("png")
+    ) {
+      setTextToast("File phải là .jpg hoặc .png");
+      ToastUtils("fail");
+      return false;
+    } else if (!oneFilm.category.toString().includes(",")) {
+      setTextToast("Thể loại bao gồm ký tự ','");
+      ToastUtils("fail");
+      return false;
+    } else if (oneFilm.startingDay >= oneFilm.closingDay) {
+      setTextToast("Ngày kết thúc phải lớn hơn ngày bắt đầu");
+      ToastUtils("fail");
+      return false;
+    } else if (oneFilm.duration <= 0) {
+      setTextToast("Thời lượng của phim phải lớn hơn 0");
+      ToastUtils("fail");
+      return false;
+    }
+    return true;
   };
 
   const Delete = () => {
@@ -54,12 +124,173 @@ export default function ManagerFilms() {
       })
       .catch(function (error) {});
   };
-  const handleEdit = (id) => {
-    return (
-      setOneFilm(listFilm.filter((items) => items._id === id)),
-      ref.current?.scrollIntoView({ behavior: "smooth" })
-    );
+  const handleClickPencil = (id) => {
+    const film = listFilm.filter((items) => items._id === id);
+    setOneFilm({
+      id: id,
+      name: film[0].name,
+      duration: film[0].duration,
+      startingDay: film[0].startingDay,
+      closingDay: film[0].closingDay,
+      trailer: film[0].trailer,
+      img: film[0].img,
+      describe: film[0].describe,
+      category: film[0].category,
+      showtimes: film[0].showtimes,
+      theaterId: film[0].theaterId,
+      room: film[0].room,
+    });
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+
+    setChecked(false);
+    $(`button[id*='edit']`)[0].disabled = false;
+    var input = $("input[id*='detail']");
+    for (var i = 0; i < input.length; i++) {
+      input[i].disabled = true;
+    }
   };
+  const handleChange = (e) => {
+    setOneFilm({ ...oneFilm, [e.target.name]: e.target.value });
+  };
+  const EditInfo = (state) => {
+    var input = $("input[id*='detail']");
+    for (var i = 0; i < input.length; i++) {
+      input[i].disabled = state;
+    }
+    setChecked(!state);
+
+    $(`button[id*='edit']`)[0].disabled = !state;
+    $(`button[id*='add']`)[0].disabled = !state;
+  };
+
+  const handleAdd = (str, state) => {
+    if (str == "add") {
+      setOneFilm({
+        id: "",
+        name: "",
+        duration: 0,
+        startingDay: "",
+        closingDay: "",
+        trailer: "",
+        img: "",
+        describe: "",
+        category: [],
+        showtimes: [],
+        theaterId: [],
+        room: [],
+      });
+      setChecked(!state);
+    } else if (str == "cancel") {
+      setChecked(!state);
+      setOneFilm({
+        id: "",
+        name: listFilm[0].name,
+        duration: listFilm[0].duration,
+        startingDay: listFilm[0].startingDay,
+        closingDay: listFilm[0].closingDay,
+        trailer: listFilm[0].trailer,
+        img: listFilm[0].img,
+        describe: listFilm[0].describe,
+        category: listFilm[0].category,
+        showtimes: listFilm[0].showtimes,
+        theaterId: listFilm[0].theaterId,
+        room: listFilm[0].room,
+      });
+    } else {
+      if (CheckValidate()) {
+        const listTheater = $('input[name="checkItem"]:checked');
+        var arrTheater = Object.values(listTheater)
+          .map((item) => item.value)
+          .filter((item) => item !== undefined);
+        var arrCategory = CheckSymbolToArray(oneFilm.category);
+        if (arrCategory) {
+          arrCategory = arrCategory.filter((item) => item !== "");
+          Axios.post("http://localhost:5000/admin/addFilm", {
+            name: oneFilm.name,
+            duration: oneFilm.duration,
+            startingDay: oneFilm.startingDay,
+            closingDay: oneFilm.closingDay,
+            trailer: oneFilm.trailer,
+            img: oneFilm.img,
+            describe: oneFilm.describe,
+            category: arrCategory,
+            showtimes: oneFilm.showtimes,
+            theaterId: arrTheater,
+            room: oneFilm.room,
+          })
+            .then(function (response) {
+              setTextToast("Đã thêm phim mới");
+              setCheck(Math.random());
+              ToastUtils("success");
+              setChecked(!state);
+            })
+            .catch(function (error) {
+              setTextToast(error);
+              ToastUtils("fail");
+            });
+        } else {
+          setTextToast("Lỗi hệ thống. Vui lòng nhập lại!!!");
+          ToastUtils("fail");
+        }
+      }
+    }
+    if (checked || str == "add" || str == "cancel") {
+      var input = $("input[id*='detail']");
+      for (var i = 0; i < input.length; i++) {
+        input[i].disabled = state;
+      }
+      setCheckAdd(!state);
+      $(`button[id*='add']`)[0].disabled = !state;
+      $(`button[id*='edit']`)[0].disabled = !state;
+      $(`button[id*='delete']`)[0].disabled = !state;
+    }
+  };
+  const Update = (e) => {
+    e.preventDefault();
+    if (CheckValidate()) {
+      const listNameTheater = $('input[name="checkItem"]:checked');
+      var arrTheater = Object.values(listNameTheater)
+        .map((item) => item.value)
+        .filter((item) => item !== undefined);
+      var arrCategory = CheckSymbolToArray(oneFilm.category.toString());
+      if (arrCategory) {
+        arrCategory = arrCategory.filter((item) => item !== "");
+        Axios.put(`http://localhost:5000/admin/updateFilmById/${oneFilm.id}`, {
+          name: oneFilm.name,
+          duration: oneFilm.duration,
+          startingDay: oneFilm.startingDay,
+          closingDay: oneFilm.closingDay,
+          trailer: oneFilm.trailer,
+          img: oneFilm.img,
+          describe: oneFilm.describe,
+          category: arrCategory,
+          showtimes: oneFilm.showtimes,
+          theaterId: arrTheater,
+          room: oneFilm.room,
+        })
+          .then(function (response) {
+            setTextToast("Đã cập nhật thành công");
+            ToastUtils("success");
+            setCheck(Math.random());
+            setChecked(false);
+            var input = $("input[id*='detail']");
+            for (var i = 0; i < input.length; i++) {
+              input[i].disabled = true;
+            }
+            $(`button[id*='edit']`)[0].disabled = false;
+            $(`button[id*='add']`)[0].disabled = false;
+          })
+          .catch(function (error) {
+            setTextToast(error.response.data);
+            ToastUtils("fail");
+          });
+      } else {
+        setTextToast("Lỗi hệ thống. Vui lòng nhập lại!!!");
+        ToastUtils("fail");
+      }
+    }
+  };
+
   return (
     <div className="bg-light p-4">
       <div className="row">
@@ -107,7 +338,7 @@ export default function ManagerFilms() {
                     <td>
                       <button
                         className="btn border-light"
-                        onClick={(e) => handleEdit(item._id)}
+                        onClick={(e) => handleClickPencil(item._id)}
                       >
                         <i className="fa-solid fa-pencil"></i>
                       </button>
@@ -125,65 +356,325 @@ export default function ManagerFilms() {
               })}
             </tbody>
           </table>
+          {/* Modal Delte */}
+          <div
+            class="modal fade"
+            id="delete"
+            tabindex="-1"
+            aria-labelledby="deleteLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteLabel">
+                    Xoá phim
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  Phim sẽ bị khoá vĩnh viễn và không thể khôi phục
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Huỷ
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-bs-dismiss="modal"
+                    onClick={(e) => Delete()}
+                  >
+                    Tôi chắn chắn
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {oneFilm && (
           <div className="col-md-12" ref={ref}>
-            <h3 className="text-center text-success mt-2">
-              THÔNG TIN CHI TIẾT
-            </h3>
-            <FilmDetails
-              listTheater={listNameTheater}
-              oneFilm={oneFilm}
-              setIdFilm={setIdFilm}
-              setCheck={handleSetCheck}
-              setTextToast={handleSetTextToast}
-            />
+            {!checkAdd ? (
+              <h3 className="text-center text-success mt-2">
+                THÔNG TIN CHI TIẾT
+              </h3>
+            ) : (
+              <h3 className="text-center text-success mt-2">THÊM PHIM MỚI</h3>
+            )}
+
+            <div className="d-flex">
+              <img
+                src={oneFilm.img}
+                style={{
+                  width: "300px",
+                  height: "400px",
+                  marginRight: "10px",
+                  marginTop: "16px",
+                }}
+                alt=""
+              />
+              <div>
+                <form
+                  className="row g-3"
+                  style={{ margin: "0 auto" }}
+                  onSubmit={(e) => Update(e)}
+                >
+                  <div className="col-md-6">
+                    <label className="form-label">Tên phim:</label>
+                    <input
+                      type="text"
+                      className=" form-control"
+                      name="name"
+                      id="detail"
+                      required
+                      disabled
+                      value={oneFilm.name}
+                      onChange={(e) => handleChange(e)}
+                    ></input>
+                  </div>
+                  <div className="col-md-6">
+                    <label className="form-label">Thể loại:</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      required
+                      disabled
+                      name="category"
+                      id="detail"
+                      onChange={(e) => handleChange(e)}
+                      value={oneFilm.category}
+                    ></input>
+                    <div className="form-text">
+                      Cách nhập: Nếu có 1 thể loại thì kết thúc bằng dấu phẩy
+                      (,) và nhiều hơn một thì cách nhau bởi dấu phẩy (,)
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <label className="form-label">Thời lượng:</label>
+                    <div className="input-group">
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={oneFilm.duration}
+                        name="duration"
+                        id="detail"
+                        required
+                        disabled
+                        onChange={(e) => handleChange(e)}
+                      ></input>
+                      <span class="input-group-text">Phút</span>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <label className="form-label">Link trailer:</label>
+                    <input
+                      type="text"
+                      className=" form-control"
+                      required
+                      disabled
+                      name="trailer"
+                      id="detail"
+                      value={oneFilm.trailer}
+                      onChange={(e) => handleChange(e)}
+                    ></input>
+                  </div>
+                  <div className="col-md-6">
+                    <label className="form-label">Ngày bắt đầu:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      onChange={(e) => handleChange(e)}
+                      value={oneFilm.startingDay.substring(0, 10)}
+                      name="startingDay"
+                      id="detail"
+                      required
+                      disabled
+                    ></input>
+                  </div>
+                  <div className="col-md-6">
+                    <label className="form-label">Ngày kết thúc:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      onChange={(e) => handleChange(e)}
+                      value={oneFilm.closingDay.substring(0, 10)}
+                      name="closingDay"
+                      id="detail"
+                      required
+                      disabled
+                    ></input>
+                  </div>
+                  <div className="col-md-12 mb-3">
+                    <label className="form-label">Mô tả:</label>
+                    <input
+                      type="text"
+                      className="form-control "
+                      value={oneFilm.describe}
+                      name="describe"
+                      id="detail"
+                      maxLength={220}
+                      required
+                      disabled
+                      onChange={(e) => handleChange(e)}
+                    ></input>
+                  </div>
+                  {checked && (
+                    <>
+                      <div className="col-md-12 mb-3">
+                        <label className="form-label me-2">Poster phim:</label>
+                        <FileBase64
+                          accept="image/*"
+                          multiple={false}
+                          type="file"
+                          required
+                          onDone={({ base64 }) => {
+                            setOneFilm({ ...oneFilm, img: base64 });
+                          }}
+                        />
+                      </div>
+                      <div className="row ">
+                        <label className="col-md-12">
+                          <input
+                            type="checkbox"
+                            class="check"
+                            id="checkAll"
+                            onClick={(e) => CheckAll()}
+                          ></input>
+                          Tất cả
+                        </label>
+                        {listNameTheater.map((item) => {
+                          if (oneFilm.theaterId.includes(item._id)) {
+                            return (
+                              <label className="col-md-4" key={item._id}>
+                                <input
+                                  type="checkbox"
+                                  class="check"
+                                  name="checkItem"
+                                  value={item._id}
+                                  id={item._id}
+                                  defaultChecked
+                                  onChange={(e) => CheckItem()}
+                                ></input>{" "}
+                                {item.name}
+                              </label>
+                            );
+                          } else {
+                            return (
+                              <label className="col-md-4" key={item._id}>
+                                <input
+                                  type="checkbox"
+                                  class="check"
+                                  name="checkItem"
+                                  value={item._id}
+                                  onChange={(e) => CheckItem()}
+                                ></input>{" "}
+                                {item.name}
+                              </label>
+                            );
+                          }
+                        })}
+                      </div>
+                    </>
+                  )}
+                  {!checkAdd && (
+                    <div
+                      className="w-75 mt-3 d-flex justify-content-center"
+                      style={{ margin: "0 auto" }}
+                    >
+                      <button
+                        type="button"
+                        className="btn mx-1 w-75 btn-primary"
+                        id="edit"
+                        onClick={(e) => EditInfo(false)}
+                      >
+                        Sửa thông tin
+                      </button>
+                      {checked && (
+                        <>
+                          <button
+                            type="submit"
+                            className="btn mx-1 w-75 btn-success"
+                          >
+                            Cập nhật
+                          </button>
+                          <button
+                            type="button"
+                            id="cancel"
+                            className="btn mx-1 w-75 btn-secondary"
+                            onClick={(e) => EditInfo(true)}
+                          >
+                            Huỷ
+                          </button>
+                        </>
+                      )}
+                      {!checked && (
+                        <button
+                          type="button"
+                          className="btn mx-1 w-75 btn-danger"
+                          data-bs-toggle="modal"
+                          data-bs-target="#delete"
+                          id="delete"
+                          onClick={(e) => setIdFilm(oneFilm.id)}
+                        >
+                          Xoá phim
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </form>
+                <div className="row w-75 pb-4" style={{ margin: "0 auto" }}>
+                  <div className="mt-3 d-flex justify-content-center">
+                    <button
+                      type="button"
+                      id="add"
+                      className="btn mx-1 w-100 btn-primary"
+                      onClick={(e) => handleAdd("add", false)}
+                    >
+                      Thêm phim mới
+                    </button>
+                    {checkAdd && (
+                      <>
+                        <button
+                          type="button"
+                          id="add"
+                          className="btn mx-1 w-100 btn-success"
+                          onClick={(e) => handleAdd("confirm", true)}
+                        >
+                          Xác nhận
+                        </button>
+                        <button
+                          type="button"
+                          id="add"
+                          className="btn mx-1 w-100 btn-secondary"
+                          onClick={(e) => handleAdd("cancel", true)}
+                        >
+                          Huỷ
+                        </button>
+                      </>
+                    )}
+                    {!checkAdd && (
+                      <button
+                        type="button"
+                        className="btn mx-1 w-100 btn-warning"
+                      >
+                        Đặt vé trước
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
-      </div>
-      {/* Modal Delte */}
-      <div
-        class="modal fade"
-        id="delete"
-        tabindex="-1"
-        aria-labelledby="deleteLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteLabel">
-                Xoá phim
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              Phim sẽ bị khoá vĩnh viễn và không thể khôi phục
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Huỷ
-              </button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-dismiss="modal"
-                onClick={(e) => Delete()}
-              >
-                Tôi chắn chắn
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
       <Toast text={textToast} bg="bg-danger" id="fail" />
       <Toast text={textToast} bg="bg-success" id="success" />

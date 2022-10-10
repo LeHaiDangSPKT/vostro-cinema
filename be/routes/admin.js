@@ -3,17 +3,20 @@ const router = express.Router();
 
 const AdminController = require("../controller/Admin");
 
+router.put("/deleteTheaterById/:id", AdminController.deleteTheaterById); //update state
+router.put("/deleteFilmById/:id", AdminController.deleteFilmById); //update state
+router.put("/deleteAccountById/:id", AdminController.deleteAccountById); //update state
+router.put("/updateTheaterById/:id", AdminController.updateTheaterById);
+router.put("/updateFilmById/:id", AdminController.updateFilmById);
+
 router.post("/addTheaterAndRoom", AdminController.addTheaterAndRoom);
+router.post("/addFilm", AdminController.addFilm);
+
 router.get("/getAllTheater", AdminController.getAllTheater);
 router.get("/getOneTheaterById/:id", AdminController.getOneTheaterById);
-router.put("/deleteTheaterById/:id", AdminController.deleteTheaterById); //update state
-router.put("/updateTheaterById/:id", AdminController.updateTheaterById);
 router.get("/getNameAndIdAllTheater", AdminController.getNameAndIdAllTheater);
-router.post("/addFilm", AdminController.addFilm);
 router.get("/getAllFilmsById/:id", AdminController.getAllFilmsById);
-router.put("/deleteFilmById/:id", AdminController.deleteFilmById); //update state
-router.put("/updateFilmById/:id", AdminController.updateFilmById);
 router.get("/getAllUsers", AdminController.getAllUsers);
-router.put("/deleteAccountById/:id", AdminController.deleteAccountById); //update state
+router.get("/getChairService", AdminController.getChairService);
 
 module.exports = router;
