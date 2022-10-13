@@ -4,8 +4,14 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 import Toast from "./Toast";
 import ToastUtils from "../utils/ToastUtils";
+import Loader from "../utils/Loader";
 export default function Header() {
   const [textToast, setTextToast] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+
+  const [hasOTP, setHasOTP] = React.useState(true);
+  const [OTP, setOTP] = React.useState(0);
+  const [sendOTP, setSendOTP] = React.useState("");
   const [newAccount, setNewAccount] = React.useState({
     name: "",
     phoneNumber: "",
@@ -17,33 +23,75 @@ export default function Header() {
     billId: [],
   });
 
+  React.useEffect(() => {
+    setOTP(Math.floor(Math.random() * 10000000));
+  }, [setHasOTP]);
+
   const handleChange = (e) => {
     setNewAccount({ ...newAccount, [e.target.name]: e.target.value });
   };
-
   //Nếu có tg làm thêm chức năng gửi OTP xác nhận SĐT có tồn tại
   const signIn = (e) => {
     e.preventDefault();
-    if (newAccount.password == newAccount.confirmPassword) {
-      Axios.post("http://localhost:5000/user/signIn", {
-        name: newAccount.name,
-        phoneNumber: newAccount.phoneNumber,
-        email: newAccount.email,
-        dateOfBirthday: newAccount.dateOfBirthday,
-        username: newAccount.username,
-        password: newAccount.password,
-      })
-        .then(function (response) {
-          setTextToast("Đăng ký tài khoản thành công !");
-          ToastUtils("signIn-success");
+
+    if (!hasOTP) {
+      if (OTP === parseInt(sendOTP)) {
+        setLoading(true);
+        Axios.post("http://localhost:5000/user/signIn", {
+          name: newAccount.name,
+          phoneNumber: newAccount.phoneNumber,
+          email: newAccount.email,
+          dateOfBirthday: newAccount.dateOfBirthday,
+          username: newAccount.username,
+          password: newAccount.password,
         })
-        .catch(function (error) {
-          setTextToast(error.response.data);
-          ToastUtils("signIn-fail");
-        });
+          .then(function (response) {
+            setHasOTP(true);
+            setLoading(false);
+
+            setTextToast("Đăng ký thành công");
+            ToastUtils("signIn-success");
+          })
+          .catch(function (error) {
+            setLoading(false);
+
+            setTextToast(error.response.data);
+            ToastUtils("signIn-fail");
+          });
+      } else {
+        alert("Bạn nhập sai mã OTP");
+        window.location.reload();
+      }
     } else {
-      setTextToast("Mật khẩu nhập lại không khớp");
-      ToastUtils("signIn-fail");
+      if (newAccount.password == newAccount.confirmPassword) {
+        setLoading(true);
+
+        Axios.post("http://localhost:5000/user/signIn", {
+          state: "getOTP",
+          otp: OTP,
+          email: newAccount.email,
+          phoneNumber: newAccount.phoneNumber,
+          username: newAccount.username,
+        })
+          .then(function (response) {
+            setHasOTP(false);
+            setLoading(false);
+
+            setTextToast(
+              `Mã xác thực đã được gửi qua email: ${newAccount.email}`
+            );
+            ToastUtils("signIn-success");
+          })
+          .catch(function (error) {
+            setLoading(false);
+
+            setTextToast(error.response.data);
+            ToastUtils("signIn-fail");
+          });
+      } else {
+        setTextToast("Mật khẩu nhập lại không khớp");
+        ToastUtils("signIn-fail");
+      }
     }
   };
 
@@ -286,117 +334,167 @@ export default function Header() {
                   aria-label="Close"
                 ></button>
               </div>
-              <div className="modal-body">
-                <div className="mb-3 text-center">
-                  <img src={Logo} alt="" width="150" height="80" />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Họ và tên:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="fullname"
-                    name="name"
-                    required
-                    onChange={(e) => handleChange(e)}
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Ngày tháng năm sinh:</label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    id="dob"
-                    name="dateOfBirthday"
-                    required
-                    onChange={(e) => handleChange(e)}
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Email:</label>
-                  <input
-                    type="email"
-                    name="email"
-                    className="form-control"
-                    id="email"
-                    required
-                    onChange={(e) => handleChange(e)}
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Số điện thoại:</label>
-                  <input
-                    type="tel"
-                    className="form-control"
-                    id="phone"
-                    name="phoneNumber"
-                    required
-                    onChange={(e) => handleChange(e)}
-                    minLength="10"
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Tên tài khoản:</label>
-                  <input
-                    type="text"
-                    name="username"
-                    className="form-control"
-                    id="username-signin"
-                    required
-                    onChange={(e) => handleChange(e)}
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Mật khẩu:</label>
-                  <input
-                    type="password"
-                    name="password"
-                    className="form-control"
-                    id="password-signin"
-                    required
-                    onChange={(e) => handleChange(e)}
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Nhập lại mật khẩu:</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="confirm-password"
-                    name="confirmPassword"
-                    onChange={(e) => handleChange(e)}
-                    required
-                  ></input>
-                </div>
-              </div>
-              <div className="modal-footer d-flex justify-content-between">
-                <div>
-                  <button
-                    type="button"
-                    className="btn btn-outline-success"
-                    data-bs-dismiss="modal"
-                    onClick={() => toggleModal("login")}
-                  >
-                    {`<< Đăng nhập`}
-                  </button>
-                </div>
-                <div>
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary me-2 "
-                    data-bs-dismiss="modal"
-                  >
-                    Huỷ
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn btn-outline-success"
-                    data-bs-dismiss="modal"
-                  >
-                    Đăng ký tài khoản
-                  </button>
-                </div>
-              </div>
+              {loading ? (
+                <Loader state={loading} />
+              ) : (
+                <>
+                  <div className="modal-body">
+                    {hasOTP ? (
+                      <>
+                        <div className="mb-3 text-center">
+                          <img src={Logo} alt="" width="150" height="80" />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Họ và tên:</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="fullname"
+                            name="name"
+                            required
+                            onChange={(e) => handleChange(e)}
+                          ></input>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">
+                            Ngày tháng năm sinh:
+                          </label>
+                          <input
+                            type="date"
+                            className="form-control"
+                            id="dob"
+                            name="dateOfBirthday"
+                            required
+                            onChange={(e) => handleChange(e)}
+                          ></input>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Email:</label>
+                          <input
+                            type="email"
+                            name="email"
+                            className="form-control"
+                            id="email"
+                            required
+                            onChange={(e) => handleChange(e)}
+                          ></input>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Số điện thoại:</label>
+                          <input
+                            type="tel"
+                            className="form-control"
+                            id="phone"
+                            name="phoneNumber"
+                            required
+                            onChange={(e) => handleChange(e)}
+                            minLength="10"
+                          ></input>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Tên tài khoản:</label>
+                          <input
+                            type="text"
+                            name="username"
+                            className="form-control"
+                            id="username-signin"
+                            required
+                            onChange={(e) => handleChange(e)}
+                          ></input>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Mật khẩu:</label>
+                          <input
+                            type="password"
+                            name="password"
+                            className="form-control"
+                            id="password-signin"
+                            required
+                            onChange={(e) => handleChange(e)}
+                          ></input>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">
+                            Nhập lại mật khẩu:
+                          </label>
+                          <input
+                            type="password"
+                            className="form-control"
+                            id="confirm-password"
+                            name="confirmPassword"
+                            onChange={(e) => handleChange(e)}
+                            required
+                          ></input>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="mb-3">
+                        <label className="form-label">
+                          Nhập mã được gửi đến email:
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          onChange={(e) => setSendOTP(e.target.value)}
+                          required
+                        ></input>
+                      </div>
+                    )}
+                  </div>
+                  <div className="modal-footer d-flex justify-content-between">
+                    {hasOTP ? (
+                      <>
+                        <div>
+                          <button
+                            type="button"
+                            className="btn btn-outline-success"
+                            data-bs-dismiss="modal"
+                            onClick={() => toggleModal("login")}
+                          >
+                            {`<< Đăng nhập`}
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary me-2 "
+                            data-bs-dismiss="modal"
+                          >
+                            Huỷ
+                          </button>
+                          <button
+                            type="submit"
+                            className="btn btn-outline-success"
+                          >
+                            Đăng ký tài khoản
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div>
+                          <button
+                            type="button"
+                            className="btn btn-outline-success"
+                            onClick={() => setHasOTP(false)}
+                          >
+                            {`<< Trở về`}
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            type="submit"
+                            className="btn btn-outline-success"
+                            data-bs-dismiss="modal"
+                          >
+                            Xác nhận
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

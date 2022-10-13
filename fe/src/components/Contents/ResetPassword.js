@@ -38,7 +38,7 @@ export default function ResetPassword() {
 
   const SendOTP = (e) => {
     e.preventDefault();
-    if (parseInt(sendOtp) == otp) {
+    if (parseInt(sendOtp) === otp) {
       setLoading(true);
       Axios.post("http://localhost:5000/user/resetPassword", {
         state: "sendOTP",
@@ -52,6 +52,7 @@ export default function ResetPassword() {
           document.location.href = "/";
         })
         .catch(function (error) {
+          setLoading(false);
           setTextToast(error.response.data);
           ToastUtils("fail");
         });
@@ -64,7 +65,6 @@ export default function ResetPassword() {
   return (
     <div className="bg-light w-75 rounded-2" style={{ margin: "0 auto" }}>
       <div className="p-4">
-        {/* {sent && (  */}
         {loading ? (
           <Loader state={loading} />
         ) : sent ? (
