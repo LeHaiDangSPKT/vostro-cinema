@@ -96,8 +96,15 @@ export default function Header() {
                 </button>
                 <ul className="dropdown-menu w-100">
                   <li>
-                    <button className="dropdown-item text-danger">
-                      Đăng xuất
+                    <button
+                      className="dropdown-item "
+                      onClick={(e) => {
+                        localStorage.removeItem("login");
+                      }}
+                    >
+                      <a className="dropdown-item text-danger p-0" href="/">
+                        Đăng xuất
+                      </a>
                     </button>
                   </li>
                 </ul>

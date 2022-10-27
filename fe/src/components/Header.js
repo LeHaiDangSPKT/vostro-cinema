@@ -101,8 +101,13 @@ export default function Header() {
       password: newAccount.password,
     })
       .then(function (response) {
-        localStorage.setItem("login", newAccount.username);
-        document.location.href = "/";
+        if (response.data.username == "admin@admin123") {
+          localStorage.setItem("login", "admin");
+          document.location.href = "/admin";
+        } else {
+          localStorage.setItem("login", newAccount.username);
+          document.location.href = "/";
+        }
       })
       .catch(function (error) {
         setTextToast(error.response.data);

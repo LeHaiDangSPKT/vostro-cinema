@@ -9,8 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* <AppUser /> */}
-      <AppAdmin />
+      {localStorage.getItem("login") == "admin" ? <AppAdmin /> : <AppUser />}
     </BrowserRouter>
   </React.StrictMode>
 );
