@@ -48,7 +48,6 @@ export default function Header() {
           .then(function (response) {
             setHasOTP(true);
             setLoading(false);
-
             setTextToast("Đăng ký thành công");
             ToastUtils("signIn-success");
           })

@@ -2,6 +2,7 @@ const TheaterModel = require("../models/Theater");
 const FilmModel = require("../models/Film");
 const UserModel = require("../models/User");
 const ServiceModel = require("../models/Service");
+const ShowTimeModel = require("../models/Showtime");
 
 class Admin {
   //[GET] /admin/getAllTheater
@@ -57,7 +58,7 @@ class Admin {
 
   // [GET] /admin/getNameAndIdAllTheater
   getNameAndIdAllTheater(req, res, next) {
-    TheaterModel.find({ state: true }, { name: 1 }, (err, result) => {
+    TheaterModel.find({ state: true }, { name: 1, room: 1 }, (err, result) => {
       if (err) {
         res.json(err);
       } else {
@@ -171,6 +172,83 @@ class Admin {
           .catch(next);
       }
     }
+  }
+
+  //[POST] /admin/addShowTime/
+  addShowTime(req, res, next) {
+    const showTime = req.body;
+    console.log(showTime);
+    const newshowTime = new ShowTimeModel(showTime);
+    newshowTime.save();
+    res.json(showTime);
+  }
+
+  //[POST] /admin/getOneShowTime
+  getOneShowTime(req, res, next) {
+    ShowTimeModel.findOne(
+      {
+        $and: [
+          { theaterId: req.body.theaterId },
+          { roomName: req.body.roomName },
+          { movieDate: req.body.movieDate + "T00:00:00.000+00:00" },
+        ],
+      },
+
+      (err, result) => {
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(result);
+        }
+      }
+    );
+  }
+
+  //[PUT] /admin/updateShowTime:id
+  updateShowTime(req, res, next) {
+    ShowTimeModel.updateOne(
+      { _id: req.params.id },
+      { $push: { movieTime: { $each: req.body.movieTime, $sort: 1 } } },
+      (err, result) => {
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(result);
+        }
+      }
+    );
+  }
+
+  //[GET] /admin/getAllShowTimesById/:id
+  getAllShowTimesById(req, res, next) {
+    ShowTimeModel.find({ theaterId: req.params.id }, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        console.log(result);
+        res.json(result);
+      }
+    }).sort({ movieDate: 1, roomName: 1 });
+  }
+
+  //[POST] /admin/deleteShowTimeById/:id
+  deleteShowTimeById(req, res, next) {
+    ShowTimeModel.updateOne(
+      { _id: req.params.id },
+      { $pull: { movieTime: { time: req.body.time } } }
+    )
+      .then((result) => res.json(result))
+      .catch(next);
+  }
+
+  //[PUT] /admin/updateStateShowTimeById/:id
+  updateStateShowTimeById(req, res, next) {
+    ShowTimeModel.updateOne(
+      { _id: req.params.id, "movieTime.time": req.body.time },
+      { $set: { "movieTime.$.state": 1 } }
+    )
+      .then((result) => res.json(result))
+      .catch(next);
   }
 }
 

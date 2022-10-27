@@ -13,8 +13,6 @@ const Film = new Schema(
     describe: { type: String },
     category: { type: Array, default: [] },
     theaterId: { type: Array, default: [] },
-    showtimes: { type: Array, default: [] },
-    room: { type: Array, default: [] },
     state: { type: Boolean, default: true },
   },
   {

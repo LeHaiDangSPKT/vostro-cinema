@@ -27,9 +27,7 @@ export default function ManagerFilms() {
     img: "",
     describe: "",
     category: [],
-    showtimes: [],
     theaterId: [],
-    room: [],
   });
   React.useEffect(() => {
     Axios.get("http://localhost:5000/admin/getNameAndIdAllTheater").then(
@@ -55,9 +53,7 @@ export default function ManagerFilms() {
             img: response.data[0].img,
             describe: response.data[0].describe,
             category: response.data[0].category,
-            showtimes: response.data[0].showtimes,
             theaterId: response.data[0].theaterId,
-            room: response.data[0].room,
           });
         }
       );
@@ -175,9 +171,7 @@ export default function ManagerFilms() {
         img: "",
         describe: "",
         category: [],
-        showtimes: [],
         theaterId: [],
-        room: [],
       });
       setChecked(!state);
     } else if (str == "cancel") {
@@ -192,9 +186,7 @@ export default function ManagerFilms() {
         img: listFilm[0].img,
         describe: listFilm[0].describe,
         category: listFilm[0].category,
-        showtimes: listFilm[0].showtimes,
         theaterId: listFilm[0].theaterId,
-        room: listFilm[0].room,
       });
     } else {
       if (CheckValidate()) {
@@ -264,9 +256,7 @@ export default function ManagerFilms() {
           img: oneFilm.img,
           describe: oneFilm.describe,
           category: arrCategory,
-          showtimes: oneFilm.showtimes,
           theaterId: arrTheater,
-          room: oneFilm.room,
         })
           .then(function (response) {
             setTextToast("Đã cập nhật thành công");

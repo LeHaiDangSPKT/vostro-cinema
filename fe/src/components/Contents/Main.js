@@ -225,7 +225,7 @@ export default function Main() {
       </div>
 
       {/* Modal Trailer */}
-      <div
+      <div 
         class="modal fade"
         id="trailerModal"
         tabindex="-1"

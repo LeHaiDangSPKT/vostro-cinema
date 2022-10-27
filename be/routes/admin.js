@@ -13,9 +13,17 @@ router.put(
   AdminController.updateChairServiceByName
 );
 router.put("/updateMenuService", AdminController.updateMenuService);
+router.put("/updateShowTime/:id", AdminController.updateShowTime);
+router.put(
+  "/updateStateShowTimeById/:id",
+  AdminController.updateStateShowTimeById
+);
 
 router.post("/addTheaterAndRoom", AdminController.addTheaterAndRoom);
 router.post("/addFilm", AdminController.addFilm);
+router.post("/addShowTime", AdminController.addShowTime);
+router.post("/getOneShowTime", AdminController.getOneShowTime);
+router.post("/deleteShowTimeById/:id", AdminController.deleteShowTimeById);
 
 router.get("/getAllTheater", AdminController.getAllTheater);
 router.get("/getOneTheaterById/:id", AdminController.getOneTheaterById);
@@ -24,5 +32,6 @@ router.get("/getAllFilmsById/:id", AdminController.getAllFilmsById);
 router.get("/getAllUsers", AdminController.getAllUsers);
 router.get("/getChairService", AdminController.getChairService);
 router.get("/getMenuService", AdminController.getMenuService);
+router.get("/getAllShowTimesById/:id", AdminController.getAllShowTimesById);
 
 module.exports = router;
