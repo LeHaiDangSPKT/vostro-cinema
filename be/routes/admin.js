@@ -24,10 +24,15 @@ router.post("/addFilm", AdminController.addFilm);
 router.post("/addShowTime", AdminController.addShowTime);
 router.post("/getOneShowTime", AdminController.getOneShowTime);
 router.post("/deleteShowTimeById/:id", AdminController.deleteShowTimeById);
+router.post(
+  "/getAllShowtimeByIdFilmAndTheater",
+  AdminController.getAllShowtimeByIdFilmAndTheater
+);
 
 router.get("/getAllTheater", AdminController.getAllTheater);
 router.get("/getOneTheaterById/:id", AdminController.getOneTheaterById);
 router.get("/getNameAndIdAllTheater", AdminController.getNameAndIdAllTheater);
+router.get("/getAllFilms", AdminController.getAllFilms);
 router.get("/getAllFilmsById/:id", AdminController.getAllFilmsById);
 router.get("/getAllUsers", AdminController.getAllUsers);
 router.get("/getChairService", AdminController.getChairService);

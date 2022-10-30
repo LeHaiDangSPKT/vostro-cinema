@@ -92,6 +92,17 @@ class Admin {
     });
   }
 
+  //[GET] /admin/getAllFilms
+  getAllFilms(req, res, next) {
+    FilmModel.find({ state: true }, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(result);
+      }
+    });
+  }
+
   //[UPDATE] /admin/deleteFilmById/:id
   deleteFilmById(req, res, next) {
     FilmModel.updateOne({ _id: req.params.id }, { state: false })
@@ -247,6 +258,14 @@ class Admin {
       { _id: req.params.id, "movieTime.time": req.body.time },
       { $set: { "movieTime.$.state": 1 } }
     )
+      .then((result) => res.json(result))
+      .catch(next);
+  }
+
+  getAllShowtimeByIdFilmAndTheater(req, res, next) {
+    ShowTimeModel.find({
+      $and: [{ theaterId: req.body.idTheater }, { filmId: req.body.idfilm }],
+    })
       .then((result) => res.json(result))
       .catch(next);
   }

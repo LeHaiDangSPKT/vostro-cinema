@@ -105,7 +105,8 @@ export default function Header() {
           localStorage.setItem("login", "admin");
           document.location.href = "/admin";
         } else {
-          localStorage.setItem("login", newAccount.username);
+          localStorage.setItem("id", response.data._id);
+          localStorage.setItem("name", response.data.name);
           document.location.href = "/";
         }
       })
@@ -162,7 +163,7 @@ export default function Header() {
               )}
             </ul>
             <div className="d-flex">
-              {!localStorage.getItem("login") ? (
+              {!localStorage.getItem("id") ? (
                 <>
                   <button
                     className="btn btn-outline-success me-3"
@@ -191,7 +192,7 @@ export default function Header() {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    <span className="me-2">Lê Hải Đăng</span>
+                    <span className="me-2">{localStorage.getItem("name")}</span>
                     <div
                       className="bg-success rounded-5"
                       style={{ margin: "auto 0" }}
@@ -210,7 +211,8 @@ export default function Header() {
                       <button
                         className="dropdown-item "
                         onClick={(e) => {
-                          localStorage.removeItem("login");
+                          localStorage.removeItem("id");
+                          localStorage.removeItem("name");
                         }}
                       >
                         <a className="dropdown-item text-danger p-0" href="/">

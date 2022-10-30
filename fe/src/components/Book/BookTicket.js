@@ -1,21 +1,124 @@
 import * as React from "react";
 import Test from "../../imgs/test-2.jpg";
-
+import Axios from "axios";
+import $ from "jquery";
 export default function BookTicket() {
-  const next = () => {
-    const collection = document.getElementsByClassName("slick-next");
-    for (let i = 0; i < collection.length; i++) {
-      if (collection[i].parentNode.outerHTML.includes("book")) {
-        collection[i].click(function () {});
+  const [checked, setChecked] = React.useState(false);
+  const [allInfo, setAllInfo] = React.useState({
+    film: {
+      name: "",
+      id: "",
+    },
+    theaterId: "",
+    date: "",
+    time: "",
+  });
+  const [currentFilm, setCurrentFilm] = React.useState({});
+  const [currentShowtime, setCurrentShowtime] = React.useState([]);
+
+  const [listFilms, setListFilms] = React.useState([]);
+  const [listTheaters, setListTheaters] = React.useState([]);
+  const [listDate, setListDate] = React.useState([]);
+  const [listTime, setListTime] = React.useState([]);
+
+  const selectPlace = $("select[id*='place']");
+  const selectDay = $("select[id*='day']");
+  const selectShowtime = $("select[id*='showtime']");
+
+  //Get all film
+  React.useEffect(() => {
+    Axios.get("http://localhost:5000/admin/getAllFilms").then((response) => {
+      setListFilms(response.data);
+    });
+  }, []);
+  //Get all theater
+  React.useEffect(() => {
+    Axios.get("http://localhost:5000/admin/getNameAndIdAllTheater").then(
+      (response) => {
+        setListTheaters(response.data);
       }
+    );
+  }, []);
+  const selectedFilm = (idFilm, nameFilm) => {
+    setCurrentFilm(listFilms.filter((item) => item._id == idFilm));
+    setAllInfo({
+      ...allInfo,
+      film: {
+        id: idFilm,
+        name: nameFilm,
+      },
+    });
+    if (idFilm == "") {
+      setChecked(false);
+      selectPlace.attr("disabled", true);
+      selectDay.attr("disabled", true);
+      selectShowtime.attr("disabled", true);
+    } else {
+      setChecked(true);
+      selectPlace.attr("disabled", false);
     }
   };
+  const selectedTheater = (idTheater) => {
+    if (idTheater == "") {
+      selectDay.attr("disabled", true);
+      selectShowtime.attr("disabled", true);
+    } else {
+      setAllInfo({
+        ...allInfo,
+        theaterId: idTheater,
+      });
+      Axios.post(
+        "http://localhost:5000/admin/getAllShowtimeByIdFilmAndTheater",
+        {
+          idfilm: currentFilm[0]._id,
+          idTheater: idTheater,
+        }
+      ).then((response) => {
+        setCurrentShowtime(response.data);
+        setListDate(
+          response.data.map((item) => {
+            return item.movieDate;
+          })
+        );
+      });
+      selectDay.attr("disabled", false);
+    }
+  };
+  const selectedDay = (day) => {
+    if (day == "") {
+      selectShowtime.attr("disabled", true);
+    } else {
+      setAllInfo({
+        ...allInfo,
+        date: day,
+      });
+      setListTime(
+        currentShowtime.filter((item) => item.movieDate.slice(0, 10) == day)
+      );
+      selectShowtime.attr("disabled", false);
+    }
+  };
+  const selectedShowtime = (valueTime) => {
+    setAllInfo({
+      ...allInfo,
+      time: valueTime,
+    });
+  };
 
-  const prev = () => {
-    const collection = document.getElementsByClassName("slick-prev");
-    for (let i = 0; i < collection.length; i++) {
-      if (collection[i].parentNode.outerHTML.includes("book")) {
-        collection[i].click(function () {});
+  var check = [];
+  const next = () => {
+    if (
+      selectShowtime.prop("disabled") ||
+      selectDay.prop("disabled") ||
+      selectPlace.prop("disabled")
+    ) {
+      alert("Vui lòng chọn đầy đủ");
+    } else {
+      const collection = document.getElementsByClassName("slick-next");
+      for (let i = 0; i < collection.length; i++) {
+        if (collection[i].parentNode.outerHTML.includes("book")) {
+          collection[i].click(function () {});
+        }
       }
     }
   };
@@ -28,44 +131,79 @@ export default function BookTicket() {
         </h3>
         <div className="mb-3">
           <label className="form-label">Chọn phim:</label>
-          <select class="form-control" id="film">
+          <select
+            class="form-control"
+            id="film"
+            onChange={(e) =>
+              selectedFilm(e.target.value, $("#film option:selected").text())
+            }
+          >
             <option value="">Choose..</option>
-            <option value="">Phim 1</option>
-            <option value="">Phim 1</option>
+            {listFilms.map((item) => {
+              return <option value={item._id}>{item.name}</option>;
+            })}
           </select>
         </div>
         <div className="mb-3">
           <label className="form-label">Chọn rạp:</label>
-          <select className="form-control" id="place">
+          <select
+            className="form-control"
+            id="place"
+            onChange={(e) => selectedTheater(e.target.value)}
+            disabled
+          >
             <option value="">Choose...</option>
-            <option value="">Nơi 1</option>
-            <option value="">Nơi 2</option>
-            <option value="">Nơi 3</option>
+            {listTheaters.map((item) => {
+              try {
+                if (currentFilm[0].theaterId.includes(item._id)) {
+                  return <option value={item._id}>{item.name}</option>;
+                }
+              } catch (error) {}
+            })}
           </select>
         </div>
         <div className="mb-3">
           <label className="form-label">Chọn ngày:</label>
-          <select className="form-control" id="day">
+          <select
+            className="form-control"
+            id="day"
+            onChange={(e) => selectedDay(e.target.value)}
+            disabled
+          >
             <option value="">Choose...</option>
-            <option value="">Nơi 1</option>
-            <option value="">Nơi 2</option>
-            <option value="">Nơi 3</option>
+            {listDate
+              .filter((v, i, a) => a.indexOf(v) === i)
+              .map((item) => {
+                item = item.slice(0, 10);
+                return <option value={item}>{item}</option>;
+              })}
           </select>
         </div>
         <div className="mb-3">
           <label className="form-label">Chọn suất chiếu:</label>
-          <select className="form-control" id="showtime">
+          <select
+            className="form-control"
+            id="showtime"
+            onChange={(e) => selectedShowtime(e.target.value)}
+            disabled
+          >
             <option value="">Choose...</option>
-            <option value="">Nơi 1</option>
-            <option value="">Nơi 2</option>
-            <option value="">Nơi 3</option>
+            {listTime.map((item) => {
+              return item.movieTime.map((time) => {
+                if (time.state == 1 && !check.includes(time.time)) {
+                  check.push(time.time);
+                  return <option value={time.time}>{time.time}</option>;
+                }
+              });
+            })}
           </select>
         </div>
         <button
+          id="btn_book"
           type="button"
           className="btn btn-success w-75 d-flex justify-content-center"
           style={{ margin: "0 auto" }}
-          onClick={next}
+          onClick={(e) => next()}
         >
           Đặt vé
         </button>
@@ -74,9 +212,9 @@ export default function BookTicket() {
         className="d-flex flex-column w-25"
         style={{ margin: "0 auto", marginTop: "40px" }}
       >
-        <img src={Test} className="" alt="" />
+        {checked && <img src={currentFilm[0].img} className="" alt="" />}
         <span className="text-center text-light fs-5 bg-danger p-4 rounded-bottom">
-          Tổng tiền: 100.000 đồng
+          Tổng tiền: 0 đồng
         </span>
       </div>
     </div>
