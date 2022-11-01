@@ -1,17 +1,19 @@
 import * as React from "react";
-import Test from "../../imgs/test-2.jpg";
 import Axios from "axios";
 import $ from "jquery";
-export default function BookTicket() {
+export default function BookTicket(props) {
   const [checked, setChecked] = React.useState(false);
   const [allInfo, setAllInfo] = React.useState({
     film: {
+      img: "",
       name: "",
       id: "",
     },
     theaterId: "",
     date: "",
     time: "",
+    price: 0,
+    seat: [],
   });
   const [currentFilm, setCurrentFilm] = React.useState({});
   const [currentShowtime, setCurrentShowtime] = React.useState([]);
@@ -39,15 +41,9 @@ export default function BookTicket() {
       }
     );
   }, []);
-  const selectedFilm = (idFilm, nameFilm) => {
+  const selectedFilm = (idFilm) => {
     setCurrentFilm(listFilms.filter((item) => item._id == idFilm));
-    setAllInfo({
-      ...allInfo,
-      film: {
-        id: idFilm,
-        name: nameFilm,
-      },
-    });
+
     if (idFilm == "") {
       setChecked(false);
       selectPlace.attr("disabled", true);
@@ -101,6 +97,11 @@ export default function BookTicket() {
   const selectedShowtime = (valueTime) => {
     setAllInfo({
       ...allInfo,
+      film: {
+        id: currentFilm[0]._id,
+        name: currentFilm[0].name,
+        img: currentFilm[0].img,
+      },
       time: valueTime,
     });
   };
@@ -114,6 +115,7 @@ export default function BookTicket() {
     ) {
       alert("Vui lòng chọn đầy đủ");
     } else {
+      props.setData(allInfo);
       const collection = document.getElementsByClassName("slick-next");
       for (let i = 0; i < collection.length; i++) {
         if (collection[i].parentNode.outerHTML.includes("book")) {
@@ -134,13 +136,15 @@ export default function BookTicket() {
           <select
             class="form-control"
             id="film"
-            onChange={(e) =>
-              selectedFilm(e.target.value, $("#film option:selected").text())
-            }
+            onChange={(e) => selectedFilm(e.target.value)}
           >
             <option value="">Choose..</option>
             {listFilms.map((item) => {
-              return <option value={item._id}>{item.name}</option>;
+              return (
+                <option value={item._id} data-img={item.img}>
+                  {item.name}
+                </option>
+              );
             })}
           </select>
         </div>

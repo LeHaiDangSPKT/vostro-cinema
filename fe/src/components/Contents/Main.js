@@ -8,6 +8,7 @@ import Search from "../Search";
 import Poster from "../../imgs/bdts_main-poster_vi_print_1_.jpg";
 
 export default function Main() {
+  const [data, setData] = React.useState({});
   const liStateFilms = document.getElementsByClassName("state-film");
   const changeColor = (e) => {
     e.currentTarget.classList.add("custom-hover-active");
@@ -58,6 +59,11 @@ export default function Main() {
     nextArrow: <br />,
     prevArrow: <br />,
   };
+
+  const setDataFromChildComponent = (data) => {
+    setData(data);
+  };
+  console.log(data);
   return (
     <>
       {/* Poster khuyến mãi */}
@@ -217,15 +223,15 @@ export default function Main() {
 
       {/* Đặt vé */}
       <div className="w-75" style={{ margin: "0 auto" }}>
-        <Slider {...settingsBook} className="d-flex justify-content-between">
-          <BookTicket />
-          <BookSeat />
-          <BookService />
+        <Slider {...settingsBook}>
+          <BookTicket setData={setDataFromChildComponent} />
+          <BookSeat setData={setDataFromChildComponent} data={data} />
+          <BookService setData={setDataFromChildComponent} data={data} />
         </Slider>
       </div>
 
       {/* Modal Trailer */}
-      <div 
+      <div
         class="modal fade"
         id="trailerModal"
         tabindex="-1"

@@ -36,17 +36,20 @@
     justify-content: center;
     align-items: center;
     li {
-        padding: 10px 30px;
+        width: 70px;
+        padding: 10px 0;
         margin: 2px 3px;
         border-bottom: 5px solid #198754;
+        text-align: center;
     }
     li:hover {
         background-color: #198754;
         cursor: pointer;
         transition: all 0.4s ease;
     }
-    .double-seat {
-        padding: 10px 67px;
+    .seat-double {
+        width: 145px;
+        padding: 10px 0;
         border-bottom: 5px solid #dc3545;
     }
 }
