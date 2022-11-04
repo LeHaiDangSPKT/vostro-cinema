@@ -4,7 +4,7 @@ import CurrencyFormat from "react-currency-format";
 import Toast from "../../Toast";
 import ToastUtils from "../../../utils/ToastUtils";
 import ManagerFoodAndDrink from "./ManagerFoodAndDrink";
-export default function ManagerTicket() {
+export default function ManagerPriceOfTicket() {
   const [check, setCheck] = React.useState(0);
   const [listService, setListService] = React.useState([]);
   const [priceSingle, setPriceSingle] = React.useState(0);

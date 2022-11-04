@@ -8,7 +8,6 @@ import $ from "jquery";
 
 export default function ManagerFoodAndDrink(props) {
   const [check, setCheck] = React.useState("");
-  const [listMenu, setListMenu] = React.useState([]);
   const [menu, setMenu] = React.useState({
     baprangbo: 0,
     bapcaramel: 0,
@@ -20,7 +19,6 @@ export default function ManagerFoodAndDrink(props) {
 
   React.useEffect(() => {
     Axios.get("http://localhost:5000/admin/getMenuService").then((response) => {
-      setListMenu(response.data);
       setMenu({
         baprangbo: response.data[0].menu[0].price,
         bapcaramel: response.data[0].menu[1].price,

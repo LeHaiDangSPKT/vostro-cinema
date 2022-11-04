@@ -3,7 +3,7 @@ import ManagerUser from "./ManagerUser";
 import InfoDetails from "./InfoDetails";
 import ManagerCalender from "./ManagerCalender";
 import ManagerFilms from "./ManagerFilms";
-import ManagerService from "./ManagerService";
+import ManagerPriceOfTicKet from "./ManagerPriceOfTicKet";
 import ManagerDashboard from "./ManagerDashboard";
 import ManagerTheaterRoom from "./ManagerTheaterRoom";
 
@@ -13,7 +13,7 @@ export {
   InfoDetails,
   ManagerCalender,
   ManagerFilms,
-  ManagerService,
+  ManagerPriceOfTicKet,
   ManagerDashboard,
   ManagerTheaterRoom,
 };

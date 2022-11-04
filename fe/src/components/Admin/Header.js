@@ -69,7 +69,7 @@ export default function Header() {
                   <li>
                     <Link
                       className="text-dark dropdown-item"
-                      to="/admin/manager-service"
+                      to="/admin/manager-price-of-ticKet"
                     >
                       Quản lý giá dịch vụ
                     </Link>

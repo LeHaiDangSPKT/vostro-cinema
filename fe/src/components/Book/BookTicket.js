@@ -10,16 +10,19 @@ export default function BookTicket(props) {
       id: "",
     },
     theaterId: "",
+    roomName: [],
     date: "",
     time: "",
     price: 0,
     seat: [],
+    service: [],
   });
   const [currentFilm, setCurrentFilm] = React.useState({});
   const [currentShowtime, setCurrentShowtime] = React.useState([]);
 
   const [listFilms, setListFilms] = React.useState([]);
   const [listTheaters, setListTheaters] = React.useState([]);
+  const [listRoom, setListRoom] = React.useState([]);
   const [listDate, setListDate] = React.useState([]);
   const [listTime, setListTime] = React.useState([]);
 
@@ -80,6 +83,7 @@ export default function BookTicket(props) {
       selectDay.attr("disabled", false);
     }
   };
+  // console.log(listTime);
   const selectedDay = (day) => {
     if (day == "") {
       selectShowtime.attr("disabled", true);
@@ -102,6 +106,9 @@ export default function BookTicket(props) {
         name: currentFilm[0].name,
         img: currentFilm[0].img,
       },
+      roomName: listTime.map((item) => {
+        return item.roomName;
+      }),
       time: valueTime,
     });
   };

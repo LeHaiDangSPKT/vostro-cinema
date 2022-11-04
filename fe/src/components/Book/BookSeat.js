@@ -1,19 +1,24 @@
 import * as React from "react";
 import Axios from "axios";
+import CurrencyFormat from "react-currency-format";
 
 export default function BookSeat(props) {
   const next = () => {
-    const collection = document.getElementsByClassName("slick-next");
-    for (let i = 0; i < collection.length; i++) {
-      if (collection[i].parentNode.outerHTML.includes("book")) {
-        collection[i].click(function () {});
+    if (seat.length) {
+      const collection = document.getElementsByClassName("slick-next");
+      for (let i = 0; i < collection.length; i++) {
+        if (collection[i].parentNode.outerHTML.includes("book")) {
+          collection[i].click(function () {});
+        }
       }
+      props.setData({
+        ...props.data,
+        price: price,
+        seat: seat,
+      });
+    } else {
+      alert("Vui lòng chọn chỗ ngồi");
     }
-    props.setData({
-      ...props.data,
-      price: price,
-      seat: seat,
-    });
   };
 
   const prev = () => {
@@ -38,7 +43,6 @@ export default function BookSeat(props) {
       setPrice((prev) => prev - e.target.value);
     }
   };
-  console.log(seat);
 
   //Get seat
   React.useEffect(() => {
@@ -87,6 +91,15 @@ export default function BookSeat(props) {
           <h4 className="text-center text-light mb-0 mt-3 py-2 bg-dark border rounded-3">
             MÀN HÌNH
           </h4>
+          <div className="my-3 w-25">
+            <label className="form-label">Chọn phòng chiếu:</label>
+            <select class="form-control" id="film">
+              <option value="">Choose..</option>
+              {props.data.roomName.map((item) => {
+                return <option value={item}>{item}</option>;
+              })}
+            </select>
+          </div>
           <div className="d-flex justify-content-between mt-3">
             <span className="text-center">
               Lối vào<i class="fa-solid fa-arrow-down"></i>
@@ -136,7 +149,14 @@ export default function BookSeat(props) {
         >
           <img src={props.data.film.img} className="" alt="" />
           <span className="text-center text-light fs-5 bg-danger p-4 rounded-bottom">
-            Tổng tiền: {price}
+            <CurrencyFormat
+              prefix={"Tổng tiền: "}
+              value={price}
+              displayType={"text"}
+              thousandSeparator={true}
+              thousandSpacing={3}
+              suffix={" VND"}
+            />
           </span>
         </div>
       </div>

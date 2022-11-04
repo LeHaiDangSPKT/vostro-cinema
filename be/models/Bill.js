@@ -4,22 +4,22 @@ const Schema = mongoose.Schema;
 
 const Bill = new Schema(
   {
-    MaKhachHang: { type: String },
-    MaPhim: { type: String },
-    TenPhim: { type: String },
-    MaRap: { type: String },
-    TenPhong: { type: String },
-    SuatChieu: { type: String },
-    GiaVe: { type: Number },
-    DichVu: [
+    UserId: { type: String },
+    FilmID: { type: String },
+    FilmName: { type: String },
+    TheaterId: { type: String },
+    Showtime: { type: String },
+    Price: { type: Number },
+    Total: { type: Number },
+
+    RoomName: { type: String },
+    Service: [
       {
-        TenDichVu: { type: String },
-        SoLuong: { type: Number },
+        Name: { type: String },
+        Quantity: { type: Number },
       },
     ],
-    KhuyenMai: { type: String },
-    TongTien: { type: Number },
-    ThoiGian: { type: Date },
+    Promotion: { type: String },
   },
   {
     timestamps: true,
