@@ -4,9 +4,10 @@ const Schema = mongoose.Schema;
 
 const Feedback = new Schema(
   {
-    UserId: { type: String },
-    Content: { type: String },
-    Mode: { type: String },
+    userId: { type: String },
+    name: { type: String },
+    content: { type: String },
+    mode: { type: String },
   },
   {
     timestamps: true,

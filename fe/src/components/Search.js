@@ -9,7 +9,7 @@ export default function Search() {
       <div className="d-flex justify-content-center align-items-center w-75">
         <input
           type="text"
-          class="form-control"
+          className="form-control"
           placeholder="Tìm kiếm tên phim..."
         ></input>
         <select className="p-2 mx-1 rounded-2">
@@ -19,7 +19,11 @@ export default function Search() {
           <option value="">3</option>
         </select>
       </div>
-      <button type="button" class="btn btn-success" style={{ height: "40px" }}>
+      <button
+        type="button"
+        className="btn btn-success"
+        style={{ height: "40px" }}
+      >
         Tìm kiếm
       </button>
     </div>

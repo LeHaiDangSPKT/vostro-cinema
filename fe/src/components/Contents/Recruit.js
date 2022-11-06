@@ -29,12 +29,12 @@ export default function Recruit() {
               hội làm việc cho các tài năng trẻ, năng động, yêu thích ngành công
               nghiệp điện ảnh.
             </p>
-            Hiện tại có cá tiêu chí....
+            Tiêu chí của hệ thống:
             <ul>
-              <li>a</li>
-              <li>a</li>
-              <li>a</li>
-              <li>a</li>
+              <li>Nhân viên trung thực</li>
+              <li>Tính cách hoà đồng</li>
+              <li>Không làm việc riêng trong giờ làm việc</li>
+              <li>Nói không với chất cấm</li>
             </ul>
           </div>
         </div>

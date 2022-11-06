@@ -8,14 +8,6 @@ import CurrencyFormat from "react-currency-format";
 import $ from "jquery";
 
 export default function BookService(props) {
-  const prev = () => {
-    const collection = document.getElementsByClassName("slick-prev");
-    for (let i = 0; i < collection.length; i++) {
-      if (collection[i].parentNode.outerHTML.includes("book")) {
-        collection[i].click(function () {});
-      }
-    }
-  };
   var service = [];
   const [totalPriceService, setTotalPriceService] = React.useState(0);
   const [price, setPrice] = React.useState({
@@ -61,12 +53,13 @@ export default function BookService(props) {
       if (+quantity[i].value) {
         service.push({
           name: name[i].outerText,
-          quantity: quantity[i].value,
+          quantity: +quantity[i].value,
         });
       }
     }
     props.setData({
       ...props.data,
+      price: totalPriceService + props.data.price,
       service: service,
     });
   };
@@ -333,6 +326,7 @@ export default function BookService(props) {
               </div>
             </div>
           </div>
+
           <button
             type="button"
             className="btn btn-success w-75 mt-2 d-flex justify-content-center"
@@ -340,14 +334,6 @@ export default function BookService(props) {
             onClick={Submit}
           >
             Thanh toán
-          </button>
-          <button
-            type="button"
-            className="btn btn-success w-75 mt-2 d-flex justify-content-center"
-            style={{ marginLeft: "137px" }}
-            onClick={prev}
-          >
-            Quay về
           </button>
         </div>
         <div
@@ -368,7 +354,5 @@ export default function BookService(props) {
         </div>
       </div>
     );
-  } catch (error) {
-    prev();
-  }
+  } catch (error) {}
 }

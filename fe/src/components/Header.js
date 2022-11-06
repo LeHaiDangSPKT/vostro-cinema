@@ -135,26 +135,11 @@ export default function Header() {
                 </Link>
               </li>
               <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/buy-ticket">
-                  Đặt vé
-                </Link>
-              </li>
-              <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/calender">
-                  Lịch chiếu
-                </Link>
-              </li>
-              <li className="nav-item me-3">
-                <Link className="text-white nav-link" to="/system">
-                  Hệ thống rạp
-                </Link>
-              </li>
-              <li className="nav-item me-3">
                 <Link className="text-white nav-link" to="/recruit">
                   Tuyển dụng
                 </Link>
               </li>
-              {localStorage.getItem("login") && (
+              {localStorage.getItem("id") && (
                 <li className="nav-item me-3">
                   <Link className="text-white nav-link" to="/feedback">
                     Góp ý

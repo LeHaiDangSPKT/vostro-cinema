@@ -1,8 +1,8 @@
 import React from "react";
-import InfoDetails from "./InfoDetails";
 import Axios from "axios";
 import Toast from "../../Toast";
 import ToastUtils from "../../../utils/ToastUtils";
+import ReserveString from "../../../utils/ReserveString";
 export default function ManagerUser() {
   const [listOfUsers, setListOfUsers] = React.useState([]);
   const [oneUser, setOneUser] = React.useState({});
@@ -58,33 +58,41 @@ export default function ManagerUser() {
                 </thead>
                 <tbody>
                   {listOfUsers.map((item, index) => {
-                    return (
-                      <tr
-                        className="table__row"
-                        key={item._id}
-                        style={{ cursor: "pointer" }}
-                        onClick={(e) =>
-                          setOneUser(
-                            listOfUsers.filter((items) => items._id == item._id)
-                          )
-                        }
-                      >
-                        <th>{index + 1}</th>
-                        <td>{item.name}</td>
-                        <td>{item.phoneNumber}</td>
-                        <td>{item.email}</td>
-                        <td>{item.dateOfBirthday.substring(0, 10)}</td>
-                        <td>
-                          <button
-                            className="btn border-white"
-                            data-bs-toggle="modal"
-                            data-bs-target="#delete"
-                          >
-                            <i class="fa-solid fa-trash-can text-danger"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    );
+                    if (item.name !== undefined) {
+                      return (
+                        <tr
+                          className="table__row"
+                          key={item._id}
+                          style={{ cursor: "pointer" }}
+                          onClick={(e) =>
+                            setOneUser(
+                              listOfUsers.filter(
+                                (items) => items._id == item._id
+                              )
+                            )
+                          }
+                        >
+                          <th>{index + 1}</th>
+                          <td>{item.name}</td>
+                          <td>{item.phoneNumber}</td>
+                          <td>{item.email}</td>
+                          <td>
+                            {ReserveString(
+                              item.dateOfBirthday.substring(0, 10)
+                            )}
+                          </td>
+                          <td>
+                            <button
+                              className="btn border-white"
+                              data-bs-toggle="modal"
+                              data-bs-target="#delete"
+                            >
+                              <i className="fa-solid fa-trash-can text-danger"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    }
                   })}
                 </tbody>
               </table>
@@ -93,7 +101,7 @@ export default function ManagerUser() {
               {oneUser[0] && (
                 <div className="bg-secondary rounded-4 bg-opacity-50 ms-2">
                   <div className="text-center text-dark p-2">
-                    <i class="fa-solid fa-user fs-1 p-3 bg-success rounded-5"></i>
+                    <i className="fa-solid fa-user fs-1 p-3 bg-success rounded-5"></i>
                     <h4 className="mt-3">{oneUser[0].name}</h4>
                     <div className="text-start">
                       <div className="my-3">
@@ -166,39 +174,39 @@ export default function ManagerUser() {
       </div>
       {/* Modal Delte */}
       <div
-        class="modal fade"
+        className="modal fade"
         id="delete"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="deleteLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteLabel">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="deleteLabel">
                 Xoá tài khoản
               </h5>
               <button
                 type="button"
-                class="btn-close"
+                className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               Tài khoản này sẽ bị khoá vĩnh viễn và không thể khôi phục
             </div>
-            <div class="modal-footer">
+            <div className="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
                 Huỷ
               </button>
               <button
                 type="button"
-                class="btn btn-danger"
+                className="btn btn-danger"
                 data-bs-dismiss="modal"
                 onClick={(e) => Delete()}
               >

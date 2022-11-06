@@ -1,4 +1,6 @@
 const UserModel = require("../models/User");
+const BillModel = require("../models/Bill");
+const FeedbackModel = require("../models/Feedback");
 const nodemailer = require("nodemailer");
 
 class User {
@@ -52,10 +54,6 @@ class User {
               },
             });
             transpoter.sendMail(options).then((result) => res.json(result));
-            // const user = req.body;
-            // const newUser = new UserModel(user);
-            // newUser.save();
-            // res.json(user);
           }
         }
       );
@@ -79,6 +77,7 @@ class User {
         $and: [
           { username: req.body.username },
           { password: req.body.password },
+          { state: true },
         ],
       },
       (err, result) => {
@@ -133,6 +132,149 @@ class User {
         res.status(404).send("Email không tồn tại trong hệ thống");
       }
     });
+  }
+
+  //[POST] /user/provisionalInvoice
+  provisionalInvoice(req, res, next) {
+    const bill = req.body;
+    const newBill = new BillModel(bill);
+    newBill.save();
+    res.json(bill);
+  }
+
+  //[GET] /user/:id
+  findPhoneNumberAndEmailUserById(req, res) {
+    UserModel.find(
+      { _id: req.params.id },
+      { phoneNumber: 1, email: 1 },
+      (err, result) => {
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(result);
+        }
+      }
+    );
+  }
+
+  //[GET] /user/findProvisionalInvoiceLasted
+  findProvisionalInvoiceLasted(req, res) {
+    BillModel.find({}, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(result);
+      }
+    })
+      .sort({ _id: -1 })
+      .limit(1);
+  }
+
+  //[PUT] /user/officialInvoiceById/:id
+  officialInvoiceById(req, res, next) {
+    BillModel.updateOne(
+      { _id: req.params.id },
+      { state: 0, price: req.body.price }
+    )
+      .then((result) => res.json(result))
+      .catch(next);
+  }
+
+  // [POST] /user/findBill
+  findBill(req, res, next) {
+    BillModel.find(
+      {
+        $and: [
+          { theaterId: req.body.theaterId },
+          { showtime: req.body.showtime },
+          { filmId: req.body.film.id },
+          { roomName: req.body.roomName },
+          { state: 0 },
+        ],
+      },
+      (err, result) => {
+        if (result) {
+          res.json(result);
+          console.log(result);
+        } else {
+          res.json(err);
+        }
+      }
+    );
+  }
+
+  // [GET] /user/findUserById/:id
+  findUserById(req, res, next) {
+    UserModel.findOne({ _id: req.params.id }, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(result);
+      }
+    });
+  }
+
+  //[PUT] /user/updateUserById/:id
+  updateUserById(req, res, next) {
+    UserModel.findByIdAndUpdate(req.params.id, req.body, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(result);
+      }
+    });
+  }
+
+  //[PUT] /user/deleteAccount/:id
+  deleteAccount(req, res, next) {
+    UserModel.findByIdAndUpdate(
+      req.params.id,
+      { state: false },
+      (err, result) => {
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(result);
+        }
+      }
+    );
+  }
+
+  //[GET] /user/findBillByUserById/:id
+  findBillByUserById(req, res, next) {
+    BillModel.find(
+      {
+        $and: [{ userId: req.params.id }, { state: 0 }],
+      },
+      (err, result) => {
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(result);
+        }
+      }
+    );
+  }
+
+  //[POST] /user/feedback
+  feedback(req, res, next) {
+    const feedback = req.body;
+    const newFeedback = new FeedbackModel(feedback);
+    newFeedback.save();
+    res.json(feedback);
+  }
+
+  //[GET] /user/findAllFeedback
+  findAllFeedback(req, res) {
+    FeedbackModel.find({}, (err, result) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(result);
+      }
+    })
+      .sort({ createdAt: -1 })
+      .limit(10);
   }
 }
 module.exports = new User();

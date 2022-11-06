@@ -1,15 +1,9 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { useParams, Routes, Route } from "react-router-dom";
-import {
-  Main,
-  BuyTicket,
-  Calender,
-  System,
-  Recruit,
-  ResetPassword,
-  Feedback,
-} from "./components/Contents";
+import { Main, Recruit, ResetPassword, Feedback } from "./components/Contents";
+
+import { Invoice } from "./components/Me";
 
 import { ManagerInfo, History } from "./components/Me";
 import "./styles/App.scss";
@@ -17,14 +11,12 @@ import "./styles/App.scss";
 import RemoveSpecialCharacters from "./utils/RemoveSpecialCharacters";
 function AppUser() {
   const dict = {
-    BuyTicket: { src: <BuyTicket /> },
-    Calender: { src: <Calender /> },
-    System: { src: <System /> },
     Recruit: { src: <Recruit /> },
     Feedback: { src: <Feedback /> },
     ResetPassword: { src: <ResetPassword /> },
     ManagerInfo: { src: <ManagerInfo /> },
     History: { src: <History /> },
+    Invoice: { src: <Invoice /> },
   };
   const Element = () => {
     let params = useParams();

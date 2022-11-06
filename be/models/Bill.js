@@ -4,22 +4,24 @@ const Schema = mongoose.Schema;
 
 const Bill = new Schema(
   {
-    UserId: { type: String },
-    FilmID: { type: String },
-    FilmName: { type: String },
-    TheaterId: { type: String },
-    Showtime: { type: String },
-    Price: { type: Number },
-    Total: { type: Number },
-
-    RoomName: { type: String },
-    Service: [
+    userId: { type: String },
+    filmId: { type: String },
+    filmName: { type: String },
+    theaterId: { type: String },
+    showtime: { type: String },
+    price: { type: Number },
+    seat: { type: Array },
+    roomName: { type: String },
+    service: [
       {
-        Name: { type: String },
-        Quantity: { type: Number },
+        name: { type: String },
+        quantity: { type: Number },
       },
     ],
-    Promotion: { type: String },
+    promotion: { type: String },
+    state: { type: Number, default: 1 },
+    //0: đã thanh toán
+    //1: chưa thanh toán
   },
   {
     timestamps: true,

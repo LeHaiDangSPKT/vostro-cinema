@@ -348,39 +348,39 @@ export default function ManagerFilms() {
           </table>
           {/* Modal Delte */}
           <div
-            class="modal fade"
+            className="modal fade"
             id="delete"
-            tabindex="-1"
+            tabIndex="-1"
             aria-labelledby="deleteLabel"
             aria-hidden="true"
           >
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="deleteLabel">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="deleteLabel">
                     Xoá phim
                   </h5>
                   <button
                     type="button"
-                    class="btn-close"
+                    className="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
                   ></button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                   Phim sẽ bị khoá vĩnh viễn và không thể khôi phục
                 </div>
-                <div class="modal-footer">
+                <div className="modal-footer">
                   <button
                     type="button"
-                    class="btn btn-secondary"
+                    className="btn btn-secondary"
                     data-bs-dismiss="modal"
                   >
                     Huỷ
                   </button>
                   <button
                     type="button"
-                    class="btn btn-danger"
+                    className="btn btn-danger"
                     data-bs-dismiss="modal"
                     onClick={(e) => Delete()}
                   >
@@ -461,7 +461,7 @@ export default function ManagerFilms() {
                         disabled
                         onChange={(e) => handleChange(e)}
                       ></input>
-                      <span class="input-group-text">Phút</span>
+                      <span className="input-group-text">Phút</span>
                     </div>
                   </div>
                   <div className="col-6">
@@ -535,7 +535,7 @@ export default function ManagerFilms() {
                         <label className="col-md-12">
                           <input
                             type="checkbox"
-                            class="check"
+                            className="check"
                             id="checkAll"
                             onClick={(e) => CheckAll()}
                           ></input>
@@ -547,7 +547,7 @@ export default function ManagerFilms() {
                               <label className="col-md-4" key={item._id}>
                                 <input
                                   type="checkbox"
-                                  class="check"
+                                  className="check"
                                   name="checkItem"
                                   value={item._id}
                                   id={item._id}
@@ -562,7 +562,7 @@ export default function ManagerFilms() {
                               <label className="col-md-4" key={item._id}>
                                 <input
                                   type="checkbox"
-                                  class="check"
+                                  className="check"
                                   name="checkItem"
                                   value={item._id}
                                   onChange={(e) => CheckItem()}

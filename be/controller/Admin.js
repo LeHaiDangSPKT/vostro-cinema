@@ -3,6 +3,7 @@ const FilmModel = require("../models/Film");
 const UserModel = require("../models/User");
 const ServiceModel = require("../models/Service");
 const ShowTimeModel = require("../models/Showtime");
+const BillModel = require("../models/Bill");
 
 class Admin {
   //[GET] /admin/getAllTheater
@@ -188,7 +189,6 @@ class Admin {
   //[POST] /admin/addShowTime/
   addShowTime(req, res, next) {
     const showTime = req.body;
-    console.log(showTime);
     const newshowTime = new ShowTimeModel(showTime);
     newshowTime.save();
     res.json(showTime);
@@ -236,7 +236,6 @@ class Admin {
       if (err) {
         res.json(err);
       } else {
-        console.log(result);
         res.json(result);
       }
     }).sort({ movieDate: 1, roomName: 1 });
@@ -267,6 +266,32 @@ class Admin {
       $and: [{ theaterId: req.body.idTheater }, { filmId: req.body.idfilm }],
     })
       .then((result) => res.json(result))
+      .catch(next);
+  }
+
+  // [POST] /admin/getAllYear
+  getAllYear(req, res, next) {
+    BillModel.find({})
+      .then((result) => {
+        const arr = result.map((item) => {
+          return item.createdAt.toString().slice(11, 15);
+        });
+        return res.json(arr.filter((v, i, a) => a.indexOf(v) === i));
+      })
+      .catch(next);
+  }
+
+  //[POST] /admin/getAllBillByYearAndTheaterId/:id
+  getAllBillByYearAndTheaterId(req, res, next) {
+    BillModel.find({
+      $and: [
+        { theaterId: req.params.id },
+        { showtime: new RegExp(req.body.year) },
+      ],
+    })
+      .then((result) => {
+        return res.json(result);
+      })
       .catch(next);
   }
 }

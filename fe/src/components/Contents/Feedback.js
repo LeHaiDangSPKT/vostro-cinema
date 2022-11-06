@@ -1,21 +1,38 @@
 import React from "react";
-import Toast from "../Toast";
-import * as bootstrap from "bootstrap";
-
+import Axios from "axios";
+import ReserveString from "../../utils/ReserveString";
 export default function Feedback() {
+  const [check, setCheck] = React.useState(true);
+  const [listFeedback, setListFeedback] = React.useState([]);
   const [feedback, setFeedback] = React.useState("");
   const [quantity, setQuantity] = React.useState(0);
+  const [comment, setComment] = React.useState({
+    userId: localStorage.getItem("id"),
+    name: localStorage.getItem("name"),
+    content: "",
+    mode: "user",
+  });
   React.useEffect(() => {
     setQuantity(feedback.length);
   }, [feedback]);
 
+  React.useEffect(() => {
+    Axios.get("http://localhost:5000/user/findAllFeedback").then((response) => {
+      setListFeedback(response.data);
+    });
+  }, [check]);
   const SendFeedback = () => {
-    window.bootstrap = bootstrap;
-    const toastLiveExample = document.getElementById("feedback");
-    const toast = new bootstrap.Toast(toastLiveExample);
-    toast.show();
-    setFeedback("");
+    Axios.post("http://localhost:5000/user/feedback", {
+      userId: comment.userId,
+      name: comment.name,
+      content: feedback,
+      mode: comment.mode,
+    }).then(function (response) {
+      setFeedback("");
+      setCheck((prev) => (prev = !check));
+    });
   };
+
   return (
     <div className="bg-light w-100">
       <div className="p-4 w-75 " style={{ margin: "0 auto" }}>
@@ -39,66 +56,41 @@ export default function Feedback() {
           >
             Gửi góp ý
           </button>
-          <select className="rounded-2 me-2 fs-6">
-            <option value="">Tài khoản hiện tại</option>
-            <option value="">Ẩn danh</option>
+          <select
+            className="rounded-2 me-2 fs-6"
+            onChange={(e) => setComment({ ...comment, mode: e.target.value })}
+          >
+            <option value="user">Tài khoản hiện tại</option>
+            <option value="anonymous">Ẩn danh</option>
           </select>
         </div>
         <div>
-          <div class="text-justify darker mt-4 float-right">
-            <div className="d-flex align-items-center">
-              <img
-                src="https://i.imgur.com/CFpa3nK.jpg"
-                class="rounded-circle me-2"
-                width="40"
-                height="40"
-              ></img>
-              <h5 className="m-0 me-2">Rob Simpson</h5>
-              <span>29/09/2022</span>
-            </div>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Accusamus numquam assumenda hic aliquam vero sequi velit molestias
-              doloremque molestiae dicta?
-            </p>
-          </div>
-          <div class="text-justify darker mt-4 float-right">
-            <div className="d-flex align-items-center">
-              <img
-                src="https://i.imgur.com/CFpa3nK.jpg"
-                class="rounded-circle me-2"
-                width="40"
-                height="40"
-              ></img>
-              <h5 className="m-0 me-2">Rob Simpson</h5>
-              <span>29/09/2022</span>
-            </div>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Accusamus numquam assumenda hic aliquam vero sequi velit molestias
-              doloremque molestiae dicta?
-            </p>
-          </div>
-          <div class="text-justify darker mt-4 float-right">
-            <div className="d-flex align-items-center">
-              <img
-                src="https://i.imgur.com/CFpa3nK.jpg"
-                class="rounded-circle me-2"
-                width="40"
-                height="40"
-              ></img>
-              <h5 className="m-0 me-2">Rob Simpson</h5>
-              <span>29/09/2022</span>
-            </div>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Accusamus numquam assumenda hic aliquam vero sequi velit molestias
-              doloremque molestiae dicta?
-            </p>
-          </div>
+          {listFeedback.map((item) => {
+            return (
+              <div
+                key={item._id}
+                className="text-justify darker mt-4 float-right"
+              >
+                <div className="d-flex align-items-center">
+                  <img
+                    src="https://i.imgur.com/CFpa3nK.jpg"
+                    className="rounded-circle me-2"
+                    width="40"
+                    height="40"
+                  ></img>
+                  {item.mode == "user" ? (
+                    <h5 className="m-0 me-2">{item.name}</h5>
+                  ) : (
+                    <h5 className="m-0 me-2">Ẩn danh</h5>
+                  )}
+                  <span>{ReserveString(item.createdAt.slice(0, 10))}</span>
+                </div>
+                <p>{item.content}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
-      <Toast text="Gửi thành công" bg="bg-success" id="feedback" />
     </div>
   );
 }

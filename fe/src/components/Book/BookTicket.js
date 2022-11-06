@@ -1,6 +1,9 @@
 import * as React from "react";
 import Axios from "axios";
 import $ from "jquery";
+import ReserveString from "../../utils/ReserveString";
+import FormatTime from "../../utils/FormatTime";
+
 export default function BookTicket(props) {
   const [checked, setChecked] = React.useState(false);
   const [allInfo, setAllInfo] = React.useState({
@@ -22,7 +25,6 @@ export default function BookTicket(props) {
 
   const [listFilms, setListFilms] = React.useState([]);
   const [listTheaters, setListTheaters] = React.useState([]);
-  const [listRoom, setListRoom] = React.useState([]);
   const [listDate, setListDate] = React.useState([]);
   const [listTime, setListTime] = React.useState([]);
 
@@ -83,7 +85,6 @@ export default function BookTicket(props) {
       selectDay.attr("disabled", false);
     }
   };
-  // console.log(listTime);
   const selectedDay = (day) => {
     if (day == "") {
       selectShowtime.attr("disabled", true);
@@ -106,9 +107,13 @@ export default function BookTicket(props) {
         name: currentFilm[0].name,
         img: currentFilm[0].img,
       },
-      roomName: listTime.map((item) => {
-        return item.roomName;
-      }),
+      roomName: listTime
+        .map((item) => {
+          if (item.movieTime.some((el) => el.time == valueTime)) {
+            return item.roomName;
+          }
+        })
+        .filter((item) => item !== undefined),
       time: valueTime,
     });
   };
@@ -141,14 +146,14 @@ export default function BookTicket(props) {
         <div className="mb-3">
           <label className="form-label">Chọn phim:</label>
           <select
-            class="form-control"
+            className="form-control"
             id="film"
             onChange={(e) => selectedFilm(e.target.value)}
           >
             <option value="">Choose..</option>
             {listFilms.map((item) => {
               return (
-                <option value={item._id} data-img={item.img}>
+                <option value={item._id} key={item._id} data-img={item.img}>
                   {item.name}
                 </option>
               );
@@ -167,7 +172,11 @@ export default function BookTicket(props) {
             {listTheaters.map((item) => {
               try {
                 if (currentFilm[0].theaterId.includes(item._id)) {
-                  return <option value={item._id}>{item.name}</option>;
+                  return (
+                    <option key={item._id} value={item._id}>
+                      {item.name}
+                    </option>
+                  );
                 }
               } catch (error) {}
             })}
@@ -186,7 +195,7 @@ export default function BookTicket(props) {
               .filter((v, i, a) => a.indexOf(v) === i)
               .map((item) => {
                 item = item.slice(0, 10);
-                return <option value={item}>{item}</option>;
+                return <option value={item}>{ReserveString(item)}</option>;
               })}
           </select>
         </div>
@@ -203,7 +212,11 @@ export default function BookTicket(props) {
               return item.movieTime.map((time) => {
                 if (time.state == 1 && !check.includes(time.time)) {
                   check.push(time.time);
-                  return <option value={time.time}>{time.time}</option>;
+                  return (
+                    <option key={item.time} value={time.time}>
+                      {FormatTime(time.time.toString())}
+                    </option>
+                  );
                 }
               });
             })}
@@ -214,7 +227,7 @@ export default function BookTicket(props) {
           type="button"
           className="btn btn-success w-75 d-flex justify-content-center"
           style={{ margin: "0 auto" }}
-          onClick={(e) => next()}
+          onClick={(e) => next(e)}
         >
           Đặt vé
         </button>

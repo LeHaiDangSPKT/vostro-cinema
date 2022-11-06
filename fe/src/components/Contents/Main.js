@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { BookSeat, BookService, BookTicket } from "../Book";
 import Search from "../Search";
 import Poster from "../../imgs/bdts_main-poster_vi_print_1_.jpg";
+import Axios from "axios";
 
 export default function Main() {
   const [data, setData] = React.useState({});
@@ -62,25 +63,44 @@ export default function Main() {
 
   const setDataFromChildComponent = (data) => {
     setData(data);
+    if (data.service.length > 0) {
+      Axios.post("http://localhost:5000/user/provisionalInvoice", {
+        userId: localStorage.getItem("id") || "",
+        filmId: data.film.id,
+        filmName: data.film.name,
+        theaterId: data.theaterId,
+        showtime: data.date + "-" + data.time,
+        price: data.price,
+        seat: data.seat,
+        roomName: data.roomName,
+        service: data.service,
+      })
+        .then(function (response) {
+          window.location.href = "/me/invoice";
+        })
+        .catch(function (error) {
+          window.location.href = "/";
+        });
+    }
   };
-  console.log(data);
+
   return (
     <>
       {/* Poster khuyến mãi */}
       <div
         id="carouselExampleControls"
-        class="carousel slide"
+        className="carousel slide"
         data-bs-ride="carousel"
       >
-        <div class="carousel-inner" style={{ height: "300px" }}>
-          <div class="carousel-item active">
-            <img src={Test} class="d-block w-100" alt="..."></img>
+        <div className="carousel-inner" style={{ height: "300px" }}>
+          <div className="carousel-item active">
+            <img src={Test} className="d-block w-100" alt="..."></img>
           </div>
-          <div class="carousel-item">
-            <img src={Test} class="d-block w-100" alt="..."></img>
+          <div className="carousel-item">
+            <img src={Test} className="d-block w-100" alt="..."></img>
           </div>
-          <div class="carousel-item">
-            <img src={Test} class="d-block w-100" alt="..."></img>
+          <div className="carousel-item">
+            <img src={Test} className="d-block w-100" alt="..."></img>
           </div>
         </div>
       </div>
@@ -116,14 +136,14 @@ export default function Main() {
           {...settingsListFilms}
           className="d-flex justify-content-between"
         >
-          <div class="card">
+          <div className="card">
             <div className="poster-film">
-              <img src={Poster} class="card-img-top" alt="..."></img>
+              <img src={Poster} className="card-img-top" alt="..."></img>
             </div>
             <div className="overlay">
-              <div class="card-body">
-                <h5 class="card-title">Bỗng dưng trúng số</h5>
-                <p class="card-text">
+              <div className="card-body">
+                <h5 className="card-title">Bỗng dưng trúng số</h5>
+                <p className="card-text">
                   1 cơn gió vô duyên vô tình thổi bay tờ vé số trúng độc đắc
                   vượt qua ranh giới 2 nước, hành trình tìm lại tờ vé số đầy bất
                   ổn của những anh lính Nam - Bắc , cùng cuộc chạm trán ko hề
@@ -132,7 +152,7 @@ export default function Main() {
                 <div className="d-flex justify-content-center">
                   <a
                     href="#"
-                    class="btn btn-primary"
+                    className="btn btn-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#trailerModal"
                     style={{ width: "90px", margin: "3px" }}
@@ -141,7 +161,7 @@ export default function Main() {
                   </a>
                   <a
                     href="/buy-ticket"
-                    class="btn btn-success"
+                    className="btn btn-success"
                     style={{ width: "90px", margin: "3px" }}
                   >
                     Đặt vé
@@ -150,67 +170,67 @@ export default function Main() {
               </div>
             </div>
           </div>
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..."></img>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
+          <div className="card">
+            <img src="..." className="card-img-top" alt="..."></img>
+            <div className="card-body">
+              <h5 className="card-title">Card title</h5>
+              <p className="card-text">
                 Some quick example text to build on the card title and make up
                 the bulk of the card's content.
               </p>
-              <a href="#" class="btn btn-primary">
+              <a href="#" className="btn btn-primary">
                 Go somewhere
               </a>
             </div>
           </div>
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..."></img>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
+          <div className="card">
+            <img src="..." className="card-img-top" alt="..."></img>
+            <div className="card-body">
+              <h5 className="card-title">Card title</h5>
+              <p className="card-text">
                 Some quick example text to build on the card title and make up
                 the bulk of the card's content.
               </p>
-              <a href="#" class="btn btn-primary">
+              <a href="#" className="btn btn-primary">
                 Go somewhere
               </a>
             </div>
           </div>
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..."></img>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
+          <div className="card">
+            <img src="..." className="card-img-top" alt="..."></img>
+            <div className="card-body">
+              <h5 className="card-title">Card title</h5>
+              <p className="card-text">
                 Some quick example text to build on the card title and make up
                 the bulk of the card's content.
               </p>
-              <a href="#" class="btn btn-primary">
+              <a href="#" className="btn btn-primary">
                 Go somewhere
               </a>
             </div>
           </div>
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..."></img>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
+          <div className="card">
+            <img src="..." className="card-img-top" alt="..."></img>
+            <div className="card-body">
+              <h5 className="card-title">Card title</h5>
+              <p className="card-text">
                 Some quick example text to build on the card title and make up
                 the bulk of the card's content.
               </p>
-              <a href="#" class="btn btn-primary">
+              <a href="#" className="btn btn-primary">
                 Go somewhere
               </a>
             </div>
           </div>
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..."></img>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
+          <div className="card">
+            <img src="..." className="card-img-top" alt="..."></img>
+            <div className="card-body">
+              <h5 className="card-title">Card title</h5>
+              <p className="card-text">
                 Some quick example text to build on the card title and make up
                 the bulk of the card's content.
               </p>
-              <a href="#" class="btn btn-primary">
+              <a href="#" className="btn btn-primary">
                 Go somewhere
               </a>
             </div>
@@ -232,25 +252,25 @@ export default function Main() {
 
       {/* Modal Trailer */}
       <div
-        class="modal fade"
+        className="modal fade"
         id="trailerModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="trailerModalLabel"
         aria-hidden="true"
       >
         <div
-          class="modal-dialog modal-dialog-centered"
+          className="modal-dialog modal-dialog-centered"
           style={{ maxWidth: "594px" }}
         >
-          <div class="modal-content">
-            <div class="modal-body">
+          <div className="modal-content">
+            <div className="modal-body">
               <iframe
                 width="560"
                 height="330"
                 src="https://www.youtube.com/embed/D3KbO3QF-lg"
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+                allowFullScreen
               ></iframe>
             </div>
           </div>

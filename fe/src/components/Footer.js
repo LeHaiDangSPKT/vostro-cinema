@@ -57,6 +57,14 @@ export default function Footer() {
                   NodeMailer
                 </a>
               </p>
+              <p>
+                <a
+                  href="https://axios-http.com/docs/intro"
+                  className="text-reset"
+                >
+                  Axios
+                </a>
+              </p>
             </div>
             <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 text-center">
               <h6 className="text-uppercase fw-bold mb-4">Contact</h6>

@@ -48,7 +48,7 @@ export default function ManagerPriceOfTicket() {
 
         <div className="row pb-4">
           <div className="col-md-6">
-            <i class="fa-solid fa-couch" style={{ fontSize: "200px" }}></i>
+            <i className="fa-solid fa-couch" style={{ fontSize: "200px" }}></i>
             {listService[0] && (
               <h3 className="text-success">
                 <CurrencyFormat
@@ -80,9 +80,12 @@ export default function ManagerPriceOfTicket() {
           </div>
           <div className="col-md-6">
             <div className="d-flex">
-              <i class="fa-solid fa-couch" style={{ fontSize: "200px" }}></i>
               <i
-                class="fa-solid fa-couch"
+                className="fa-solid fa-couch"
+                style={{ fontSize: "200px" }}
+              ></i>
+              <i
+                className="fa-solid fa-couch"
                 style={{ fontSize: "200px", transform: "translateX(-60px)" }}
               ></i>
             </div>

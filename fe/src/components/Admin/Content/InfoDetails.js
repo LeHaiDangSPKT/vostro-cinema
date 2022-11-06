@@ -5,7 +5,7 @@ export default function InfoDetails(props) {
   return (
     <div className="bg-secondary rounded-4 bg-opacity-50 ms-2">
       <div className="text-center text-dark p-2">
-        <i class="fa-solid fa-user fs-1 p-3 bg-success rounded-5"></i>
+        <i className="fa-solid fa-user fs-1 p-3 bg-success rounded-5"></i>
         <h4 className="mt-3">{user.name}</h4>
         <div className="text-start">
           <div className="my-3">

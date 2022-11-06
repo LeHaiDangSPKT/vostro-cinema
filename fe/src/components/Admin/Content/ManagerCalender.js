@@ -474,7 +474,7 @@ export default function ManagerCalender() {
                             setShowTime(movieTime.time);
                           }}
                         >
-                          <i class="fa-sharp fa-solid fa-upload text-danger"></i>
+                          <i className="fa-sharp fa-solid fa-upload text-danger"></i>
                         </button>
                         <button
                           style={{
@@ -500,39 +500,39 @@ export default function ManagerCalender() {
         </table>
         {/* MODAL DELETE */}
         <div
-          class="modal fade"
+          className="modal fade"
           id="delete"
-          tabindex="-1"
+          tabIndex="-1"
           aria-labelledby="deleteLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="deleteLabel">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="deleteLabel">
                   Xoá suất chiếu
                 </h5>
                 <button
                   type="button"
-                  class="btn-close"
+                  className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 Suất chiếu sẽ bị xoá vĩnh viễn và không thể khôi phục
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-bs-dismiss="modal"
                 >
                   Huỷ
                 </button>
                 <button
                   type="button"
-                  class="btn btn-danger"
+                  className="btn btn-danger"
                   data-bs-dismiss="modal"
                   onClick={(e) => Delete()}
                 >
@@ -544,39 +544,39 @@ export default function ManagerCalender() {
         </div>
         {/* MODAL CHANGE STATE */}
         <div
-          class="modal fade"
+          className="modal fade"
           id="change"
-          tabindex="-1"
+          tabIndex="-1"
           aria-labelledby="changeLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="changeLabel">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="changeLabel">
                   Mở bán suất chiếu này
                 </h5>
                 <button
                   type="button"
-                  class="btn-close"
+                  className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 Suất chiếu sẽ được mở bán và không thể khôi phục
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-bs-dismiss="modal"
                 >
                   Huỷ
                 </button>
                 <button
                   type="button"
-                  class="btn btn-danger"
+                  className="btn btn-danger"
                   data-bs-dismiss="modal"
                   onClick={(e) => Change()}
                 >

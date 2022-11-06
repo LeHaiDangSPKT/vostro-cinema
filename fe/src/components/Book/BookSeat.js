@@ -1,8 +1,59 @@
 import * as React from "react";
 import Axios from "axios";
 import CurrencyFormat from "react-currency-format";
+import $ from "jquery";
 
 export default function BookSeat(props) {
+  const [currentRoom, setCurrentRoom] = React.useState("");
+  const [seat, setSeat] = React.useState([]);
+  const [listChairService, setListChairService] = React.useState([]);
+  const [price, setPrice] = React.useState(0);
+  //Get seat
+  React.useEffect(() => {
+    Axios.get("http://localhost:5000/admin/getChairService").then(
+      (response) => {
+        setListChairService(response.data);
+        setCurrentRoom(props.data.roomName[0]);
+      }
+    );
+  }, []);
+
+  //Get bill
+  React.useEffect(() => {
+    try {
+      const roomName = props.data.roomName[0];
+      Axios.post("http://localhost:5000/user/findBill", {
+        theaterId: props.data.theaterId,
+        showtime: props.data.date + "-" + props.data.time,
+        roomName: currentRoom == "" ? roomName : currentRoom,
+        film: props.data.film,
+      }).then((response) => {
+        console.log(response.data);
+        var list = [];
+        if (response.data.length > 0) {
+          for (var i = 0; i < response.data.length; i++) {
+            list.push(response.data[i].seat);
+          }
+        }
+        const li = $("li[class*='seat']");
+        if (list.length > 0) {
+          Object.values(li).map((item) => {
+            if (list.join().includes(item.outerText)) {
+              item.classList.add("custom-disabled");
+            } else {
+              item.classList.remove("custom-disabled");
+            }
+          });
+        } else {
+          Object.values(li).map((item) => {
+            item.classList.remove("custom-disabled");
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [currentRoom, props.data.roomName]);
   const next = () => {
     if (seat.length) {
       const collection = document.getElementsByClassName("slick-next");
@@ -13,6 +64,8 @@ export default function BookSeat(props) {
       }
       props.setData({
         ...props.data,
+        //Tam thoi
+        roomName: currentRoom || props.data.roomName[0],
         price: price,
         seat: seat,
       });
@@ -30,9 +83,6 @@ export default function BookSeat(props) {
     }
   };
 
-  const [seat, setSeat] = React.useState([]);
-  const [listSeat, setListSeat] = React.useState([]);
-  const [price, setPrice] = React.useState(0);
   const SelectedSeat = (e) => {
     e.target.classList.toggle("border-bottom-seat");
     if (!seat.includes(e.target.outerText)) {
@@ -44,45 +94,40 @@ export default function BookSeat(props) {
     }
   };
 
-  //Get seat
-  React.useEffect(() => {
-    Axios.get("http://localhost:5000/admin/getChairService").then(
-      (response) => {
-        setListSeat(response.data);
-      }
-    );
-  }, []);
   const dataSingleSeat = () => {
     const rows = [];
     for (let index = 65; index < 70; index++) {
-      for (let i = 1; i <= 10; i++)
+      for (let i = 1; i <= 10; i++) {
         rows.push(
           <li
-            className="seat-single"
-            value={listSeat[0].chair[0].price}
+            className={`seat-single `}
+            value={listChairService[0].chair[0].price}
             onClick={(e) => SelectedSeat(e)}
           >
             {String.fromCharCode(index) + i + ""}
           </li>
         );
+      }
     }
     return rows;
   };
   const dataDoubleSeat = () => {
     const nameRow = 70; //F
     const rows = [];
-    for (let i = 1; i <= 5; i++)
+    for (let i = 1; i <= 5; i++) {
       rows.push(
         <li
-          className="seat-double"
-          value={listSeat[0].chair[1].price}
+          className={`seat-double`}
+          value={listChairService[0].chair[1].price}
           onClick={(e) => SelectedSeat(e)}
         >
           {String.fromCharCode(nameRow) + i + ""}
         </li>
       );
+    }
     return rows;
   };
+
   try {
     return (
       <div className="bg-light rounded-3 p-4 mt-4 d-flex justify-content-between book">
@@ -93,8 +138,11 @@ export default function BookSeat(props) {
           </h4>
           <div className="my-3 w-25">
             <label className="form-label">Chọn phòng chiếu:</label>
-            <select class="form-control" id="film">
-              <option value="">Choose..</option>
+            <select
+              className="form-control"
+              id="film"
+              onChange={(e) => setCurrentRoom(e.target.value)}
+            >
               {props.data.roomName.map((item) => {
                 return <option value={item}>{item}</option>;
               })}
@@ -102,7 +150,7 @@ export default function BookSeat(props) {
           </div>
           <div className="d-flex justify-content-between mt-3">
             <span className="text-center">
-              Lối vào<i class="fa-solid fa-arrow-down"></i>
+              Lối vào<i className="fa-solid fa-arrow-down"></i>
             </span>
             <ul className="seat">
               {dataSingleSeat()}

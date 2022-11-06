@@ -28,6 +28,11 @@ router.post(
   "/getAllShowtimeByIdFilmAndTheater",
   AdminController.getAllShowtimeByIdFilmAndTheater
 );
+router.post("/getAllYear", AdminController.getAllYear);
+router.post(
+  "/getAllBillByYearAndTheaterId/:id",
+  AdminController.getAllBillByYearAndTheaterId
+);
 
 router.get("/getAllTheater", AdminController.getAllTheater);
 router.get("/getOneTheaterById/:id", AdminController.getOneTheaterById);

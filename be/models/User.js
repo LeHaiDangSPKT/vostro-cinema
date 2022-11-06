@@ -10,7 +10,6 @@ const User = new Schema(
     dateOfBirthday: { type: Date },
     username: { type: String },
     password: { type: String },
-    billId: { type: Array, default: [] },
     state: { type: Boolean, default: true },
   },
   {

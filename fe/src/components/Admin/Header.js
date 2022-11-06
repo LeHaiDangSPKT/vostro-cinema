@@ -48,16 +48,16 @@ export default function Header() {
                 </Link>
               </li>
 
-              <div class="dropdown">
+              <div className="dropdown">
                 <Link
-                  class="text-white nav-link"
+                  className="text-white nav-link"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
                   Khác
                 </Link>
 
-                <ul class="dropdown-menu">
+                <ul className="dropdown-menu">
                   <li>
                     <Link
                       className="text-dark dropdown-item"
