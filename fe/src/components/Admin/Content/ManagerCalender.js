@@ -3,11 +3,13 @@ import Axios from "axios";
 import $ from "jquery";
 import Toast from "../../Toast";
 import ToastUtils from "../../../utils/ToastUtils";
+import LoadingPage from "../../../utils/LoadingPage";
 
 export default function ManagerCalender() {
   let newDate = new Date();
   var flagForSold = 1;
   var flagForSchedule = 1;
+  const [pageLoading, setPageLoading] = React.useState(true);
 
   const data = [
     { text: "7h00", value: 700 },
@@ -193,6 +195,7 @@ export default function ManagerCalender() {
         `https://vostro-cinema.herokuapp.com/admin/getAllShowTimesById/${idScheduled}`
       ).then((response) => {
         setListFilmScheduled(response.data);
+        setPageLoading(false);
       });
   }, [idScheduled, temp]);
   React.useEffect(() => {
@@ -201,6 +204,7 @@ export default function ManagerCalender() {
         `https://vostro-cinema.herokuapp.com/admin/getAllShowTimesById/${idSold}`
       ).then((response) => {
         setListFilmSold(response.data);
+        setPageLoading(false);
       });
   }, [idSold, temp]);
 
@@ -276,7 +280,6 @@ export default function ManagerCalender() {
             select.attr("disabled", false);
             setTextToast("Đã thêm vào danh sách lên lịch");
             ToastUtils("success");
-            setChecked(false);
           })
           .catch(function (error) {
             setTextToast(error.response.data);
@@ -354,420 +357,433 @@ export default function ManagerCalender() {
 
   try {
     return (
-      <div className="bg-light">
-        {/* DANH SÁCH MỞ BÁN */}
-        <div className="p-4">
-          <h3 className="text-center text-success mt-2">
-            QUẢN LÝ CÁC SUẤT CHIẾU ĐÃ MỞ BÁN
-          </h3>
-          Lựa chọn rạp:
-          <select
-            className="mx-3 rounded-2"
-            onChange={(e) => setidSold(e.target.value)}
-          >
-            {listNameTheater.map((item) => {
-              return (
-                <option key={item._id} value={item._id}>
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
-          <table className="table text-center">
-            <thead>
-              <tr>
-                <th className="table__header" scope="col">
-                  #
-                </th>
-                <th className="table__header" scope="col">
-                  Tên phim
-                </th>
-                <th className="table__header" scope="col">
-                  Suất chiếu
-                </th>
-                <th className="table__header" scope="col">
-                  Phòng chiếu
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {listFilmSold.map((item) => {
-                return item.movieTime.map((movieTime) => {
-                  if (movieTime.state == 1) {
-                    return (
-                      <tr key={item._id} className="table__row">
-                        <th>{flagForSold++}</th>
-                        <td>{item.filmName}</td>
-                        <td>
-                          {`${item.movieDate.substr(0, 10)} - ${(
-                            movieTime.time + ""
-                          ).slice(0, (movieTime.time + "").length - 2)}h${(
-                            movieTime.time + ""
-                          ).slice(-2)}`}
-                        </td>
-                        <td>{item.roomName}</td>
-                      </tr>
-                    );
-                  }
-                });
-              })}
-            </tbody>
-          </table>
-        </div>
-
-        {/* LÊN LỊCH */}
-        <div className="p-4">
-          <h3 className="text-center text-success mt-2">
-            QUẢN LÝ CÁC SUẤT CHIẾU ĐÃ LÊN LỊCH
-          </h3>
-          Lựa chọn rạp:
-          <select
-            className="mx-3 rounded-2"
-            onChange={(e) => setIdScheduled(e.target.value)}
-          >
-            {listNameTheater.map((item) => {
-              return (
-                <option key={item._id} value={item._id}>
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
-          <table className="table text-center">
-            <thead>
-              <tr>
-                <th className="table__header" scope="col">
-                  #
-                </th>
-                <th className="table__header" scope="col">
-                  Tên phim
-                </th>
-                <th className="table__header" scope="col">
-                  Suất chiếu
-                </th>
-                <th className="table__header" scope="col">
-                  Phòng chiếu
-                </th>
-                <th className="table__header" scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {listFilmScheduled &&
-                listFilmScheduled.map((item) => {
-                  return item.movieTime.map((movieTime) => {
-                    if (movieTime.state == 2) {
-                      return (
-                        <tr key={item._id} className="table__row">
-                          <th>{flagForSchedule++}</th>
-                          <td>{item.filmName}</td>
-                          <td>
-                            {`${item.movieDate.substr(0, 10)} - ${(
-                              movieTime.time + ""
-                            ).slice(0, (movieTime.time + "").length - 2)}h${(
-                              movieTime.time + ""
-                            ).slice(-2)}`}
-                          </td>
-                          <td>{item.roomName}</td>
-                          <td>
-                            <button
-                              style={{
-                                border: "none",
-                                backgroundColor: "transparent",
-                                marginRight: "15px",
-                              }}
-                              data-bs-toggle="modal"
-                              data-bs-target="#change"
-                              onClick={(e) => {
-                                setIdShowTime(item._id);
-                                setShowTime(movieTime.time);
-                              }}
-                            >
-                              <i className="fa-sharp fa-solid fa-upload text-danger"></i>
-                            </button>
-                            <button
-                              style={{
-                                border: "none",
-                                backgroundColor: "transparent",
-                              }}
-                              data-bs-toggle="modal"
-                              data-bs-target="#delete"
-                              onClick={(e) => {
-                                setIdShowTime(item._id);
-                                setShowTime(movieTime.time);
-                              }}
-                            >
-                              <i className="fa-solid fa-trash-can text-danger"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    }
-                  });
+      <>
+        {pageLoading ? (
+          <LoadingPage />
+        ) : (
+          <div className="bg-light">
+            {/* DANH SÁCH MỞ BÁN */}
+            <div className="p-4">
+              <h3 className="text-center text-success mt-2">
+                QUẢN LÝ CÁC SUẤT CHIẾU ĐÃ MỞ BÁN
+              </h3>
+              Lựa chọn rạp:
+              <select
+                className="mx-3 rounded-2"
+                onChange={(e) => {
+                  setidSold(e.target.value);
+                }}
+              >
+                {listNameTheater.map((item) => {
+                  return (
+                    <option key={item._id} value={item._id}>
+                      {item.name}
+                    </option>
+                  );
                 })}
-            </tbody>
-          </table>
-          {/* MODAL DELETE */}
-          <div
-            className="modal fade"
-            id="delete"
-            tabIndex="-1"
-            aria-labelledby="deleteLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="deleteLabel">
-                    Xoá suất chiếu
-                  </h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  Suất chiếu sẽ bị xoá vĩnh viễn và không thể khôi phục
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Huỷ
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    data-bs-dismiss="modal"
-                    onClick={(e) => Delete()}
-                  >
-                    Tôi chắn chắn
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* MODAL CHANGE STATE */}
-          <div
-            className="modal fade"
-            id="change"
-            tabIndex="-1"
-            aria-labelledby="changeLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="changeLabel">
-                    Mở bán suất chiếu này
-                  </h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  Suất chiếu sẽ được mở bán và không thể khôi phục
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Huỷ
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    data-bs-dismiss="modal"
-                    onClick={(e) => Change()}
-                  >
-                    Tôi chắn chắn
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h3 className="text-center text-success mt-2">THÊM SUẤT CHIẾU</h3>
-          <form className="row g-3 px-4" onSubmit={(e) => HandleShowTime(e)}>
-            <div className="row g-3 justify-content-center">
-              <div className="col-md-4">
-                <label className="form-label">Chọn ngày chiếu:</label>
-                <input
-                  type="date"
-                  id="add-date"
-                  className=" form-control"
-                  name="movieDate"
-                  value={oneShowTime.movieDate}
-                  required
-                  disabled
-                  onChange={(e) => handleChange(e)}
-                  min={
-                    newDate.toISOString().split("T")[0] > filmTime.startingDay
-                      ? newDate.toISOString().split("T")[0]
-                      : filmTime.startingDay
-                  }
-                  max={filmTime.closingDay}
-                ></input>
-              </div>
-              <div className="col-md-4">
-                <label className="form-label">Chọn rạp:</label>
-                <select
-                  id="add-theater"
-                  className="rounded-2 form-control"
-                  onChange={(e) => {
-                    setId(e.target.value);
-                    var input = $("input[id*='add']");
-                    input.attr("disabled", false);
-                  }}
-                  required
-                >
-                  <option value="">Choose...</option>
-                  {listNameTheater.map((item) => {
-                    return (
-                      <option key={item._id} value={item._id}>
-                        {item.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </div>
-
-            <div className="row g-3 justify-content-center">
-              <div className="col-md-4">
-                <label className="form-label">Chọn phim:</label>
-                <select
-                  id="add-film"
-                  className="rounded-2 form-control"
-                  onChange={(e) => getNameAndIdFilm(e)}
-                  required
-                >
-                  <option value="">Choose...</option>
-                  {listFilm.map((item) => {
-                    return (
-                      <option
-                        key={item._id}
-                        value={item._id}
-                        begin={item.startingDay}
-                        end={item.closingDay}
-                        duration={item.duration}
-                      >
-                        {item.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className="col-md-4">
-                <label className="form-label">Chọn phòng:</label>
-                <select
-                  id="add-room"
-                  className="rounded-2 form-control"
-                  name="roomName"
-                  onChange={(e) => handleChange(e)}
-                  required
-                >
-                  <option value="">Choose...</option>
-                  {listNameTheater.map((item) => {
-                    if (item._id === id) {
-                      return item.room.map((room) => {
+              </select>
+              <table className="table text-center">
+                <thead>
+                  <tr>
+                    <th className="table__header" scope="col">
+                      #
+                    </th>
+                    <th className="table__header" scope="col">
+                      Tên phim
+                    </th>
+                    <th className="table__header" scope="col">
+                      Suất chiếu
+                    </th>
+                    <th className="table__header" scope="col">
+                      Phòng chiếu
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {listFilmSold.map((item) => {
+                    return item.movieTime.map((movieTime) => {
+                      if (movieTime.state == 1) {
                         return (
-                          <option key={room} value={room}>
-                            {room}
+                          <tr key={item._id} className="table__row">
+                            <th>{flagForSold++}</th>
+                            <td>{item.filmName}</td>
+                            <td>
+                              {`${item.movieDate.substr(0, 10)} - ${(
+                                movieTime.time + ""
+                              ).slice(0, (movieTime.time + "").length - 2)}h${(
+                                movieTime.time + ""
+                              ).slice(-2)}`}
+                            </td>
+                            <td>{item.roomName}</td>
+                          </tr>
+                        );
+                      }
+                    });
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* LÊN LỊCH */}
+            <div className="p-4">
+              <h3 className="text-center text-success mt-2">
+                QUẢN LÝ CÁC SUẤT CHIẾU ĐÃ LÊN LỊCH
+              </h3>
+              Lựa chọn rạp:
+              <select
+                className="mx-3 rounded-2"
+                onChange={(e) => setIdScheduled(e.target.value)}
+              >
+                {listNameTheater.map((item) => {
+                  return (
+                    <option key={item._id} value={item._id}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+              </select>
+              <table className="table text-center">
+                <thead>
+                  <tr>
+                    <th className="table__header" scope="col">
+                      #
+                    </th>
+                    <th className="table__header" scope="col">
+                      Tên phim
+                    </th>
+                    <th className="table__header" scope="col">
+                      Suất chiếu
+                    </th>
+                    <th className="table__header" scope="col">
+                      Phòng chiếu
+                    </th>
+                    <th className="table__header" scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {listFilmScheduled &&
+                    listFilmScheduled.map((item) => {
+                      return item.movieTime.map((movieTime) => {
+                        if (movieTime.state == 2) {
+                          return (
+                            <tr key={item._id} className="table__row">
+                              <th>{flagForSchedule++}</th>
+                              <td>{item.filmName}</td>
+                              <td>
+                                {`${item.movieDate.substr(0, 10)} - ${(
+                                  movieTime.time + ""
+                                ).slice(
+                                  0,
+                                  (movieTime.time + "").length - 2
+                                )}h${(movieTime.time + "").slice(-2)}`}
+                              </td>
+                              <td>{item.roomName}</td>
+                              <td>
+                                <button
+                                  style={{
+                                    border: "none",
+                                    backgroundColor: "transparent",
+                                    marginRight: "15px",
+                                  }}
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#change"
+                                  onClick={(e) => {
+                                    setIdShowTime(item._id);
+                                    setShowTime(movieTime.time);
+                                  }}
+                                >
+                                  <i className="fa-sharp fa-solid fa-upload text-danger"></i>
+                                </button>
+                                <button
+                                  style={{
+                                    border: "none",
+                                    backgroundColor: "transparent",
+                                  }}
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#delete"
+                                  onClick={(e) => {
+                                    setIdShowTime(item._id);
+                                    setShowTime(movieTime.time);
+                                  }}
+                                >
+                                  <i className="fa-solid fa-trash-can text-danger"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        }
+                      });
+                    })}
+                </tbody>
+              </table>
+              {/* MODAL DELETE */}
+              <div
+                className="modal fade"
+                id="delete"
+                tabIndex="-1"
+                aria-labelledby="deleteLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="deleteLabel">
+                        Xoá suất chiếu
+                      </h5>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div className="modal-body">
+                      Suất chiếu sẽ bị xoá vĩnh viễn và không thể khôi phục
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Huỷ
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        data-bs-dismiss="modal"
+                        onClick={(e) => Delete()}
+                      >
+                        Tôi chắn chắn
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* MODAL CHANGE STATE */}
+              <div
+                className="modal fade"
+                id="change"
+                tabIndex="-1"
+                aria-labelledby="changeLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="changeLabel">
+                        Mở bán suất chiếu này
+                      </h5>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div className="modal-body">
+                      Suất chiếu sẽ được mở bán và không thể khôi phục
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Huỷ
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        data-bs-dismiss="modal"
+                        onClick={(e) => Change()}
+                      >
+                        Tôi chắn chắn
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-center text-success mt-2">THÊM SUẤT CHIẾU</h3>
+              <form
+                className="row g-3 px-4"
+                onSubmit={(e) => HandleShowTime(e)}
+              >
+                <div className="row g-3 justify-content-center">
+                  <div className="col-md-4">
+                    <label className="form-label">Chọn ngày chiếu:</label>
+                    <input
+                      type="date"
+                      id="add-date"
+                      className=" form-control"
+                      name="movieDate"
+                      value={oneShowTime.movieDate}
+                      required
+                      disabled
+                      onChange={(e) => handleChange(e)}
+                      min={
+                        newDate.toISOString().split("T")[0] >
+                        filmTime.startingDay
+                          ? newDate.toISOString().split("T")[0]
+                          : filmTime.startingDay
+                      }
+                      max={filmTime.closingDay}
+                    ></input>
+                  </div>
+                  <div className="col-md-4">
+                    <label className="form-label">Chọn rạp:</label>
+                    <select
+                      id="add-theater"
+                      className="rounded-2 form-control"
+                      onChange={(e) => {
+                        setId(e.target.value);
+                        var input = $("input[id*='add']");
+                        input.attr("disabled", false);
+                      }}
+                      required
+                    >
+                      <option value="">Choose...</option>
+                      {listNameTheater.map((item) => {
+                        return (
+                          <option key={item._id} value={item._id}>
+                            {item.name}
                           </option>
                         );
-                      });
-                    }
-                  })}
-                </select>
-              </div>
-            </div>
-            <div className="text-center py-4">
-              <button className="btn btn-success w-75" type="submit">
-                Tìm suất chiếu trống
-              </button>
-            </div>
+                      })}
+                    </select>
+                  </div>
+                </div>
 
-            {checked && (
-              <>
-                <div className="col-md-12 justify-content-center text-center">
-                  {data.map((item) => {
-                    if (dataTimeDB != null) {
-                      var flag = true;
-                      for (var i = 0; i < dataTimeDB.length; i++) {
-                        if (
-                          item.value >= dataTimeDB[i].start &&
-                          item.value <= dataTimeDB[i].end
-                        ) {
-                          flag = false;
-                          break;
-                        }
-                      }
-                      if (flag) {
+                <div className="row g-3 justify-content-center">
+                  <div className="col-md-4">
+                    <label className="form-label">Chọn phim:</label>
+                    <select
+                      id="add-film"
+                      className="rounded-2 form-control"
+                      onChange={(e) => getNameAndIdFilm(e)}
+                      required
+                    >
+                      <option value="">Choose...</option>
+                      {listFilm.map((item) => {
                         return (
-                          <label className="col-md-2" key={item.value}>
-                            <input
-                              name="checkItem"
-                              type="checkbox"
-                              value={item.value}
-                            ></input>{" "}
-                            {item.text}
-                          </label>
+                          <option
+                            key={item._id}
+                            value={item._id}
+                            begin={item.startingDay}
+                            end={item.closingDay}
+                            duration={item.duration}
+                          >
+                            {item.name}
+                          </option>
                         );
-                      }
-                    } else {
-                      return (
-                        <label className="col-md-2" key={item.value}>
-                          <input
-                            name="checkItem"
-                            type="checkbox"
-                            value={item.value}
-                          ></input>{" "}
-                          {item.text}
-                        </label>
-                      );
-                    }
-                  })}
+                      })}
+                    </select>
+                  </div>
+                  <div className="col-md-4">
+                    <label className="form-label">Chọn phòng:</label>
+                    <select
+                      id="add-room"
+                      className="rounded-2 form-control"
+                      name="roomName"
+                      onChange={(e) => handleChange(e)}
+                      required
+                    >
+                      <option value="">Choose...</option>
+                      {listNameTheater.map((item) => {
+                        if (item._id === id) {
+                          return item.room.map((room) => {
+                            return (
+                              <option key={room} value={room}>
+                                {room}
+                              </option>
+                            );
+                          });
+                        }
+                      })}
+                    </select>
+                  </div>
                 </div>
-
                 <div className="text-center py-4">
-                  <button
-                    className="btn btn-success w-75"
-                    onClick={(e) => HandleAdd()}
-                  >
-                    Thêm suất chiếu
-                  </button>
-                  <button
-                    className="btn btn-secondary w-75 mt-2"
-                    onClick={(e) => {
-                      var input = $("input[id*='add']");
-                      var select = $("select[id*='add']");
-                      input.attr("disabled", false);
-                      select.attr("disabled", false);
-                      setChecked(false);
-                    }}
-                  >
-                    Huỷ
+                  <button className="btn btn-success w-75" type="submit">
+                    Tìm suất chiếu trống
                   </button>
                 </div>
-              </>
-            )}
-          </form>
-        </div>
 
-        <Toast text={textToast} bg="bg-danger" id="fail" />
-        <Toast text={textToast} bg="bg-success" id="success" />
-      </div>
+                {checked && (
+                  <>
+                    <div className="col-md-12 justify-content-center text-center">
+                      {data.map((item) => {
+                        if (dataTimeDB != null) {
+                          var flag = true;
+                          for (var i = 0; i < dataTimeDB.length; i++) {
+                            if (
+                              item.value >= dataTimeDB[i].start &&
+                              item.value <= dataTimeDB[i].end
+                            ) {
+                              flag = false;
+                              break;
+                            }
+                          }
+                          if (flag) {
+                            return (
+                              <label className="col-md-2" key={item.value}>
+                                <input
+                                  name="checkItem"
+                                  type="checkbox"
+                                  value={item.value}
+                                ></input>{" "}
+                                {item.text}
+                              </label>
+                            );
+                          }
+                        } else {
+                          return (
+                            <label className="col-md-2" key={item.value}>
+                              <input
+                                name="checkItem"
+                                type="checkbox"
+                                value={item.value}
+                              ></input>{" "}
+                              {item.text}
+                            </label>
+                          );
+                        }
+                      })}
+                    </div>
+
+                    <div className="text-center py-4">
+                      <button
+                        className="btn btn-success w-75"
+                        onClick={(e) => HandleAdd()}
+                      >
+                        Thêm suất chiếu
+                      </button>
+                      <button
+                        className="btn btn-secondary w-75 mt-2"
+                        onClick={(e) => {
+                          var input = $("input[id*='add']");
+                          var select = $("select[id*='add']");
+                          input.attr("disabled", false);
+                          select.attr("disabled", false);
+                          setChecked(false);
+                        }}
+                      >
+                        Huỷ
+                      </button>
+                    </div>
+                  </>
+                )}
+              </form>
+            </div>
+
+            <Toast text={textToast} bg="bg-danger" id="fail" />
+            <Toast text={textToast} bg="bg-success" id="success" />
+          </div>
+        )}
+      </>
     );
   } catch (error) {
     alert(error);

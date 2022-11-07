@@ -142,7 +142,7 @@ export default function BookTicket(props) {
     return (
       <div className="bg-light rounded-3 p-4 mt-4 d-flex justify-content-between book">
         <div className="w-75 me-4" style={{ margin: "0 auto" }}>
-          <h3 className="text-center text-success mb-0 ">
+          <h3 className="text-center text-success mb-0 fw-bolder">
             ĐẶT VÉ NGAY BẠN YÊU ƠI
           </h3>
           <div className="mb-3">

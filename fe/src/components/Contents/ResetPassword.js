@@ -2,7 +2,8 @@ import React from "react";
 import Toast from "../Toast";
 import ToastUtils from "../../utils/ToastUtils";
 import Axios from "axios";
-import Loader from "../../utils/Loader";
+import LoadingPage from "../../utils/LoadingPage";
+
 export default function ResetPassword() {
   const [loading, setLoading] = React.useState(false);
   const [email, setEmail] = React.useState("");
@@ -66,7 +67,7 @@ export default function ResetPassword() {
     <div className="bg-light w-75 rounded-2" style={{ margin: "0 auto" }}>
       <div className="p-4">
         {loading ? (
-          <Loader state={loading} />
+          <LoadingPage />
         ) : sent ? (
           <>
             <h3 className="text-center text-success mt-2">Lấy mã OTP</h3>

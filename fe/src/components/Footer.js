@@ -38,6 +38,7 @@ export default function Footer() {
                   NodeJS
                 </a>
               </p>
+              <p>...</p>
             </div>
 
             <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-center">
@@ -65,6 +66,7 @@ export default function Footer() {
                   Axios
                 </a>
               </p>
+              <p>...</p>
             </div>
             <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 text-center">
               <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
