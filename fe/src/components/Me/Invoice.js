@@ -25,7 +25,7 @@ export default function Invoice() {
   const [invoiceLasted, setInvoiceLasted] = React.useState({});
   React.useEffect(() => {
     Axios.get(
-      `http://localhost:5000/user/findPhoneNumberAndEmailUserById/${localStorage.getItem(
+      `https://vostro-cinema.herokuapp.com/user/findPhoneNumberAndEmailUserById/${localStorage.getItem(
         "id"
       )}`
     ).then((response) => {
@@ -33,35 +33,35 @@ export default function Invoice() {
     });
   }, []);
   React.useEffect(() => {
-    Axios.get(`http://localhost:5000/user/findProvisionalInvoiceLasted`).then(
-      (response) => {
-        setInvoiceLasted(response.data[0]);
-        if (localStorage.getItem("id")) {
-          setPriceDiscount(response.data[0].price * 0.01);
-        }
-        var count = 0;
-        var listNameSingleSeat = [];
-        var listNameDoubleSeat = [];
-        for (var i = 0; i < response.data[0].seat.length; i++) {
-          if (response.data[0].seat[i].includes("F")) {
-            listNameDoubleSeat.push(response.data[0].seat[i]);
-            count = count + 1;
-          } else {
-            listNameSingleSeat.push(response.data[0].seat[i]);
-          }
-        }
-        setCountSeat({
-          ["singleSeat"]: response.data[0].seat.length - count,
-          ["doubleSeat"]: count,
-          ["listNameSingleSeat"]: listNameSingleSeat.toString(),
-          ["listNameDoubleSeat"]: listNameDoubleSeat.toString(),
-        });
+    Axios.get(
+      `https://vostro-cinema.herokuapp.com/user/findProvisionalInvoiceLasted`
+    ).then((response) => {
+      setInvoiceLasted(response.data[0]);
+      if (localStorage.getItem("id")) {
+        setPriceDiscount(response.data[0].price * 0.01);
       }
-    );
+      var count = 0;
+      var listNameSingleSeat = [];
+      var listNameDoubleSeat = [];
+      for (var i = 0; i < response.data[0].seat.length; i++) {
+        if (response.data[0].seat[i].includes("F")) {
+          listNameDoubleSeat.push(response.data[0].seat[i]);
+          count = count + 1;
+        } else {
+          listNameSingleSeat.push(response.data[0].seat[i]);
+        }
+      }
+      setCountSeat({
+        ["singleSeat"]: response.data[0].seat.length - count,
+        ["doubleSeat"]: count,
+        ["listNameSingleSeat"]: listNameSingleSeat.toString(),
+        ["listNameDoubleSeat"]: listNameDoubleSeat.toString(),
+      });
+    });
   }, []);
 
   React.useEffect(() => {
-    Axios.get("http://localhost:5000/admin/getChairService").then(
+    Axios.get("https://vostro-cinema.herokuapp.com/admin/getChairService").then(
       (response) => {
         setListSeat(response.data[0]);
       }
@@ -70,7 +70,7 @@ export default function Invoice() {
   React.useEffect(() => {
     invoiceLasted &&
       Axios.get(
-        `http://localhost:5000/admin/getOneTheaterById/${invoiceLasted.theaterId}`
+        `https://vostro-cinema.herokuapp.com/admin/getOneTheaterById/${invoiceLasted.theaterId}`
       ).then((response) => {
         setTheater(response.data[0]);
       });
@@ -83,7 +83,7 @@ export default function Invoice() {
   // /user/officialInvoiceById/:id
   const Submit = () => {
     Axios.put(
-      `http://localhost:5000/user/officialInvoiceById/${invoiceLasted._id}`,
+      `https://vostro-cinema.herokuapp.com/user/officialInvoiceById/${invoiceLasted._id}`,
       {
         price: invoiceLasted.price - priceDiscount,
       }

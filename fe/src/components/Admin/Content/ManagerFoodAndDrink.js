@@ -18,16 +18,18 @@ export default function ManagerFoodAndDrink(props) {
   });
 
   React.useEffect(() => {
-    Axios.get("http://localhost:5000/admin/getMenuService").then((response) => {
-      setMenu({
-        baprangbo: response.data[0].menu[0].price,
-        bapcaramel: response.data[0].menu[1].price,
-        bapphomai: response.data[0].menu[2].price,
-        monster: response.data[0].menu[3].price,
-        pepsi: response.data[0].menu[4].price,
-        redbull: response.data[0].menu[5].price,
-      });
-    });
+    Axios.get("https://vostro-cinema.herokuapp.com/admin/getMenuService").then(
+      (response) => {
+        setMenu({
+          baprangbo: response.data[0].menu[0].price,
+          bapcaramel: response.data[0].menu[1].price,
+          bapphomai: response.data[0].menu[2].price,
+          monster: response.data[0].menu[3].price,
+          pepsi: response.data[0].menu[4].price,
+          redbull: response.data[0].menu[5].price,
+        });
+      }
+    );
   }, [check]);
   const handleChange = (e) => {
     setMenu({ ...menu, [e.target.name]: e.target.value });
@@ -48,14 +50,17 @@ export default function ManagerFoodAndDrink(props) {
       for (var i = 0; i < input.length; i++) {
         input[i].setAttribute("disabled", "");
       }
-      Axios.put(`http://localhost:5000/admin/updateMenuService/`, {
-        baprangbo: menu.baprangbo,
-        bapcaramel: menu.bapcaramel,
-        bapphomai: menu.bapphomai,
-        monster: menu.monster,
-        pepsi: menu.pepsi,
-        redbull: menu.redbull,
-      })
+      Axios.put(
+        `https://vostro-cinema.herokuapp.com/admin/updateMenuService/`,
+        {
+          baprangbo: menu.baprangbo,
+          bapcaramel: menu.bapcaramel,
+          bapphomai: menu.bapphomai,
+          monster: menu.monster,
+          pepsi: menu.pepsi,
+          redbull: menu.redbull,
+        }
+      )
         .then(function (response) {
           props.sendToast("Cập nhật thành công");
           setCheck(Math.random());

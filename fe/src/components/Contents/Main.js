@@ -4,23 +4,13 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { BookSeat, BookService, BookTicket } from "../Book";
-import Search from "../Search";
 import Poster from "../../imgs/bdts_main-poster_vi_print_1_.jpg";
 import Axios from "axios";
 
 export default function Main() {
+  const [linkTrailer, setLinkTrailer] = React.useState("");
   const [data, setData] = React.useState({});
-  const liStateFilms = document.getElementsByClassName("state-film");
-  const changeColor = (e) => {
-    e.currentTarget.classList.add("custom-hover-active");
-    Object.values(liStateFilms)
-      .filter((item) => item != e.currentTarget)
-      .map((item) => {
-        if (item.className.includes("custom-hover-active")) {
-          item.classList.remove("custom-hover-active");
-        }
-      });
-  };
+  const [listFilms, setListFilms] = React.useState([]);
   // Slick
   function SampleNextArrow(props) {
     const { className, style, onClick } = props;
@@ -64,17 +54,20 @@ export default function Main() {
   const setDataFromChildComponent = (data) => {
     setData(data);
     if (data.service.length > 0) {
-      Axios.post("http://localhost:5000/user/provisionalInvoice", {
-        userId: localStorage.getItem("id") || "",
-        filmId: data.film.id,
-        filmName: data.film.name,
-        theaterId: data.theaterId,
-        showtime: data.date + "-" + data.time,
-        price: data.price,
-        seat: data.seat,
-        roomName: data.roomName,
-        service: data.service,
-      })
+      Axios.post(
+        "https://vostro-cinema.herokuapp.com/user/provisionalInvoice",
+        {
+          userId: localStorage.getItem("id") || "",
+          filmId: data.film.id,
+          filmName: data.film.name,
+          theaterId: data.theaterId,
+          showtime: data.date + "-" + data.time,
+          price: data.price,
+          seat: data.seat,
+          roomName: data.roomName,
+          service: data.service,
+        }
+      )
         .then(function (response) {
           window.location.href = "/me/invoice";
         })
@@ -84,6 +77,11 @@ export default function Main() {
     }
   };
 
+  React.useEffect(() => {
+    Axios.get("https://vostro-cinema.herokuapp.com/admin/getAllFilms").then(
+      (response) => setListFilms(response.data)
+    );
+  }, []);
   return (
     <>
       {/* Poster khuyến mãi */}
@@ -108,139 +106,49 @@ export default function Main() {
       {/* State films */}
       <div>
         <ul
-          className="d-flex justify-content-center text-white fs-5 ul-state-fimls"
-          style={{ margin: "0 auto", listStyleType: "none" }}
+          className="d-flex justify-content-center text-white ul-state-fimls bg-light w-50 rounded-2"
+          style={{ margin: "50px auto 20px", listStyleType: "none" }}
         >
-          <li
-            className="m-4 custom-hover state-film custom-hover-active"
-            onClick={(e) => {
-              changeColor(e);
-            }}
-          >
-            PHIM ĐANG CHIẾU
-          </li>
-          <li
-            className="m-4 custom-hover state-film"
-            onClick={(e) => {
-              changeColor(e);
-            }}
-          >
-            PHIM SẮP CHIẾU
-          </li>
+          <li className="m-2 fs-2 text-success">TẤT CẢ PHIM TRÊN HỆ THỐNG</li>
         </ul>
       </div>
 
       {/* List phim theo state */}
       <div className="w-75" style={{ margin: "0 auto" }}>
-        <Slider
-          {...settingsListFilms}
-          className="d-flex justify-content-between"
-        >
-          <div className="card">
-            <div className="poster-film">
-              <img src={Poster} className="card-img-top" alt="..."></img>
-            </div>
-            <div className="overlay">
-              <div className="card-body">
-                <h5 className="card-title">Bỗng dưng trúng số</h5>
-                <p className="card-text">
-                  1 cơn gió vô duyên vô tình thổi bay tờ vé số trúng độc đắc
-                  vượt qua ranh giới 2 nước, hành trình tìm lại tờ vé số đầy bất
-                  ổn của những anh lính Nam - Bắc , cùng cuộc chạm trán ko hề
-                  căng thẳng mà siêu hài hước...
-                </p>
-                <div className="d-flex justify-content-center">
-                  <a
-                    href="#"
-                    className="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#trailerModal"
-                    style={{ width: "90px", margin: "3px" }}
-                  >
-                    Xem
-                  </a>
-                  <a
-                    href="/buy-ticket"
-                    className="btn btn-success"
-                    style={{ width: "90px", margin: "3px" }}
-                  >
-                    Đặt vé
-                  </a>
+        <Slider {...settingsListFilms} className="">
+          {listFilms.map((item) => {
+            return (
+              <div className="card" key={item._id}>
+                <div className="poster-film">
+                  <img
+                    src={item.img}
+                    className="card-img-top"
+                    alt="..."
+                    style={{ height: "400px" }}
+                  ></img>
+                </div>
+                <div className="overlay">
+                  <div className="card-body">
+                    <h5 className="card-title">{item.name}</h5>
+                    <p className="card-text">{item.describe}</p>
+                    <div className="text-center">
+                      <a
+                        href="#"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#trailerModal"
+                        onClick={(e) => setLinkTrailer(item.trailer)}
+                      >
+                        Xem trailer
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="card">
-            <img src="..." className="card-img-top" alt="..."></img>
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" className="btn btn-primary">
-                Go somewhere
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <img src="..." className="card-img-top" alt="..."></img>
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" className="btn btn-primary">
-                Go somewhere
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <img src="..." className="card-img-top" alt="..."></img>
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" className="btn btn-primary">
-                Go somewhere
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <img src="..." className="card-img-top" alt="..."></img>
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" className="btn btn-primary">
-                Go somewhere
-              </a>
-            </div>
-          </div>
-          <div className="card">
-            <img src="..." className="card-img-top" alt="..."></img>
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" className="btn btn-primary">
-                Go somewhere
-              </a>
-            </div>
-          </div>
+            );
+          })}
         </Slider>
       </div>
-
-      {/* Search */}
-      <Search />
-
       {/* Đặt vé */}
       <div className="w-75" style={{ margin: "0 auto" }}>
         <Slider {...settingsBook}>
@@ -251,23 +159,34 @@ export default function Main() {
       </div>
 
       {/* Modal Trailer */}
+
       <div
-        className="modal fade"
+        class="modal fade"
         id="trailerModal"
-        tabIndex="-1"
+        tabindex="-1"
         aria-labelledby="trailerModalLabel"
         aria-hidden="true"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
       >
         <div
-          className="modal-dialog modal-dialog-centered"
+          class="modal-dialog modal-dialog-centered"
           style={{ maxWidth: "594px" }}
         >
-          <div className="modal-content">
-            <div className="modal-body">
+          <div class="modal-content">
+            <div class="modal-header" style={{ padding: `15px 20px 0px;` }}>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
               <iframe
                 width="560"
                 height="330"
-                src="https://www.youtube.com/embed/D3KbO3QF-lg"
+                src={`https://www.youtube.com/embed/${linkTrailer}`}
                 frameBorder="0"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

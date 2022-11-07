@@ -17,9 +17,11 @@ export default function ManagerTheaterRoom() {
 
   //Get All Theater
   React.useEffect(() => {
-    Axios.get("http://localhost:5000/admin/getAllTheater").then((response) => {
-      setListOfTheater(response.data);
-    });
+    Axios.get("https://vostro-cinema.herokuapp.com/admin/getAllTheater").then(
+      (response) => {
+        setListOfTheater(response.data);
+      }
+    );
   }, [checked]);
 
   const handleChange = (e) => {
@@ -41,12 +43,15 @@ export default function ManagerTheaterRoom() {
     );
     if (arrRoom) {
       arrRoom = arrRoom.filter((item) => item !== "");
-      Axios.post("http://localhost:5000/admin/addTheaterAndRoom", {
-        name: newTheater.name,
-        address: newTheater.address,
-        describe: newTheater.describe,
-        room: arrRoom,
-      })
+      Axios.post(
+        "https://vostro-cinema.herokuapp.com/admin/addTheaterAndRoom",
+        {
+          name: newTheater.name,
+          address: newTheater.address,
+          describe: newTheater.describe,
+          room: arrRoom,
+        }
+      )
         .then(function (response) {
           setNewTheater({ name: "", address: "", describe: "", room: [] });
           setChecked(newTheater.name);
@@ -64,7 +69,9 @@ export default function ManagerTheaterRoom() {
   };
 
   const handleDelete = (e) => {
-    Axios.put(`http://localhost:5000/admin/deleteTheaterById/${idTheater}`)
+    Axios.put(
+      `https://vostro-cinema.herokuapp.com/admin/deleteTheaterById/${idTheater}`
+    )
       .then(function (response) {
         setChecked(Math.random());
         setTextToast("Đã xoá thành công");
@@ -85,12 +92,15 @@ export default function ManagerTheaterRoom() {
     );
     if (arrRoom) {
       arrRoom = arrRoom.filter((item) => item !== "");
-      Axios.put(`http://localhost:5000/admin/updateTheaterById/${idTheater}`, {
-        name: newTheater.name,
-        address: newTheater.address,
-        describe: newTheater.describe,
-        room: arrRoom,
-      })
+      Axios.put(
+        `https://vostro-cinema.herokuapp.com/admin/updateTheaterById/${idTheater}`,
+        {
+          name: newTheater.name,
+          address: newTheater.address,
+          describe: newTheater.describe,
+          room: arrRoom,
+        }
+      )
         .then(function (response) {
           setNewTheater({ name: "", address: "", describe: "", room: [] });
           setChecked(Math.random());

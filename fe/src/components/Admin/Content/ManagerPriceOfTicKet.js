@@ -12,7 +12,7 @@ export default function ManagerPriceOfTicket() {
   const [textToast, setTextToast] = React.useState("");
 
   React.useEffect(() => {
-    Axios.get("http://localhost:5000/admin/getChairService").then(
+    Axios.get("https://vostro-cinema.herokuapp.com/admin/getChairService").then(
       (response) => {
         setListService(response.data);
       }
@@ -30,10 +30,13 @@ export default function ManagerPriceOfTicket() {
     if (str == "double") {
       price = priceDouble;
     }
-    Axios.put(`http://localhost:5000/admin/updateChairServiceByName/${str}`, {
-      name: str,
-      price: price,
-    })
+    Axios.put(
+      `https://vostro-cinema.herokuapp.com/admin/updateChairServiceByName/${str}`,
+      {
+        name: str,
+        price: price,
+      }
+    )
       .then(function (response) {
         setTextToast("Cập nhật thành công");
         ToastUtils("success");

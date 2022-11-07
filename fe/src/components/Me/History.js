@@ -6,7 +6,7 @@ export default function History() {
   const [listBill, setListBill] = React.useState([]);
   React.useEffect(() => {
     Axios.get(
-      `http://localhost:5000/user/findBillByUserById/${localStorage.getItem(
+      `https://vostro-cinema.herokuapp.com/user/findBillByUserById/${localStorage.getItem(
         "id"
       )}`
     ).then((response) => {

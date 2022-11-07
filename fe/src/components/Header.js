@@ -37,7 +37,7 @@ export default function Header() {
     if (!hasOTP) {
       if (OTP === parseInt(sendOTP)) {
         setLoading(true);
-        Axios.post("http://localhost:5000/user/signIn", {
+        Axios.post("https://vostro-cinema.herokuapp.com/user/signIn", {
           name: newAccount.name,
           phoneNumber: newAccount.phoneNumber,
           email: newAccount.email,
@@ -65,7 +65,7 @@ export default function Header() {
       if (newAccount.password == newAccount.confirmPassword) {
         setLoading(true);
 
-        Axios.post("http://localhost:5000/user/signIn", {
+        Axios.post("https://vostro-cinema.herokuapp.com/user/signIn", {
           state: "getOTP",
           otp: OTP,
           email: newAccount.email,
@@ -96,7 +96,7 @@ export default function Header() {
 
   const logIn = (e) => {
     e.preventDefault();
-    Axios.post("http://localhost:5000/user/logIn", {
+    Axios.post("https://vostro-cinema.herokuapp.com/user/logIn", {
       username: newAccount.username,
       password: newAccount.password,
     })

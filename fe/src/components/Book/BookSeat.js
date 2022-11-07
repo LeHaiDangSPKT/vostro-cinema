@@ -10,7 +10,7 @@ export default function BookSeat(props) {
   const [price, setPrice] = React.useState(0);
   //Get seat
   React.useEffect(() => {
-    Axios.get("http://localhost:5000/admin/getChairService").then(
+    Axios.get("https://vostro-cinema.herokuapp.com/admin/getChairService").then(
       (response) => {
         setListChairService(response.data);
         setCurrentRoom(props.data.roomName[0]);
@@ -22,7 +22,7 @@ export default function BookSeat(props) {
   React.useEffect(() => {
     try {
       const roomName = props.data.roomName[0];
-      Axios.post("http://localhost:5000/user/findBill", {
+      Axios.post("https://vostro-cinema.herokuapp.com/user/findBill", {
         theaterId: props.data.theaterId,
         showtime: props.data.date + "-" + props.data.time,
         roomName: currentRoom == "" ? roomName : currentRoom,

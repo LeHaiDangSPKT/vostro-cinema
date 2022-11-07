@@ -10,13 +10,17 @@ export default function ManagerUser() {
   const [checked, setChecked] = React.useState(0);
 
   React.useEffect(() => {
-    Axios.get("http://localhost:5000/admin/getAllUsers").then((response) => {
-      setListOfUsers(response.data);
-      setOneUser(response.data[0]);
-    });
+    Axios.get("https://vostro-cinema.herokuapp.com/admin/getAllUsers").then(
+      (response) => {
+        setListOfUsers(response.data);
+        setOneUser(response.data[0]);
+      }
+    );
   }, [checked]);
   const Delete = () => {
-    Axios.put(`http://localhost:5000/admin/deleteAccountById/${oneUser[0]._id}`)
+    Axios.put(
+      `https://vostro-cinema.herokuapp.com/admin/deleteAccountById/${oneUser[0]._id}`
+    )
       .then(function (response) {
         setChecked(Math.random());
         setTextToast("Đã xoá thành công");

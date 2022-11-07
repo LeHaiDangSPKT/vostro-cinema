@@ -27,16 +27,18 @@ export default function BookService(props) {
     redbull: 0,
   });
   React.useEffect(() => {
-    Axios.get("http://localhost:5000/admin/getMenuService").then((response) => {
-      setMenu({
-        baprangbo: response.data[0].menu[0].price,
-        bapcaramel: response.data[0].menu[1].price,
-        bapphomai: response.data[0].menu[2].price,
-        monster: response.data[0].menu[3].price,
-        pepsi: response.data[0].menu[4].price,
-        redbull: response.data[0].menu[5].price,
-      });
-    });
+    Axios.get("https://vostro-cinema.herokuapp.com/admin/getMenuService").then(
+      (response) => {
+        setMenu({
+          baprangbo: response.data[0].menu[0].price,
+          bapcaramel: response.data[0].menu[1].price,
+          bapphomai: response.data[0].menu[2].price,
+          monster: response.data[0].menu[3].price,
+          pepsi: response.data[0].menu[4].price,
+          redbull: response.data[0].menu[5].price,
+        });
+      }
+    );
   }, []);
   React.useEffect(() => {
     setTotalPriceService(

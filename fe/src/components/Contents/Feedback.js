@@ -17,12 +17,14 @@ export default function Feedback() {
   }, [feedback]);
 
   React.useEffect(() => {
-    Axios.get("http://localhost:5000/user/findAllFeedback").then((response) => {
-      setListFeedback(response.data);
-    });
+    Axios.get("https://vostro-cinema.herokuapp.com/user/findAllFeedback").then(
+      (response) => {
+        setListFeedback(response.data);
+      }
+    );
   }, [check]);
   const SendFeedback = () => {
-    Axios.post("http://localhost:5000/user/feedback", {
+    Axios.post("https://vostro-cinema.herokuapp.com/user/feedback", {
       userId: comment.userId,
       name: comment.name,
       content: feedback,

@@ -11,17 +11,21 @@ export default function ManagerDashboard() {
   const [listOfTheater, setListOfTheater] = React.useState(0);
 
   React.useEffect(() => {
-    Axios.get("http://localhost:5000/admin/getAllTheater").then((response) => {
-      setListOfTheater(response.data);
-    });
-    Axios.post("http://localhost:5000/admin/getAllYear").then((response) => {
-      setDataYear(response.data);
-    });
+    Axios.get("https://vostro-cinema.herokuapp.com/admin/getAllTheater").then(
+      (response) => {
+        setListOfTheater(response.data);
+      }
+    );
+    Axios.post("https://vostro-cinema.herokuapp.com/admin/getAllYear").then(
+      (response) => {
+        setDataYear(response.data);
+      }
+    );
   }, []);
 
   const Submit = () => {
     Axios.post(
-      `http://localhost:5000/admin/getAllBillByYearAndTheaterId/${theater}`,
+      `https://vostro-cinema.herokuapp.com/admin/getAllBillByYearAndTheaterId/${theater}`,
       {
         year: year,
       }

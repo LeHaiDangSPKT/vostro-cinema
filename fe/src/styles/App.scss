@@ -14,15 +14,6 @@
 }
 
 //Main
-.custom-hover {
-    border-bottom: 3px solid transparent;
-    transition: all 0.4s ease;
-}
-.custom-hover:hover, .custom-hover-active {
-    cursor: pointer;
-    color: #198754;
-    border-bottom: 3px solid #198754 ;
-}
 .slick-slide > div {
     margin: 0 5px;
 }
@@ -108,7 +99,6 @@
 
 //Film
 .card {
-    cursor: pointer;
     position: relative;
     border: none;
     .overlay {

@@ -30,33 +30,33 @@ export default function ManagerFilms() {
     theaterId: [],
   });
   React.useEffect(() => {
-    Axios.get("http://localhost:5000/admin/getNameAndIdAllTheater").then(
-      (response) => {
-        setListNameTheater(response.data);
-        setId(response.data[0]._id);
-      }
-    );
+    Axios.get(
+      "https://vostro-cinema.herokuapp.com/admin/getNameAndIdAllTheater"
+    ).then((response) => {
+      setListNameTheater(response.data);
+      setId(response.data[0]._id);
+    });
   }, []);
 
   React.useEffect(() => {
     id &&
-      Axios.get(`http://localhost:5000/admin/getAllFilmsById/${id}`).then(
-        (response) => {
-          setListFilm(response.data);
-          setOneFilm({
-            id: response.data[0]._id,
-            name: response.data[0].name,
-            duration: response.data[0].duration,
-            startingDay: response.data[0].startingDay,
-            closingDay: response.data[0].closingDay,
-            trailer: response.data[0].trailer,
-            img: response.data[0].img,
-            describe: response.data[0].describe,
-            category: response.data[0].category,
-            theaterId: response.data[0].theaterId,
-          });
-        }
-      );
+      Axios.get(
+        `https://vostro-cinema.herokuapp.com/admin/getAllFilmsById/${id}`
+      ).then((response) => {
+        setListFilm(response.data);
+        setOneFilm({
+          id: response.data[0]._id,
+          name: response.data[0].name,
+          duration: response.data[0].duration,
+          startingDay: response.data[0].startingDay,
+          closingDay: response.data[0].closingDay,
+          trailer: response.data[0].trailer,
+          img: response.data[0].img,
+          describe: response.data[0].describe,
+          category: response.data[0].category,
+          theaterId: response.data[0].theaterId,
+        });
+      });
   }, [id, check]);
 
   const CheckAll = () => {
@@ -112,7 +112,9 @@ export default function ManagerFilms() {
   };
 
   const Delete = () => {
-    Axios.put(`http://localhost:5000/admin/deleteFilmById/${idFilm}`)
+    Axios.put(
+      `https://vostro-cinema.herokuapp.com/admin/deleteFilmById/${idFilm}`
+    )
       .then(function (response) {
         setCheck(Math.random());
         setTextToast("Đã xoá thành công");
@@ -197,7 +199,7 @@ export default function ManagerFilms() {
         var arrCategory = CheckSymbolToArray(oneFilm.category);
         if (arrCategory) {
           arrCategory = arrCategory.filter((item) => item !== "");
-          Axios.post("http://localhost:5000/admin/addFilm", {
+          Axios.post("https://vostro-cinema.herokuapp.com/admin/addFilm", {
             name: oneFilm.name,
             duration: oneFilm.duration,
             startingDay: oneFilm.startingDay,
@@ -247,17 +249,20 @@ export default function ManagerFilms() {
       var arrCategory = CheckSymbolToArray(oneFilm.category.toString());
       if (arrCategory) {
         arrCategory = arrCategory.filter((item) => item !== "");
-        Axios.put(`http://localhost:5000/admin/updateFilmById/${oneFilm.id}`, {
-          name: oneFilm.name,
-          duration: oneFilm.duration,
-          startingDay: oneFilm.startingDay,
-          closingDay: oneFilm.closingDay,
-          trailer: oneFilm.trailer,
-          img: oneFilm.img,
-          describe: oneFilm.describe,
-          category: arrCategory,
-          theaterId: arrTheater,
-        })
+        Axios.put(
+          `https://vostro-cinema.herokuapp.com/admin/updateFilmById/${oneFilm.id}`,
+          {
+            name: oneFilm.name,
+            duration: oneFilm.duration,
+            startingDay: oneFilm.startingDay,
+            closingDay: oneFilm.closingDay,
+            trailer: oneFilm.trailer,
+            img: oneFilm.img,
+            describe: oneFilm.describe,
+            category: arrCategory,
+            theaterId: arrTheater,
+          }
+        )
           .then(function (response) {
             setTextToast("Đã cập nhật thành công");
             ToastUtils("success");

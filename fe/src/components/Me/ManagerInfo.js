@@ -6,7 +6,9 @@ export default function ManagerInfo() {
   const [info, setInfo] = React.useState({});
   React.useEffect(() => {
     Axios.get(
-      `http://localhost:5000/user/findUserById/${localStorage.getItem("id")}`
+      `https://vostro-cinema.herokuapp.com/user/findUserById/${localStorage.getItem(
+        "id"
+      )}`
     ).then((response) => {
       setInfo(response.data);
     });
@@ -28,7 +30,7 @@ export default function ManagerInfo() {
         input[i].setAttribute("disabled", "");
       }
       Axios.put(
-        `http://localhost:5000/user/updateUserById/${localStorage.getItem(
+        `https://vostro-cinema.herokuapp.com/user/updateUserById/${localStorage.getItem(
           "id"
         )}`,
         {
@@ -48,7 +50,9 @@ export default function ManagerInfo() {
 
   const DeleteAccount = () => {
     Axios.put(
-      `http://localhost:5000/user/deleteAccount/${localStorage.getItem("id")}`
+      `https://vostro-cinema.herokuapp.com/user/deleteAccount/${localStorage.getItem(
+        "id"
+      )}`
     ).then((response) => {
       localStorage.removeItem("id");
       localStorage.removeItem("name");
