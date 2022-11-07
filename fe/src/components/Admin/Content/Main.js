@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+// import LoadingPage from "../../../utils/LoadingPage";
 
 export default function Main() {
+  // const [pageLoading, setPageLoading] = React.useState(true)
   const data = [
     {
       text: "Thêm, sửa, xoá rạp phim",
@@ -36,28 +38,31 @@ export default function Main() {
       link: "/admin/manager-service",
     },
   ];
-
-  return (
-    <div className="bg-light">
-      <div className="w-75 p-4" style={{ margin: "0 auto" }}>
-        <h3 className="text-center text-success mt-2">
-          CÁC CHỨNG NĂNG CHÍNH CỦA ADMIN
-        </h3>
-        <div className="d-flex flex-wrap justify-content-center">
-          {data.map((item) => {
-            return (
-              <Link to={`${item.link}`} style={{ margin: "7px 10px" }}>
-                <button
-                  className="btn btn-success"
-                  style={{ width: "200px", height: "100px" }}
-                >
-                  {item.text}
-                </button>
-              </Link>
-            );
-          })}
+  try {
+    return (
+      <div className="bg-light">
+        <div className="w-75 p-4" style={{ margin: "0 auto" }}>
+          <h3 className="text-center text-success mt-2">
+            CÁC CHỨNG NĂNG CHÍNH CỦA ADMIN
+          </h3>
+          <div className="d-flex flex-wrap justify-content-center">
+            {data.map((item) => {
+              return (
+                <Link to={`${item.link}`} style={{ margin: "7px 10px" }}>
+                  <button
+                    className="btn btn-success"
+                    style={{ width: "200px", height: "100px" }}
+                  >
+                    {item.text}
+                  </button>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
