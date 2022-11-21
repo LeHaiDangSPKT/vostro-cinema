@@ -47,6 +47,20 @@ export default function Main() {
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1030,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 740,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
   const settingsListBanner = {
     infinite: true,
@@ -56,6 +70,20 @@ export default function Main() {
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
+    responsive: [
+      {
+        breakpoint: 1030,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 740,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
   const settingsBook = {
     infinite: false,
@@ -70,20 +98,17 @@ export default function Main() {
   const setDataFromChildComponent = (data) => {
     setData(data);
     if (data.service.length > 0) {
-      Axios.post(
-        "https://vostro-cinema.herokuapp.com/user/provisionalInvoice",
-        {
-          userId: localStorage.getItem("id") || "",
-          filmId: data.film.id,
-          filmName: data.film.name,
-          theaterId: data.theaterId,
-          showtime: data.date + "-" + data.time,
-          price: data.price,
-          seat: data.seat,
-          roomName: data.roomName,
-          service: data.service,
-        }
-      )
+      Axios.post(process.env.REACT_APP_API + "/user/provisionalInvoice", {
+        userId: localStorage.getItem("id") || "",
+        filmId: data.film.id,
+        filmName: data.film.name,
+        theaterId: data.theaterId,
+        showtime: data.date + "-" + data.time,
+        price: data.price,
+        seat: data.seat,
+        roomName: data.roomName,
+        service: data.service,
+      })
         .then(function (response) {
           window.location.href = "/me/invoice";
         })
@@ -94,7 +119,7 @@ export default function Main() {
   };
 
   React.useEffect(() => {
-    Axios.get("https://vostro-cinema.herokuapp.com/admin/getAllFilms").then(
+    Axios.get(process.env.REACT_APP_API + "/admin/getAllFilms").then(
       (response) => {
         setListFilms(response.data);
         setPageLoading(false);
@@ -122,10 +147,10 @@ export default function Main() {
           {/* State films */}
           <div>
             <ul
-              className="d-flex justify-content-center text-white ul-state-fimls bg-light w-50 rounded-2"
+              className="d-flex justify-content-center text-white ul-state-fimls bg-light w-50 rounded-2 p-0"
               style={{ margin: "50px auto 20px", listStyleType: "none" }}
             >
-              <li className="m-2 fs-2 text-success fw-bolder">
+              <li className="m-2 fs-2 text-success fw-bolder text-center">
                 TẤT CẢ PHIM TRÊN HỆ THỐNG
               </li>
             </ul>
@@ -133,7 +158,7 @@ export default function Main() {
 
           {/* List phim theo state */}
           <div className="w-75" style={{ margin: "0 auto" }}>
-            <Slider {...settingsListFilms} className="">
+            <Slider {...settingsListFilms}>
               {listFilms.map((item) => {
                 return (
                   <div className="card" key={item._id}>

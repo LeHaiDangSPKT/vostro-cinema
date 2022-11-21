@@ -13,12 +13,12 @@ export default function Recruit() {
   const [listTheaters, setListTheaters] = React.useState([]);
 
   React.useEffect(() => {
-    Axios.get(
-      "https://vostro-cinema.herokuapp.com/admin/getNameAndIdAllTheater"
-    ).then((response) => {
-      setListTheaters(response.data);
-      setPageLoading(false);
-    });
+    Axios.get(process.env.REACT_APP_API + "/admin/getNameAndIdAllTheater").then(
+      (response) => {
+        setListTheaters(response.data);
+        setPageLoading(false);
+      }
+    );
   }, []);
 
   const SendCV = (e) => {
@@ -27,7 +27,7 @@ export default function Recruit() {
       ToastUtils("fail");
     } else {
       setPageLoading(true);
-      Axios.post("https://vostro-cinema.herokuapp.com/user/sendLetter", {
+      Axios.post(process.env.REACT_APP_API + "/user/sendLetter", {
         email: email,
       }).then((response) => {
         setPageLoading(false);
@@ -52,7 +52,16 @@ export default function Recruit() {
               ĐỒNG HÀNH CÙNG VOSTRO CINEMA VIETNAM
             </h3>
             <div className="d-flex justify-content-between">
-              <img src={Recruit_img} className="rounded-start" alt="" />
+              <img
+                src={Recruit_img}
+                className="rounded-start"
+                style={{
+                  width: "50%",
+                  height: "100%",
+                  objectFit: "contain",
+                }}
+                alt=""
+              />
               <div className="d-flex flex-column justify-content-center ps-3 pe-2 border border-success rounded-end border-3 border-start-0">
                 <p style={{ textAlign: "justify" }}>
                   VOSTRO CINEMA trực thuộc VOSTRO Group một trong những tập đoàn

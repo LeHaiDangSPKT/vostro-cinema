@@ -161,19 +161,19 @@ export default function ManagerCalender() {
   });
 
   React.useEffect(() => {
-    Axios.get(
-      "https://vostro-cinema.herokuapp.com/admin/getNameAndIdAllTheater"
-    ).then((response) => {
-      setListNameTheater(response.data);
-      setId(response.data[0]._id);
-      setIdScheduled(response.data[0]._id);
-      setidSold(response.data[0]._id);
-    });
+    Axios.get(process.env.REACT_APP_API + "/admin/getNameAndIdAllTheater").then(
+      (response) => {
+        setListNameTheater(response.data);
+        setId(response.data[0]._id);
+        setIdScheduled(response.data[0]._id);
+        setidSold(response.data[0]._id);
+      }
+    );
   }, []);
   React.useEffect(() => {
     id &&
       Axios.get(
-        `https://vostro-cinema.herokuapp.com/admin/getAllFilmsById/${id}`
+        `${process.env.REACT_APP_API}/admin/getAllFilmsById/${id}`
       ).then((response) => {
         setListFilm(response.data);
         setFilmTime({
@@ -192,7 +192,7 @@ export default function ManagerCalender() {
   React.useEffect(() => {
     idScheduled &&
       Axios.get(
-        `https://vostro-cinema.herokuapp.com/admin/getAllShowTimesById/${idScheduled}`
+        `${process.env.REACT_APP_API}/admin/getAllShowTimesById/${idScheduled}`
       ).then((response) => {
         setListFilmScheduled(response.data);
         setPageLoading(false);
@@ -201,7 +201,7 @@ export default function ManagerCalender() {
   React.useEffect(() => {
     idSold &&
       Axios.get(
-        `https://vostro-cinema.herokuapp.com/admin/getAllShowTimesById/${idSold}`
+        `${process.env.REACT_APP_API}/admin/getAllShowTimesById/${idSold}`
       ).then((response) => {
         setListFilmSold(response.data);
         setPageLoading(false);
@@ -233,7 +233,7 @@ export default function ManagerCalender() {
         .map((item) => +item.value)
         .filter((item) => !!item);
       if (dataTimeDB == null) {
-        Axios.post(`https://vostro-cinema.herokuapp.com/admin/addShowTime/`, {
+        Axios.post(`${process.env.REACT_APP_API}/admin/addShowTime/`, {
           theaterId: id,
           filmId: oneShowTime.filmId,
           filmName: oneShowTime.filmName,
@@ -263,7 +263,7 @@ export default function ManagerCalender() {
           });
       } else {
         Axios.put(
-          `https://vostro-cinema.herokuapp.com/admin/updateShowTime/${idShowTime}`,
+          `${process.env.REACT_APP_API}/admin/updateShowTime/${idShowTime}`,
           {
             movieTime: arrTime.map((item) => {
               return {
@@ -298,7 +298,7 @@ export default function ManagerCalender() {
     input.attr("disabled", true);
     select.attr("disabled", true);
 
-    Axios.post("https://vostro-cinema.herokuapp.com/admin/getOneShowTime", {
+    Axios.post(process.env.REACT_APP_API + "/admin/getOneShowTime", {
       theaterId: oneShowTime.theaterId,
       roomName: oneShowTime.roomName,
       movieDate: oneShowTime.movieDate,
@@ -322,7 +322,7 @@ export default function ManagerCalender() {
 
   const Change = () => {
     Axios.put(
-      `https://vostro-cinema.herokuapp.com/admin/updateStateShowTimeById/${idShowTime}`,
+      `${process.env.REACT_APP_API}/admin/updateStateShowTimeById/${idShowTime}`,
       {
         time: showTime,
       }
@@ -339,7 +339,7 @@ export default function ManagerCalender() {
   };
   const Delete = () => {
     Axios.post(
-      `https://vostro-cinema.herokuapp.com/admin/deleteShowTimeById/${idShowTime}`,
+      `${process.env.REACT_APP_API}/admin/deleteShowTimeById/${idShowTime}`,
       {
         time: showTime,
       }

@@ -13,7 +13,7 @@ export default function ManagerUser() {
   const [checked, setChecked] = React.useState(0);
 
   React.useEffect(() => {
-    Axios.get("https://vostro-cinema.herokuapp.com/admin/getAllUsers").then(
+    Axios.get(process.env.REACT_APP_API + "/admin/getAllUsers").then(
       (response) => {
         setListOfUsers(response.data);
         setOneUser(response.data[0]);
@@ -23,7 +23,7 @@ export default function ManagerUser() {
   }, [checked]);
   const Delete = () => {
     Axios.put(
-      `https://vostro-cinema.herokuapp.com/admin/deleteAccountById/${oneUser[0]._id}`
+      `${process.env.REACT_APP_API}/admin/deleteAccountById/${oneUser[0]._id}`
     )
       .then(function (response) {
         setChecked(Math.random());
@@ -33,7 +33,6 @@ export default function ManagerUser() {
       .catch(function (error) {});
   };
 
-  console.log(oneUser);
   return (
     <>
       {pageLoading ? (

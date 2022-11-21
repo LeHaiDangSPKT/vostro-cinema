@@ -3,7 +3,7 @@ import Axios from "axios";
 import Logo from "../../imgs/logo.png";
 import QR_Zalo from "../../imgs/qr_zalo.jpg";
 import QR_MoMo from "../../imgs/qr_momo.png";
-import "../../styles/invoice.scss";
+import "../../styles/index.scss";
 import CurrencyFormat from "react-currency-format";
 import Toast from "../Toast";
 import ToastUtils from "../../utils/ToastUtils";
@@ -27,16 +27,16 @@ export default function Invoice() {
   const [invoiceLasted, setInvoiceLasted] = React.useState({});
   React.useEffect(() => {
     Axios.get(
-      `https://vostro-cinema.herokuapp.com/user/findPhoneNumberAndEmailUserById/${localStorage.getItem(
-        "id"
-      )}`
+      `${
+        process.env.REACT_APP_API
+      }/user/findPhoneNumberAndEmailUserById/${localStorage.getItem("id")}`
     ).then((response) => {
       setInfoUser(response.data[0]);
     });
   }, []);
   React.useEffect(() => {
     Axios.get(
-      `https://vostro-cinema.herokuapp.com/user/findProvisionalInvoiceLasted`
+      `${process.env.REACT_APP_API}/user/findProvisionalInvoiceLasted`
     ).then((response) => {
       setInvoiceLasted(response.data[0]);
       if (localStorage.getItem("id")) {
@@ -64,7 +64,7 @@ export default function Invoice() {
   }, []);
 
   React.useEffect(() => {
-    Axios.get("https://vostro-cinema.herokuapp.com/admin/getChairService").then(
+    Axios.get(process.env.REACT_APP_API + "/admin/getChairService").then(
       (response) => {
         setListSeat(response.data[0]);
       }
@@ -73,7 +73,7 @@ export default function Invoice() {
   React.useEffect(() => {
     invoiceLasted &&
       Axios.get(
-        `https://vostro-cinema.herokuapp.com/admin/getOneTheaterById/${invoiceLasted.theaterId}`
+        `${process.env.REACT_APP_API}/admin/getOneTheaterById/${invoiceLasted.theaterId}`
       ).then((response) => {
         setTheater(response.data[0]);
       });
@@ -86,7 +86,7 @@ export default function Invoice() {
   // /user/officialInvoiceById/:id
   const Submit = () => {
     Axios.put(
-      `https://vostro-cinema.herokuapp.com/user/officialInvoiceById/${invoiceLasted._id}`,
+      `${process.env.REACT_APP_API}/user/officialInvoiceById/${invoiceLasted._id}`,
       {
         price: invoiceLasted.price - priceDiscount,
       }
@@ -318,22 +318,30 @@ export default function Invoice() {
             >
               <div className="p-4 text-center">
                 <div className=" d-flex justify-content-around ">
-                  <div>
+                  <div className="d-flex flex-column">
                     <img
                       src={QR_Zalo}
                       className="rounded-4"
-                      style={{ width: "540px", height: "504px" }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                      }}
                       alt=""
                     />
                     <h5 className="py-3">
                       Vào ví ZALOPAY quét mã để thanh toán
                     </h5>
                   </div>
-                  <div>
+                  <div className="d-flex flex-column">
                     <img
                       src={QR_MoMo}
                       className="rounded-4"
-                      style={{ width: "540px", height: "504px" }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                      }}
                       alt=""
                     />
                     <h5 className="py-3">Vào ví MOMO quét mã để thanh toán</h5>

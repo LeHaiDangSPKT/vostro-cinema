@@ -15,7 +15,7 @@ export default function ManagerPriceOfTicket() {
   const [textToast, setTextToast] = React.useState("");
 
   React.useEffect(() => {
-    Axios.get("https://vostro-cinema.herokuapp.com/admin/getChairService").then(
+    Axios.get(process.env.REACT_APP_API + "/admin/getChairService").then(
       (response) => {
         setListService(response.data);
         setPageLoading(false);
@@ -35,7 +35,7 @@ export default function ManagerPriceOfTicket() {
       price = priceDouble;
     }
     Axios.put(
-      `https://vostro-cinema.herokuapp.com/admin/updateChairServiceByName/${str}`,
+      `${process.env.REACT_APP_API}/admin/updateChairServiceByName/${str}`,
       {
         name: str,
         price: price,

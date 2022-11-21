@@ -33,18 +33,18 @@ export default function ManagerFilms() {
     theaterId: [],
   });
   React.useEffect(() => {
-    Axios.get(
-      "https://vostro-cinema.herokuapp.com/admin/getNameAndIdAllTheater"
-    ).then((response) => {
-      setListNameTheater(response.data);
-      setId(response.data[0]._id);
-    });
+    Axios.get(process.env.REACT_APP_API + "/admin/getNameAndIdAllTheater").then(
+      (response) => {
+        setListNameTheater(response.data);
+        setId(response.data[0]._id);
+      }
+    );
   }, []);
 
   React.useEffect(() => {
     id &&
       Axios.get(
-        `https://vostro-cinema.herokuapp.com/admin/getAllFilmsById/${id}`
+        `${process.env.REACT_APP_API}/admin/getAllFilmsById/${id}`
       ).then((response) => {
         setListFilm(response.data);
         setOneFilm({
@@ -116,9 +116,7 @@ export default function ManagerFilms() {
   };
 
   const Delete = () => {
-    Axios.put(
-      `https://vostro-cinema.herokuapp.com/admin/deleteFilmById/${idFilm}`
-    )
+    Axios.put(`${process.env.REACT_APP_API}/admin/deleteFilmById/${idFilm}`)
       .then(function (response) {
         setCheck(Math.random());
         setTextToast("Đã xoá thành công");
@@ -205,7 +203,7 @@ export default function ManagerFilms() {
         if (arrCategory) {
           setPageLoading(true);
           arrCategory = arrCategory.filter((item) => item !== "");
-          Axios.post("https://vostro-cinema.herokuapp.com/admin/addFilm", {
+          Axios.post(process.env.REACT_APP_API + "/admin/addFilm", {
             name: oneFilm.name,
             duration: oneFilm.duration,
             startingDay: oneFilm.startingDay,
@@ -261,7 +259,7 @@ export default function ManagerFilms() {
       if (arrCategory) {
         arrCategory = arrCategory.filter((item) => item !== "");
         Axios.put(
-          `https://vostro-cinema.herokuapp.com/admin/updateFilmById/${oneFilm.id}`,
+          `${process.env.REACT_APP_API}/admin/updateFilmById/${oneFilm.id}`,
           {
             name: oneFilm.name,
             duration: oneFilm.duration,

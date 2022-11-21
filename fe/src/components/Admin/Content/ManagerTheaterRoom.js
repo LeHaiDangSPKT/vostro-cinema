@@ -20,7 +20,7 @@ export default function ManagerTheaterRoom() {
 
   //Get All Theater
   React.useEffect(() => {
-    Axios.get("https://vostro-cinema.herokuapp.com/admin/getAllTheater").then(
+    Axios.get(process.env.REACT_APP_API + "/admin/getAllTheater").then(
       (response) => {
         setListOfTheater(response.data);
         setLoading(false);
@@ -48,15 +48,12 @@ export default function ManagerTheaterRoom() {
     if (arrRoom) {
       setLoading(true);
       arrRoom = arrRoom.filter((item) => item !== "");
-      Axios.post(
-        "https://vostro-cinema.herokuapp.com/admin/addTheaterAndRoom",
-        {
-          name: newTheater.name,
-          address: newTheater.address,
-          describe: newTheater.describe,
-          room: arrRoom,
-        }
-      )
+      Axios.post(process.env.REACT_APP_API + "/admin/addTheaterAndRoom", {
+        name: newTheater.name,
+        address: newTheater.address,
+        describe: newTheater.describe,
+        room: arrRoom,
+      })
         .then(function (response) {
           setLoading(false);
           setTimeout(() => {
@@ -82,7 +79,7 @@ export default function ManagerTheaterRoom() {
   const handleDelete = (e) => {
     setLoading(true);
     Axios.put(
-      `https://vostro-cinema.herokuapp.com/admin/deleteTheaterById/${idTheater}`
+      `${process.env.REACT_APP_API}/admin/deleteTheaterById/${idTheater}`
     )
       .then(function (response) {
         setChecked(Math.random());
@@ -111,7 +108,7 @@ export default function ManagerTheaterRoom() {
       setLoading(true);
       arrRoom = arrRoom.filter((item) => item !== "");
       Axios.put(
-        `https://vostro-cinema.herokuapp.com/admin/updateTheaterById/${idTheater}`,
+        `${process.env.REACT_APP_API}/admin/updateTheaterById/${idTheater}`,
         {
           name: newTheater.name,
           address: newTheater.address,

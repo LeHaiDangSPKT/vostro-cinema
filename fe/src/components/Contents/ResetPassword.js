@@ -19,7 +19,7 @@ export default function ResetPassword() {
   const GetOTP = (e) => {
     e.preventDefault();
     setLoading(true);
-    Axios.post("https://vostro-cinema.herokuapp.com/user/resetPassword", {
+    Axios.post(process.env.REACT_APP_API + "/user/resetPassword", {
       state: "getOTP",
       email: email,
       otp: otp,
@@ -41,7 +41,7 @@ export default function ResetPassword() {
     e.preventDefault();
     if (parseInt(sendOtp) === otp) {
       setLoading(true);
-      Axios.post("https://vostro-cinema.herokuapp.com/user/resetPassword", {
+      Axios.post(process.env.REACT_APP_API + "/user/resetPassword", {
         state: "sendOTP",
         email: email,
       })

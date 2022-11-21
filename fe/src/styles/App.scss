@@ -1,3 +1,4 @@
+@import './responsive.scss';
 * {
     margin: 0;
     padding: 0;
@@ -11,6 +12,7 @@
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
+    overflow-x: hidden;
 }
 
 //Main
@@ -32,6 +34,12 @@
         margin: 2px 3px;
         border-bottom: 5px solid #198754;
         text-align: center;
+        @include tablet {
+            width: 44px;
+        }
+        @include phone {
+            width: 17px;
+        }
     }
     li:hover {
         background-color: #198754;
@@ -42,6 +50,12 @@
         width: 145px;
         padding: 10px 0;
         border-bottom: 5px solid #dc3545;
+        @include tablet {
+            width: 95px;
+        }
+        @include phone {
+            width: 41px;
+        }
     }
 }
 
@@ -133,4 +147,43 @@
 .custom-disabled {
     border-bottom: 5px solid #0dcaf0 !important;
     pointer-events: none; 
+}
+
+.rs-hide-only-mobile {
+    @include phone {
+        display: none !important;
+    }
+}
+.rs-hide {
+    @include tablet_phone {
+        display: none !important;
+    }
+}
+
+.rs-w-100 {
+    @include tablet_phone {
+        width: 100% !important;
+    }
+}
+
+
+.rs-m-0-auto {
+    @include tablet_phone {
+        margin: 0 auto !important;
+    }
+}
+
+.rs-mt-10 {
+    @include tablet_phone {
+        margin-top: 10px !important;
+    }
+    // @include phone {
+    //     margin: 0 auto !important;
+    // }
+}
+
+.rs-flex-column {
+    @include phone {
+        flex-direction: column !important;
+    }
 }

@@ -34,7 +34,7 @@ export default function BookTicket(props) {
 
   //Get all film
   React.useEffect(() => {
-    Axios.get("https://vostro-cinema.herokuapp.com/admin/getAllFilms").then(
+    Axios.get(process.env.REACT_APP_API + "/admin/getAllFilms").then(
       (response) => {
         setListFilms(response.data);
       }
@@ -42,11 +42,11 @@ export default function BookTicket(props) {
   }, []);
   //Get all theater
   React.useEffect(() => {
-    Axios.get(
-      "https://vostro-cinema.herokuapp.com/admin/getNameAndIdAllTheater"
-    ).then((response) => {
-      setListTheaters(response.data);
-    });
+    Axios.get(process.env.REACT_APP_API + "/admin/getNameAndIdAllTheater").then(
+      (response) => {
+        setListTheaters(response.data);
+      }
+    );
   }, []);
   const selectedFilm = (idFilm) => {
     setCurrentFilm(listFilms.filter((item) => item._id == idFilm));
@@ -71,7 +71,7 @@ export default function BookTicket(props) {
         theaterId: idTheater,
       });
       Axios.post(
-        "https://vostro-cinema.herokuapp.com/admin/getAllShowtimeByIdFilmAndTheater",
+        process.env.REACT_APP_API + "/admin/getAllShowtimeByIdFilmAndTheater",
         {
           idfilm: currentFilm[0]._id,
           idTheater: idTheater,
@@ -240,7 +240,7 @@ export default function BookTicket(props) {
           </button>
         </div>
         <div
-          className="d-flex flex-column w-25"
+          className="d-flex flex-column w-25 rs-hide-only-mobile"
           style={{ margin: "0 auto", marginTop: "40px" }}
         >
           {checked && <img src={currentFilm[0].img} className="" alt="" />}

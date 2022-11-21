@@ -13,13 +13,13 @@ export default function ManagerDashboard() {
   const [listOfTheater, setListOfTheater] = React.useState(0);
 
   React.useEffect(() => {
-    Axios.get("https://vostro-cinema.herokuapp.com/admin/getAllTheater").then(
+    Axios.get(process.env.REACT_APP_API + "/admin/getAllTheater").then(
       (response) => {
         setListOfTheater(response.data);
         setPageLoading(false);
       }
     );
-    Axios.post("https://vostro-cinema.herokuapp.com/admin/getAllYear").then(
+    Axios.post(process.env.REACT_APP_API + "/admin/getAllYear").then(
       (response) => {
         setPageLoading(false);
         setDataYear(response.data);
@@ -30,7 +30,7 @@ export default function ManagerDashboard() {
   const Submit = () => {
     setPageLoading(true);
     Axios.post(
-      `https://vostro-cinema.herokuapp.com/admin/getAllBillByYearAndTheaterId/${theater}`,
+      `${process.env.REACT_APP_API}/admin/getAllBillByYearAndTheaterId/${theater}`,
       {
         year: year,
       }

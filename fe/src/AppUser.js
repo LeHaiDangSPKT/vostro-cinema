@@ -6,7 +6,7 @@ import { Main, Recruit, ResetPassword, Feedback } from "./components/Contents";
 import { Invoice } from "./components/Me";
 
 import { ManagerInfo, History } from "./components/Me";
-import "./styles/App.scss";
+import "./styles/index.scss";
 
 import RemoveSpecialCharacters from "./utils/RemoveSpecialCharacters";
 function AppUser() {

@@ -10,7 +10,7 @@ export default function BookSeat(props) {
   const [price, setPrice] = React.useState(0);
   //Get seat
   React.useEffect(() => {
-    Axios.get("https://vostro-cinema.herokuapp.com/admin/getChairService").then(
+    Axios.get(process.env.REACT_APP_API + "/admin/getChairService").then(
       (response) => {
         setListChairService(response.data);
         setCurrentRoom(props.data.roomName[0]);
@@ -22,7 +22,7 @@ export default function BookSeat(props) {
   React.useEffect(() => {
     try {
       const roomName = props.data.roomName[0];
-      Axios.post("https://vostro-cinema.herokuapp.com/user/findBill", {
+      Axios.post(process.env.REACT_APP_API + "/user/findBill", {
         theaterId: props.data.theaterId,
         showtime: props.data.date + "-" + props.data.time,
         roomName: currentRoom == "" ? roomName : currentRoom,
@@ -131,12 +131,12 @@ export default function BookSeat(props) {
   try {
     return (
       <div className="bg-light rounded-3 p-4 mt-4 d-flex justify-content-between book">
-        <div className="w-75 me-4" style={{ margin: "0 auto" }}>
+        <div className="w-75 me-4 rs-w-100" style={{ margin: "0 auto" }}>
           <h3 className="text-center text-success mb-0 ">CHỌN GHẾ</h3>
           <h4 className="text-center text-light mb-0 mt-3 py-2 bg-dark border rounded-3">
             MÀN HÌNH
           </h4>
-          <div className="my-3 w-25">
+          <div className="my-3 w-25 rs-w-100">
             <label className="form-label">Chọn phòng chiếu:</label>
             <select
               className="form-control"
@@ -149,7 +149,7 @@ export default function BookSeat(props) {
             </select>
           </div>
           <div className="d-flex justify-content-between mt-3">
-            <span className="text-center">
+            <span className="text-center rs-hide">
               Lối vào<i className="fa-solid fa-arrow-down"></i>
             </span>
             <ul className="seat">
@@ -157,7 +157,10 @@ export default function BookSeat(props) {
               {dataDoubleSeat()}
             </ul>
           </div>
-          <div style={{ marginLeft: "35px", marginBottom: "10px" }}>
+          <div
+            style={{ marginLeft: "35px", marginBottom: "10px" }}
+            className="rs-m-0-auto"
+          >
             <label className="fw-bold fs-5">Ghi chú:</label>
             <div className="d-flex justify-content-center">
               <div className="mx-2 border-success border-3 border-bottom p-2 rounded-2">
@@ -176,7 +179,7 @@ export default function BookSeat(props) {
           </div>
           <button
             type="button"
-            className="btn btn-success w-75 d-flex justify-content-center"
+            className="btn btn-success w-75 d-flex justify-content-center rs-mt-10"
             style={{ margin: "0 auto" }}
             onClick={next}
           >
@@ -192,7 +195,7 @@ export default function BookSeat(props) {
           </button>
         </div>
         <div
-          className="d-flex flex-column w-25"
+          className="d-flex flex-column w-25 rs-hide-only-mobile"
           style={{ margin: "0 auto", marginTop: "50px" }}
         >
           <img src={props.data.film.img} className="" alt="" />

@@ -37,7 +37,7 @@ export default function Header() {
     if (!hasOTP) {
       if (OTP === parseInt(sendOTP)) {
         setLoading(true);
-        Axios.post("https://vostro-cinema.herokuapp.com/user/signIn", {
+        Axios.post(process.env.REACT_APP_API + "/user/signIn", {
           name: newAccount.name,
           phoneNumber: newAccount.phoneNumber,
           email: newAccount.email,
@@ -65,7 +65,7 @@ export default function Header() {
       if (newAccount.password == newAccount.confirmPassword) {
         setLoading(true);
 
-        Axios.post("https://vostro-cinema.herokuapp.com/user/signIn", {
+        Axios.post(process.env.REACT_APP_API + "/user/signIn", {
           state: "getOTP",
           otp: OTP,
           email: newAccount.email,
@@ -96,7 +96,7 @@ export default function Header() {
 
   const logIn = (e) => {
     e.preventDefault();
-    Axios.post("https://vostro-cinema.herokuapp.com/user/logIn", {
+    Axios.post(process.env.REACT_APP_API + "/user/logIn", {
       username: newAccount.username,
       password: newAccount.password,
     })
@@ -119,6 +119,14 @@ export default function Header() {
     document.getElementById(`btn-${nameModal}`).click();
   };
 
+  const HandeleToggleShowMobile = () => {
+    // console.log(document.querySelectorAll(".navbar-collapse")[0].className);
+    // console.log(
+    //   document
+    //     .querySelectorAll(".navbar-collapse")[0]
+    //     .className.includes("show")
+    // );
+  };
   return (
     <>
       <header>
@@ -127,12 +135,19 @@ export default function Header() {
             <Link className="text-white navbar-brand" to="/">
               <img src={Logo} alt="" width="150" height="80" />
             </Link>
-
-            <div
-              className="collapse navbar-collapse"
-              id="navbarSupportedContent"
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+              onClick={HandeleToggleShowMobile}
             >
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="collapse">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0 text-center">
                 <li className="nav-item me-3">
                   <Link className="text-white nav-link" to="/">
                     Trang chủ
@@ -151,7 +166,7 @@ export default function Header() {
                   </li>
                 )}
               </ul>
-              <div className="d-flex">
+              <div className="d-flex justify-content-center">
                 {!localStorage.getItem("id") ? (
                   <>
                     <button
@@ -175,7 +190,7 @@ export default function Header() {
                 ) : (
                   <div className="dropdown-center">
                     <button
-                      className="d-flex align-items-center text-light bg-transparent justify-content-center "
+                      className="d-flex align-items-center text-light border-0 bg-transparent justify-content-center "
                       style={{ minWidth: "220px" }}
                       type="button"
                       data-bs-toggle="dropdown"

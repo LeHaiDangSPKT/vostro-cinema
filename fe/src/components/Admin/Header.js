@@ -3,9 +3,6 @@ import Logo from "../../imgs/logo.png";
 import { Link } from "react-router-dom";
 
 export default function Header() {
-  const handleDropDown = (e) => {
-    console.log(e.target);
-  };
   return (
     <header>
       <nav className="navbar navbar-expand-lg bg-transparent">

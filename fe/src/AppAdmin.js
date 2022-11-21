@@ -10,7 +10,7 @@ import {
   ManagerDashboard,
   ManagerTheaterRoom,
 } from "./components/Admin/Content";
-import "./styles/App.scss";
+import "./styles/index.scss";
 import RemoveSpecialCharacters from "./utils/RemoveSpecialCharacters";
 
 function AppAdmin() {

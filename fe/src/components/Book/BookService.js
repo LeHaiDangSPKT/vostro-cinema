@@ -27,7 +27,7 @@ export default function BookService(props) {
     redbull: 0,
   });
   React.useEffect(() => {
-    Axios.get("https://vostro-cinema.herokuapp.com/admin/getMenuService").then(
+    Axios.get(process.env.REACT_APP_API + "/admin/getMenuService").then(
       (response) => {
         setMenu({
           baprangbo: response.data[0].menu[0].price,
@@ -68,16 +68,21 @@ export default function BookService(props) {
 
   try {
     return (
-      <div className="bg-light rounded-3 p-4 mt-4 d-flex justify-content-between book">
-        <div className="w-75 me-4">
-          <h3 className="text-center text-success mb-0 ">ĐẶT MÓN</h3>
+      <div className="bg-light rounded-3 p-4 mt-4 d-flex justify-content-between">
+        <div className="w-75 me-4 rs-w-100 rs-m-0-auto">
+          <h3
+            className="text-center text-success mb-0 rs-m-0-auto"
+            style={{ marginLeft: "137px" }}
+          >
+            ĐẶT MÓN
+          </h3>
 
           <div className="d-flex justify-content-between flex-column ">
             {/* Chọn đồ ăn */}
-            <div className="d-flex mt-4">
-              <h5 className="me-3 text-center">Chọn đồ ăn</h5>
+            <div className="d-flex mt-4 rs-flex-column">
+              <h5 className="me-3 text-center rs-hide">Chọn đồ ăn</h5>
               <div
-                className="d-flex justify-content-between mx-1"
+                className="d-flex justify-content-between mx-1 rs-mt-10"
                 style={{ height: "280px" }}
               >
                 <div className="bg-warning py-1 px-3 d-flex justify-content-center flex-column rounded-3">
@@ -118,7 +123,7 @@ export default function BookService(props) {
                 </div>
               </div>
               <div
-                className="d-flex justify-content-between mx-1"
+                className="d-flex justify-content-between mx-1 rs-mt-10"
                 style={{ height: "280px" }}
               >
                 <div className="bg-warning py-1 px-3 d-flex justify-content-center flex-column rounded-3">
@@ -159,7 +164,7 @@ export default function BookService(props) {
                 </div>
               </div>
               <div
-                className="d-flex justify-content-between mx-1"
+                className="d-flex justify-content-between mx-1 rs-mt-10"
                 style={{ height: "280px" }}
               >
                 <div className="bg-warning py-1 px-3 d-flex justify-content-center flex-column rounded-3">
@@ -201,12 +206,15 @@ export default function BookService(props) {
               </div>
             </div>
             {/* Chọn nước uống */}
-            <div className="d-flex mt-4">
-              <h5 style={{ marginRight: "22px", textAlign: "center" }}>
+            <div className="d-flex mt-4 rs-flex-column ">
+              <h5
+                className="rs-hide"
+                style={{ marginRight: "22px", textAlign: "center" }}
+              >
                 Chọn nước
               </h5>
               <div
-                className="d-flex justify-content-between mx-1"
+                className="d-flex justify-content-between mx-1 rs-mt-10"
                 style={{ height: "280px" }}
               >
                 <div className="bg-warning py-1 px-3 d-flex justify-content-center flex-column rounded-3">
@@ -247,7 +255,7 @@ export default function BookService(props) {
                 </div>
               </div>
               <div
-                className="d-flex justify-content-between mx-1"
+                className="d-flex justify-content-between mx-1 rs-mt-10"
                 style={{ height: "280px" }}
               >
                 <div className="bg-warning py-1 px-3 d-flex justify-content-center flex-column rounded-3">
@@ -286,7 +294,7 @@ export default function BookService(props) {
                 </div>
               </div>
               <div
-                className="d-flex justify-content-between mx-1"
+                className="d-flex justify-content-between mx-1 rs-mt-10"
                 style={{ height: "280px" }}
               >
                 <div className="bg-warning py-1 px-3 d-flex justify-content-center flex-column rounded-3">
@@ -331,7 +339,7 @@ export default function BookService(props) {
 
           <button
             type="button"
-            className="btn btn-success w-75 mt-2 d-flex justify-content-center"
+            className="btn btn-success w-75 mt-2 d-flex justify-content-center rs-m-0-auto rs-mt-10"
             style={{ marginLeft: "137px" }}
             onClick={Submit}
           >
@@ -339,7 +347,7 @@ export default function BookService(props) {
           </button>
         </div>
         <div
-          className="d-flex flex-column w-25"
+          className="flex-column w-25 rs-hide"
           style={{ margin: "0 auto", marginTop: "55px" }}
         >
           <img src={props.data.film.img} className="" alt="" />

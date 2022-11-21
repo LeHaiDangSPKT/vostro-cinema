@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/Loading.scss";
+import "../styles/index.scss";
 
 export default function LoadingPage(props) {
   return (
