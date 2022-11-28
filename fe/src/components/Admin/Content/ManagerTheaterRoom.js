@@ -3,7 +3,6 @@ import Axios from "axios";
 import Toast from "../../Toast";
 import ToastUtils from "../../../utils/ToastUtils";
 import LoadingPage from "../../../utils/LoadingPage";
-
 export default function ManagerTheaterRoom() {
   const [loading, setLoading] = React.useState(true);
   const [checked, setChecked] = React.useState("");
@@ -105,6 +104,7 @@ export default function ManagerTheaterRoom() {
       document.getElementsByClassName("check-name")[0].value
     );
     if (arrRoom) {
+      document.getElementById("btn-close").click();
       setLoading(true);
       arrRoom = arrRoom.filter((item) => item !== "");
       Axios.put(
@@ -125,7 +125,9 @@ export default function ManagerTheaterRoom() {
             ToastUtils("success");
           }, 500);
         })
-        .catch(function (error) {});
+        .catch(function (error) {
+          console.log(error);
+        });
     } else {
       setTextToast("Tên phòng phải bao gồm ký tự ','");
       ToastUtils("fail");
@@ -333,6 +335,7 @@ export default function ManagerTheaterRoom() {
                             CHỈNH SỬA THÔNG TIN
                           </h5>
                           <button
+                            id="btn-close"
                             type="button"
                             className="btn-close"
                             data-bs-dismiss="modal"
@@ -400,7 +403,6 @@ export default function ManagerTheaterRoom() {
                             <button
                               type="submit"
                               className="btn btn-outline-success"
-                              data-bs-dismiss="modal"
                             >
                               Cập nhật
                             </button>
