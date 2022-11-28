@@ -21,16 +21,19 @@ export default function ManagerUser() {
       }
     );
   }, [checked]);
+  console.log(listOfUsers);
   const Delete = () => {
     Axios.put(
-      `${process.env.REACT_APP_API}/admin/deleteAccountById/${oneUser[0]._id}`
+      `${process.env.REACT_APP_API}/admin/deleteAccountById/${oneUser._id}`
     )
       .then(function (response) {
         setChecked(Math.random());
         setTextToast("Đã xoá thành công");
         ToastUtils("success");
       })
-      .catch(function (error) {});
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -69,48 +72,49 @@ export default function ManagerUser() {
                       </tr>
                     </thead>
                     <tbody>
-                      {listOfUsers.map((item, index) => {
-                        if (item.name !== undefined) {
-                          return (
-                            <tr
-                              className="table__row"
-                              key={item._id}
-                              style={{ cursor: "pointer" }}
-                              onClick={(e) =>
-                                setOneUser(
-                                  listOfUsers.filter(
-                                    (items) => items._id == item._id
-                                  )[0]
-                                )
-                              }
-                            >
-                              <th>{index + 1}</th>
-                              <td>{item.name}</td>
-                              <td>{item.phoneNumber}</td>
-                              <td>{item.email}</td>
-                              <td>
-                                {ReserveString(
-                                  item.dateOfBirthday.substring(0, 10)
-                                )}
-                              </td>
-                              <td>
-                                <button
-                                  className="btn border-white"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#delete"
-                                >
-                                  <i className="fa-solid fa-trash-can text-danger"></i>
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        }
-                      })}
+                      {listOfUsers &&
+                        listOfUsers.map((item, index) => {
+                          if (item.name !== undefined) {
+                            return (
+                              <tr
+                                className="table__row"
+                                key={item._id}
+                                style={{ cursor: "pointer" }}
+                                onClick={(e) =>
+                                  setOneUser(
+                                    listOfUsers.filter(
+                                      (items) => items._id == item._id
+                                    )[0]
+                                  )
+                                }
+                              >
+                                <th>{index + 1}</th>
+                                <td>{item.name}</td>
+                                <td>{item.phoneNumber}</td>
+                                <td>{item.email}</td>
+                                <td>
+                                  {ReserveString(
+                                    item.dateOfBirthday.substring(0, 10)
+                                  )}
+                                </td>
+                                <td>
+                                  <button
+                                    className="btn border-white"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#delete"
+                                  >
+                                    <i className="fa-solid fa-trash-can text-danger"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          }
+                        })}
                     </tbody>
                   </table>
                 </div>
                 <div className="w-25">
-                  {oneUser && (
+                  {oneUser.createdAt && (
                     <div className="bg-secondary rounded-4 bg-opacity-50 ms-2">
                       <div className="text-center text-dark p-2">
                         <i className="fa-solid fa-user fs-1 p-3 bg-success rounded-5"></i>

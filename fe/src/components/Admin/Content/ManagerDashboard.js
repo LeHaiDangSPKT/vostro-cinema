@@ -55,7 +55,7 @@ export default function ManagerDashboard() {
               <h3 className="text-center text-success mb-3 ">
                 THỐNG KÊ DOANH THU
               </h3>
-              <form>
+              <form onSubmit={(e) => Submit(e)}>
                 <div className="row">
                   <div className="col-md-5">
                     <label>Chọn rạp:</label>
@@ -95,9 +95,8 @@ export default function ManagerDashboard() {
                   </div>
                   <div className="col-md-2">
                     <button
-                      type="button"
+                      type="submit"
                       className="btn btn-success h-75 w-100 mt-3"
-                      onClick={(e) => Submit()}
                     >
                       Xem
                     </button>

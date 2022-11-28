@@ -488,7 +488,9 @@ export default function Header() {
                             <button
                               type="button"
                               className="btn btn-outline-success"
-                              onClick={() => setHasOTP(false)}
+                              onClick={() => {
+                                setHasOTP(true);
+                              }}
                             >
                               {`<< Trở về`}
                             </button>

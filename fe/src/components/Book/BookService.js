@@ -63,6 +63,7 @@ export default function BookService(props) {
       ...props.data,
       price: totalPriceService + props.data.price,
       service: service,
+      complete: true,
     });
   };
 
@@ -347,8 +348,8 @@ export default function BookService(props) {
           </button>
         </div>
         <div
-          className="flex-column w-25 rs-hide"
-          style={{ margin: "0 auto", marginTop: "55px" }}
+          className="d-flex flex-column w-25"
+          style={{ margin: "50px auto 0px" }}
         >
           <img src={props.data.film.img} className="" alt="" />
           <span className="text-center text-light fs-5 bg-danger p-4 rounded-bottom">

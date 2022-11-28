@@ -18,8 +18,8 @@ export default function Main() {
       link: "/admin/manager-films",
     },
     {
-      text: "Thêm, sửa, xoá phim",
-      link: "/admin/manager-films",
+      text: "Thêm, sửa, xoá suất chiếu",
+      link: "/admin/manager-calender",
     },
     {
       text: "Xem và xoá tài khoản khách hàng",
@@ -31,11 +31,11 @@ export default function Main() {
     },
     {
       text: "Chỉnh sửa giá vé",
-      link: "/admin/manager-service",
+      link: "/admin/manager-price-of-ticKet",
     },
     {
       text: "Chỉnh sửa giá bắp, nước",
-      link: "/admin/manager-service",
+      link: "/admin/manager-price-of-ticKet",
     },
   ];
   try {

@@ -97,7 +97,7 @@ export default function Main() {
 
   const setDataFromChildComponent = (data) => {
     setData(data);
-    if (data.service.length > 0) {
+    if (data.complete) {
       Axios.post(process.env.REACT_APP_API + "/user/provisionalInvoice", {
         userId: localStorage.getItem("id") || "",
         filmId: data.film.id,
