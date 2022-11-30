@@ -11,7 +11,7 @@ export default function ManagerPriceOfTicket() {
   const [check, setCheck] = React.useState(0);
   const [listService, setListService] = React.useState([]);
   const [priceSingle, setPriceSingle] = React.useState(0);
-  const [priceDouble, setPriceDouble] = React.useState([]);
+  const [priceDouble, setPriceDouble] = React.useState(0);
   const [textToast, setTextToast] = React.useState("");
 
   React.useEffect(() => {
@@ -80,9 +80,22 @@ export default function ManagerPriceOfTicket() {
                   style={{ margin: "0 auto" }}
                 >
                   <input
-                    type="number"
+                    type="text"
                     className="form-control w-50 me-2"
-                    onChange={(e) => setPriceSingle(e.target.value)}
+                    value={priceSingle}
+                    onChange={(e) => {
+                      if (e.target.value.length == 0) {
+                        setPriceSingle(0);
+                      } else {
+                        if (
+                          "0" <= e.target.value &&
+                          e.target.value <= "9" &&
+                          +e.target.value
+                        ) {
+                          setPriceSingle(+e.target.value);
+                        }
+                      }
+                    }}
                   />
                   <button
                     className="btn btn-success"
@@ -120,9 +133,22 @@ export default function ManagerPriceOfTicket() {
                 )}
                 <div className="d-flex w-50" style={{ margin: "0 auto" }}>
                   <input
-                    type="number"
+                    type="text"
                     className="form-control w-50 me-2"
-                    onChange={(e) => setPriceDouble(e.target.value)}
+                    value={priceDouble}
+                    onChange={(e) => {
+                      if (e.target.value.length == 0) {
+                        setPriceDouble(0);
+                      } else {
+                        if (
+                          "0" <= e.target.value &&
+                          e.target.value <= "9" &&
+                          +e.target.value
+                        ) {
+                          setPriceDouble(+e.target.value);
+                        }
+                      }
+                    }}
                   />
                   <button
                     className="btn btn-success"

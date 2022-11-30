@@ -36,7 +36,6 @@ export default function Header() {
     e.preventDefault();
     if (!hasOTP) {
       if (OTP === parseInt(sendOTP)) {
-        setLoading(true);
         Axios.post(process.env.REACT_APP_API + "/user/signIn", {
           name: newAccount.name,
           phoneNumber: newAccount.phoneNumber,
@@ -46,25 +45,23 @@ export default function Header() {
           password: newAccount.password,
         })
           .then(function (response) {
-            setHasOTP(true);
-            setLoading(false);
             setTextToast("Đăng ký thành công");
             ToastUtils("signIn-success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
           })
           .catch(function (error) {
             setLoading(false);
-
             setTextToast(error.response.data);
             ToastUtils("signIn-fail");
           });
       } else {
         alert("Bạn nhập sai mã OTP");
-        window.location.reload();
       }
     } else {
       if (newAccount.password == newAccount.confirmPassword) {
         setLoading(true);
-
         Axios.post(process.env.REACT_APP_API + "/user/signIn", {
           state: "getOTP",
           otp: OTP,
@@ -75,7 +72,6 @@ export default function Header() {
           .then(function (response) {
             setHasOTP(false);
             setLoading(false);
-
             setTextToast(
               `Mã xác thực đã được gửi qua email: ${newAccount.email}`
             );
@@ -499,7 +495,6 @@ export default function Header() {
                             <button
                               type="submit"
                               className="btn btn-outline-success"
-                              data-bs-dismiss="modal"
                             >
                               Xác nhận
                             </button>

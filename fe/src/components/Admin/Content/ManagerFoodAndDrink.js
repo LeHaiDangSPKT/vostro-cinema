@@ -32,7 +32,13 @@ export default function ManagerFoodAndDrink(props) {
     );
   }, [check]);
   const handleChange = (e) => {
-    setMenu({ ...menu, [e.target.name]: e.target.value });
+    if (e.target.value.length == 0) {
+      setMenu({ ...menu, [e.target.name]: 0 });
+    } else {
+      if ("0" <= e.target.value && e.target.value <= "9" && +e.target.value) {
+        setMenu({ ...menu, [e.target.name]: +e.target.value });
+      }
+    }
   };
   const EditInfo = (className, e) => {
     e.preventDefault();
@@ -103,7 +109,7 @@ export default function ManagerFoodAndDrink(props) {
                       name="baprangbo"
                       value={menu.baprangbo}
                       onChange={(e) => handleChange(e)}
-                      type="number"
+                      type="text"
                       className="ms-2 border rounded-2 text-center"
                     />
                   </div>
@@ -132,7 +138,7 @@ export default function ManagerFoodAndDrink(props) {
                     <input
                       id="manager-bapcaramel"
                       disabled
-                      type="number"
+                      type="text"
                       name="bapcaramel"
                       value={menu.bapcaramel}
                       onChange={(e) => handleChange(e)}
@@ -167,7 +173,7 @@ export default function ManagerFoodAndDrink(props) {
                       name="bapphomai"
                       value={menu.bapphomai}
                       onChange={(e) => handleChange(e)}
-                      type="number"
+                      type="text"
                       className="ms-2 border rounded-2 text-center"
                     />
                   </div>
@@ -203,7 +209,7 @@ export default function ManagerFoodAndDrink(props) {
                       name="monster"
                       value={menu.monster}
                       onChange={(e) => handleChange(e)}
-                      type="number"
+                      type="text"
                       className="ms-2 border rounded-2 text-center"
                     />
                   </div>
@@ -233,7 +239,7 @@ export default function ManagerFoodAndDrink(props) {
                       name="pepsi"
                       value={menu.pepsi}
                       onChange={(e) => handleChange(e)}
-                      type="number"
+                      type="text"
                       className="ms-2 border rounded-2 text-center"
                     />
                   </div>
@@ -263,7 +269,7 @@ export default function ManagerFoodAndDrink(props) {
                       name="redbull"
                       value={menu.redbull}
                       onChange={(e) => handleChange(e)}
-                      type="number"
+                      type="text"
                       className="ms-2 border rounded-2 text-center"
                     />
                   </div>

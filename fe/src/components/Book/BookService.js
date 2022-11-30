@@ -46,7 +46,13 @@ export default function BookService(props) {
     );
   }, [price]);
   const ChangeQuantity = (e, prices, name) => {
-    setPrice({ ...price, [name]: prices * e.target.value });
+    if (e.target.value.length == 0) {
+      setPrice({ ...price, [name]: 0 });
+    } else {
+      if ("0" <= e.target.value && e.target.value <= "9" && +e.target.value) {
+        setPrice({ ...price, [name]: prices * +e.target.value });
+      }
+    }
   };
   const Submit = () => {
     var name = $("h5[class*='service']");
@@ -113,8 +119,9 @@ export default function BookService(props) {
                   <div className="mt-2">
                     <label className="w-50">Số lượng:</label>
                     <input
-                      type="number"
+                      type="text"
                       min={0}
+                      value={price.baprangbo / menu.baprangbo}
                       onChange={(e) =>
                         ChangeQuantity(e, menu.baprangbo, "baprangbo")
                       }
@@ -154,8 +161,9 @@ export default function BookService(props) {
                   <div className="mt-2">
                     <label className="w-50">Số lượng:</label>
                     <input
-                      type="number"
+                      type="text"
                       min={0}
+                      value={price.bapcaramel / menu.bapcaramel}
                       onChange={(e) =>
                         ChangeQuantity(e, menu.bapcaramel, "bapcaramel")
                       }
@@ -195,8 +203,9 @@ export default function BookService(props) {
                   <div className="mt-2">
                     <label className="w-50">Số lượng:</label>
                     <input
-                      type="number"
+                      type="text"
                       min={0}
+                      value={price.bapphomai / menu.bapphomai}
                       onChange={(e) =>
                         ChangeQuantity(e, menu.bapphomai, "bapphomai")
                       }
@@ -245,8 +254,9 @@ export default function BookService(props) {
                   <div className="mt-2">
                     <label className="w-50">Số lượng:</label>
                     <input
-                      type="number"
+                      type="text"
                       min={0}
+                      value={price.monster / menu.monster}
                       onChange={(e) =>
                         ChangeQuantity(e, menu.monster, "monster")
                       }
@@ -286,8 +296,9 @@ export default function BookService(props) {
                   <div className="mt-2">
                     <label className="w-50">Số lượng:</label>
                     <input
-                      type="number"
+                      type="text"
                       min={0}
+                      value={price.pepsi / menu.pepsi}
                       onChange={(e) => ChangeQuantity(e, menu.pepsi, "pepsi")}
                       className="w-50 border rounded-2 text-center quantity-drink"
                     />
@@ -325,8 +336,9 @@ export default function BookService(props) {
                   <div className="mt-2">
                     <label className="w-50">Số lượng:</label>
                     <input
-                      type="number"
+                      type="text"
                       min={0}
+                      value={price.redbull / menu.redbull}
                       onChange={(e) =>
                         ChangeQuantity(e, menu.redbull, "redbull")
                       }
