@@ -6,6 +6,8 @@ import Toast from "./Toast";
 import ToastUtils from "../utils/ToastUtils";
 import LoadingPage from "../utils/LoadingPage";
 
+import { useGoogleLogin } from "@react-oauth/google";
+
 export default function Header() {
   const [textToast, setTextToast] = React.useState("");
   const [loading, setLoading] = React.useState(false);
@@ -27,6 +29,67 @@ export default function Header() {
   React.useEffect(() => {
     setOTP(Math.floor(Math.random() * 10000000));
   }, [setHasOTP]);
+
+  const loginWitGoogle = useGoogleLogin({
+    onSuccess: async (respose) => {
+      try {
+        const res = await Axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${respose.access_token}`,
+            },
+          }
+        );
+        Axios.post(
+          process.env.REACT_APP_API + "/user/logInOrSingInWithGoogle",
+          {
+            email: res.data.email,
+          }
+        )
+          .then(function (response) {
+            localStorage.setItem("id", response.data._id);
+            localStorage.setItem("name", response.data.name);
+            localStorage.setItem("googleAccount", true);
+            document.location.href = "/";
+          })
+          .catch(function (error) {
+            Axios.post(process.env.REACT_APP_API + "/user/signIn", {
+              name: res.data.name,
+              email: res.data.email,
+            })
+              .then(function (response) {
+                setTextToast("Đăng ký thành công");
+                ToastUtils("signIn-success");
+                Axios.post(
+                  process.env.REACT_APP_API + "/user/logInOrSingInWithGoogle",
+                  {
+                    email: res.data.email,
+                  }
+                )
+                  .then(function (response) {
+                    localStorage.setItem("id", response.data._id);
+                    localStorage.setItem("name", response.data.name);
+                    localStorage.setItem("googleAccount", true);
+                    document.location.href = "/";
+                  })
+                  .catch(function (error) {
+                    setLoading(false);
+                    setTextToast(error.response.data);
+                    ToastUtils("signIn-fail");
+                  });
+              })
+              .catch(function (error) {
+                setLoading(false);
+                setTextToast(error.response.data);
+                ToastUtils("signIn-fail");
+              });
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  });
 
   const handleChange = (e) => {
     setNewAccount({ ...newAccount, [e.target.name]: e.target.value });
@@ -203,11 +266,26 @@ export default function Header() {
                       </div>
                     </button>
                     <ul className="dropdown-menu w-100">
-                      <li>
-                        <a className="dropdown-item" href="/me/manager-info">
-                          Quản lý thông tin cá nhân
-                        </a>
-                      </li>
+                      {localStorage.getItem("googleAccount") ? (
+                        <>
+                          <li>
+                            <a className="dropdown-item" href="/me/history">
+                              Xem lịch sử giao dịch
+                            </a>
+                          </li>
+                        </>
+                      ) : (
+                        <>
+                          <li>
+                            <a
+                              className="dropdown-item"
+                              href="/me/manager-info"
+                            >
+                              Quản lý thông tin cá nhân
+                            </a>
+                          </li>
+                        </>
+                      )}
 
                       <li>
                         <button
@@ -215,6 +293,8 @@ export default function Header() {
                           onClick={(e) => {
                             localStorage.removeItem("id");
                             localStorage.removeItem("name");
+                            localStorage.getItem("googleAccount") &&
+                              localStorage.removeItem("googleAccount");
                           }}
                         >
                           <a className="dropdown-item text-danger p-0" href="/">
@@ -291,6 +371,15 @@ export default function Header() {
                     >{`<<Quên mật khẩu`}</a>
                   </div>
                 </div>
+
+                <button
+                  onClick={loginWitGoogle}
+                  class="btn btn-dark btn-rounded w-50 mx-auto mb-3"
+                >
+                  {" "}
+                  <i class="fa-brands fa-google me-2"></i>
+                  Continue with google
+                </button>
                 <div className="modal-footer d-flex justify-content-between">
                   <div>
                     <button

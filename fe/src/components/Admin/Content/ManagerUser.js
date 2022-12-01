@@ -4,6 +4,7 @@ import Toast from "../../Toast";
 import ToastUtils from "../../../utils/ToastUtils";
 import ReserveString from "../../../utils/ReserveString";
 import LoadingPage from "../../../utils/LoadingPage";
+import ExportExcel from "../../../utils/ExportExcel";
 
 export default function ManagerUser() {
   const [pageLoading, setPageLoading] = React.useState(true);
@@ -36,6 +37,9 @@ export default function ManagerUser() {
       });
   };
 
+  const handleExportExcel = () => {
+    ExportExcel.exportExcel(listOfUsers, "Danh sách người dùng", "UserList");
+  };
   return (
     <>
       {pageLoading ? (
@@ -47,6 +51,14 @@ export default function ManagerUser() {
               <h3 className="text-center text-success mt-2">
                 TẤT CẢ CÁC KHÁCH HÀNG
               </h3>
+              <button
+                onClick={handleExportExcel}
+                class="btn btn-success btn-rounded w-25 mx-auto mb-3"
+              >
+                {" "}
+                <i class="fa-solid fa-file-excel me-2"></i>
+                Xuất file Excel
+              </button>
               <div className="d-flex mt-4">
                 <div className="w-75">
                   <table className="table text-center table-hover">
@@ -90,12 +102,14 @@ export default function ManagerUser() {
                               >
                                 <th>{index + 1}</th>
                                 <td>{item.name}</td>
-                                <td>{item.phoneNumber}</td>
+                                <td>{item.phoneNumber || "Đang cập nhập"}</td>
                                 <td>{item.email}</td>
                                 <td>
-                                  {ReserveString(
-                                    item.dateOfBirthday.substring(0, 10)
-                                  )}
+                                  {item.dateOfBirthday
+                                    ? ReserveString(
+                                        item.dateOfBirthday.substring(0, 10)
+                                      )
+                                    : "Đang cập nhập"}
                                 </td>
                                 <td>
                                   <button
@@ -138,7 +152,9 @@ export default function ManagerUser() {
                             <span className="fw-bold mx-1 ">
                               Ngày sinh:{" "}
                               <span className="fw-normal">
-                                {oneUser.dateOfBirthday.substring(0, 10)}
+                                {oneUser.dateOfBirthday
+                                  ? oneUser.dateOfBirthday.substring(0, 10)
+                                  : "Đang cập nhập"}
                               </span>
                             </span>
                           </div>
@@ -146,7 +162,7 @@ export default function ManagerUser() {
                             <span className="fw-bold mx-1 ">
                               Số điện thoại:{" "}
                               <span className="fw-normal">
-                                {oneUser.numberPhone}
+                                {oneUser.numberPhone || "Đang cập nhật"}
                               </span>
                             </span>
                           </div>
@@ -156,22 +172,27 @@ export default function ManagerUser() {
                               <span className="fw-normal">{oneUser.email}</span>
                             </span>
                           </div>
-                          <div className="my-3">
-                            <span className="fw-bold mx-1 ">
-                              Tài khoản:{" "}
-                              <span className="fw-normal">
-                                {oneUser.username}
-                              </span>
-                            </span>
-                          </div>
-                          <div className="my-3">
-                            <span className="fw-bold mx-1 ">
-                              Mật khẩu:{" "}
-                              <span className="fw-normal">
-                                {oneUser.password}
-                              </span>
-                            </span>
-                          </div>
+                          {oneUser.dateOfBirthday && (
+                            <>
+                              <div className="my-3">
+                                <span className="fw-bold mx-1 ">
+                                  Tài khoản:{" "}
+                                  <span className="fw-normal">
+                                    {oneUser.username}
+                                  </span>
+                                </span>
+                              </div>
+                              <div className="my-3">
+                                <span className="fw-bold mx-1 ">
+                                  Mật khẩu:{" "}
+                                  <span className="fw-normal">
+                                    {oneUser.password}
+                                  </span>
+                                </span>
+                              </div>
+                            </>
+                          )}
+
                           <div className="my-3">
                             <span className="fw-bold mx-1 ">
                               Ngày tạo:{" "}
