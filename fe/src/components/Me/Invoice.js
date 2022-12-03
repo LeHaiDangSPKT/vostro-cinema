@@ -10,7 +10,7 @@ import ToastUtils from "../../utils/ToastUtils";
 import ReserveString from "../../utils/ReserveString";
 import FormatTime from "../../utils/FormatTime";
 import LoadingPage from "../../utils/LoadingPage";
-
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 export default function Invoice() {
   if (window.performance) {
     if (performance.navigation.type == 1) {
@@ -85,6 +85,7 @@ export default function Invoice() {
 
   // /user/officialInvoiceById/:id
   const Submit = () => {
+    console.log("Đã thanh toán");
     Axios.put(
       `${process.env.REACT_APP_API}/user/officialInvoiceById/${invoiceLasted._id}`,
       {
@@ -317,6 +318,29 @@ export default function Invoice() {
               style={{ margin: "0 auto" }}
             >
               <div className="p-4 text-center">
+                <PayPalScriptProvider options={{ "client-id": "sb" }}>
+                  <PayPalButtons
+                    createOrder={(data, actions) => {
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              value:
+                                ((invoiceLasted.price - priceDiscount) / 1000) *
+                                0.04,
+                            },
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={(data, actions) => {
+                      return actions.order.capture().then((details) => {
+                        document.getElementById("checkout").click();
+                      });
+                    }}
+                  />
+                </PayPalScriptProvider>
+
                 <div className=" d-flex justify-content-around ">
                   <div className="d-flex flex-column">
                     <img
@@ -351,6 +375,7 @@ export default function Invoice() {
                   type="button"
                   className="btn btn-success w-75"
                   onClick={Submit}
+                  id="checkout"
                 >
                   Thanh toán thành công
                 </button>

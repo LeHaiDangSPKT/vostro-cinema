@@ -9,6 +9,7 @@ import { ManagerInfo, History } from "./components/Me";
 import "./styles/index.scss";
 
 import RemoveSpecialCharacters from "./utils/RemoveSpecialCharacters";
+
 function AppUser() {
   const dict = {
     Recruit: { src: <Recruit /> },

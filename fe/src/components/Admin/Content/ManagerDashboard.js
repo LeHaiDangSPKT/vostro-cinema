@@ -2,33 +2,122 @@ import React from "react";
 import Axios from "axios";
 import CurrencyFormat from "react-currency-format";
 import LoadingPage from "../../../utils/LoadingPage";
+import { CanvasJSChart } from "canvasjs-react-charts";
 
 export default function ManagerDashboard() {
   const [pageLoading, setPageLoading] = React.useState(true);
+  const [optionsCircle, setOptionsCircle] = React.useState({});
+  const [optionsLine, setOptionsLine] = React.useState({});
   const [quantityTicket, setQuantityTicket] = React.useState(0);
   const [year, setYear] = React.useState(0);
   const [theater, setTheater] = React.useState(0);
   const [dataYear, setDataYear] = React.useState([]);
   const [revenue, setRevenue] = React.useState(0);
   const [listOfTheater, setListOfTheater] = React.useState(0);
-
   React.useEffect(() => {
     Axios.get(process.env.REACT_APP_API + "/admin/getAllTheater").then(
-      (response) => {
-        setListOfTheater(response.data);
-        setPageLoading(false);
+      (responses) => {
+        setListOfTheater(responses.data);
+        Axios.get(process.env.REACT_APP_API + "/admin/getAllBillToChart").then(
+          (response) => {
+            setPageLoading(false);
+            setOptionsCircle({
+              backgroundColor: "#f8f9fa",
+              title: {
+                text: "TỔNG LƯỢNG VÉ BÁN CỦA CÁC RẠP PHIM",
+                fontFamily: "tahoma",
+                fontWeight: 700,
+                padding: "15",
+              },
+              data: [
+                {
+                  type: "pie",
+                  startAngle: 240,
+                  yValueFormatString: '##0.00"%"',
+                  indexLabel: "{label} {y}",
+                  dataPoints: Object.entries(response.data[1]).map((item) => {
+                    return {
+                      y: (item[1] / response.data[0].totalBill) * 100,
+                      label: responses.data
+                        .map((items) => {
+                          if (items._id == item[0]) {
+                            return items.name;
+                          }
+                        })
+                        .filter((item) => item != undefined),
+                    };
+                  }),
+                },
+              ],
+            });
+            setOptionsLine({
+              backgroundColor: "#f8f9fa",
+              animationEnabled: true,
+              theme: "light2",
+              title: {
+                text: "THỐNG KÊ VÉ BÁN THEO THÁNG",
+                fontFamily: "tahoma",
+                fontWeight: 700,
+                padding: "15",
+              },
+              axisX: {
+                crosshair: {
+                  enabled: true,
+                  snapToDataPoint: true,
+                },
+              },
+              axisY: {
+                title: "Số lượng vé",
+                includeZero: true,
+                crosshair: {
+                  enabled: true,
+                },
+              },
+              toolTip: {
+                shared: true,
+              },
+              legend: {
+                cursor: "pointer",
+                verticalAlign: "bottom",
+                horizontalAlign: "left",
+                dockInsidePlotArea: true,
+              },
+              data: [
+                {
+                  type: "line",
+                  showInLegend: true,
+                  name: "Năm hiện tại",
+                  markerType: "square",
+                  color: "#F08080",
+                  dataPoints: response.data[2][0].map((item, index) => {
+                    return { x: index + 1, y: item };
+                  }),
+                },
+                {
+                  type: "line",
+                  showInLegend: true,
+                  name: "Năm trước",
+                  lineDashType: "dash",
+                  dataPoints: response.data[2][1].map((item, index) => {
+                    return { x: index + 1, y: item };
+                  }),
+                },
+              ],
+            });
+          }
+        );
       }
     );
-    Axios.post(process.env.REACT_APP_API + "/admin/getAllYear").then(
+    Axios.get(process.env.REACT_APP_API + "/admin/getAllYear").then(
       (response) => {
         setPageLoading(false);
         setDataYear(response.data);
       }
     );
   }, []);
-
-  const Submit = () => {
-    setPageLoading(true);
+  const Submit = (e) => {
+    e.preventDefault();
+    // setPageLoading(true);
     Axios.post(
       `${process.env.REACT_APP_API}/admin/getAllBillByYearAndTheaterId/${theater}`,
       {
@@ -41,7 +130,6 @@ export default function ManagerDashboard() {
         total += item.price;
       });
       setRevenue(total);
-      setPageLoading(false);
     });
   };
   try {
@@ -67,7 +155,11 @@ export default function ManagerDashboard() {
                     >
                       <option value="">Choose...</option>
                       {listOfTheater.map((item) => {
-                        return (
+                        return item._id == theater ? (
+                          <option value={item._id} key={item._id} selected>
+                            {item.name}
+                          </option>
+                        ) : (
                           <option value={item._id} key={item._id}>
                             {item.name}
                           </option>
@@ -85,7 +177,11 @@ export default function ManagerDashboard() {
                     >
                       <option value="">Choose...</option>
                       {dataYear.map((item) => {
-                        return (
+                        return item == year ? (
+                          <option key={item} value={item} selected>
+                            {item}
+                          </option>
+                        ) : (
                           <option key={item} value={item}>
                             {item}
                           </option>
@@ -122,6 +218,10 @@ export default function ManagerDashboard() {
                   </h3>
                 </div>
               </div>
+            </div>
+            <div className="w-75 p-4" style={{ margin: "0 auto" }}>
+              <CanvasJSChart options={optionsCircle} />
+              <CanvasJSChart options={optionsLine} />
             </div>
           </div>
         )}

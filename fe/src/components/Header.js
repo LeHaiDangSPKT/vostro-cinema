@@ -5,7 +5,7 @@ import Axios from "axios";
 import Toast from "./Toast";
 import ToastUtils from "../utils/ToastUtils";
 import LoadingPage from "../utils/LoadingPage";
-
+import FacebookLogin from "react-facebook-login";
 import { useGoogleLogin } from "@react-oauth/google";
 
 export default function Header() {
@@ -30,7 +30,7 @@ export default function Header() {
     setOTP(Math.floor(Math.random() * 10000000));
   }, [setHasOTP]);
 
-  const loginWitGoogle = useGoogleLogin({
+  const loginWithGoogle = useGoogleLogin({
     onSuccess: async (respose) => {
       try {
         const res = await Axios.get(
@@ -90,6 +90,54 @@ export default function Header() {
       }
     },
   });
+
+  const loginWithFaceBook = (res) => {
+    try {
+      Axios.post(process.env.REACT_APP_API + "/user/logInOrSingInWithGoogle", {
+        email: res.email,
+      })
+        .then(function (response) {
+          localStorage.setItem("id", response.data._id);
+          localStorage.setItem("name", response.data.name);
+          localStorage.setItem("facebookAccount", true);
+          document.location.href = "/";
+        })
+        .catch(function (error) {
+          Axios.post(process.env.REACT_APP_API + "/user/signIn", {
+            name: res.name,
+            email: res.email,
+          })
+            .then(function (response) {
+              setTextToast("Đăng ký thành công");
+              ToastUtils("signIn-success");
+              Axios.post(
+                process.env.REACT_APP_API + "/user/logInOrSingInWithGoogle",
+                {
+                  email: res.email,
+                }
+              )
+                .then(function (response) {
+                  localStorage.setItem("id", response.data._id);
+                  localStorage.setItem("name", response.data.name);
+                  localStorage.setItem("facebookAccount", true);
+                  document.location.href = "/";
+                })
+                .catch(function (error) {
+                  setLoading(false);
+                  setTextToast(error.response.data);
+                  ToastUtils("signIn-fail");
+                });
+            })
+            .catch(function (error) {
+              setLoading(false);
+              setTextToast(error.response.data);
+              ToastUtils("signIn-fail");
+            });
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleChange = (e) => {
     setNewAccount({ ...newAccount, [e.target.name]: e.target.value });
@@ -185,6 +233,11 @@ export default function Header() {
     //     .querySelectorAll(".navbar-collapse")[0]
     //     .className.includes("show")
     // );
+  };
+
+  const clickFacebookBtn = () => {
+    console.log(document.querySelector(".kep-login-facebook"));
+    document.querySelector(".kep-login-facebook").click();
   };
   return (
     <>
@@ -373,13 +426,38 @@ export default function Header() {
                 </div>
 
                 <button
-                  onClick={loginWitGoogle}
-                  class="btn btn-dark btn-rounded w-50 mx-auto mb-3"
+                  onClick={loginWithGoogle}
+                  class="btn btn-danger btn-rounded w-50 mx-auto mb-3"
                 >
                   {" "}
                   <i class="fa-brands fa-google me-2"></i>
-                  Continue with google
+                  Continue with Google
                 </button>
+                <button
+                  onClick={clickFacebookBtn}
+                  class="btn btn-primary btn-rounded w-50 mx-auto mb-3"
+                >
+                  {" "}
+                  <i class="fa-brands fa-facebook me-2"></i>
+                  Continue with Facebook
+                </button>
+                <button
+                  onClick={clickFacebookBtn}
+                  class="btn btn-dark btn-rounded w-50 mx-auto mb-3"
+                >
+                  {" "}
+                  <i class="fa-brands fa-github me-2"></i>
+                  Continue with Github
+                </button>
+                <div hidden>
+                  <FacebookLogin
+                    appId="880047373163698"
+                    autoLoad={true}
+                    fields="name,email"
+                    callback={loginWithFaceBook}
+                    icon="fa-facebook"
+                  />
+                </div>
                 <div className="modal-footer d-flex justify-content-between">
                   <div>
                     <button
