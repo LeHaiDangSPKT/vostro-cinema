@@ -18,16 +18,6 @@ export default function ManagerDashboard() {
   React.useEffect(() => {
     Axios.get(process.env.REACT_APP_API + "/admin/getAllTheater").then(
       (responses) => {
-        const arrChart = $('[id*="canvasjs-react-chart-container"]');
-        var temp = false;
-        for (var i = 0; i < arrChart.length; i++) {
-          if (!arrChart[i].firstChild) {
-            window.location.reload();
-            temp = true;
-            break;
-          }
-        }
-        setPageLoading(temp);
         setListOfTheater(responses.data);
         Axios.get(process.env.REACT_APP_API + "/admin/getAllBillToChart").then(
           (response) => {
@@ -120,13 +110,11 @@ export default function ManagerDashboard() {
     );
     Axios.get(process.env.REACT_APP_API + "/admin/getAllYear").then(
       (response) => {
-        // setPageLoading(false);
+        setPageLoading(false);
         setDataYear(response.data);
       }
     );
   }, []);
-
-  const checkChart = () => {};
 
   const Submit = (e) => {
     e.preventDefault();
