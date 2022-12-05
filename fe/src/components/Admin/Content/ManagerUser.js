@@ -22,7 +22,7 @@ export default function ManagerUser() {
       }
     );
   }, [checked]);
-  console.log(listOfUsers);
+  console.log(oneUser);
   const Delete = () => {
     Axios.put(
       `${process.env.REACT_APP_API}/admin/deleteAccountById/${oneUser._id}`
@@ -162,7 +162,7 @@ export default function ManagerUser() {
                             <span className="fw-bold mx-1 ">
                               Số điện thoại:{" "}
                               <span className="fw-normal">
-                                {oneUser.numberPhone || "Đang cập nhật"}
+                                {oneUser.phoneNumber || "Đang cập nhập"}
                               </span>
                             </span>
                           </div>

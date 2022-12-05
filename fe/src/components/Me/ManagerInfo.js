@@ -18,7 +18,8 @@ export default function ManagerInfo() {
       setLoading(false);
     });
   }, []);
-  const EditInfo = (className) => {
+  const EditInfo = (className, e) => {
+    e.preventDefault();
     var input = $("input[id*='manager']");
     if (className === "edit-info") {
       $(".edit-info")[0].setAttribute("disabled", "");
@@ -40,19 +41,16 @@ export default function ManagerInfo() {
         }/user/updateUserById/${localStorage.getItem("id")}`,
         {
           dateOfBirthday: info.dateOfBirthday,
-          email: info.email,
           name: info.name,
           password: info.password,
           phoneNumber: info.phoneNumber,
         }
       ).then((response) => {
-        localStorage.removeItem("name");
         localStorage.setItem("name", info.name);
-        window.location.reload();
       });
     }
   };
-
+  console.log(info);
   const DeleteAccount = () => {
     Axios.put(
       `${process.env.REACT_APP_API}/user/deleteAccount/${localStorage.getItem(
@@ -76,7 +74,13 @@ export default function ManagerInfo() {
           <LoadingPage />
         ) : (
           <div className="bg-light">
-            <form className="row g-3 w-75 pt-4" style={{ margin: "0 auto" }}>
+            <form
+              className="row g-3 w-75 pt-4"
+              style={{ margin: "0 auto" }}
+              onSubmit={(e) => {
+                EditInfo("update-info", e);
+              }}
+            >
               <h3 className="text-center text-success mt-2">
                 THÔNG TIN CỦA BẠN
               </h3>
@@ -109,14 +113,11 @@ export default function ManagerInfo() {
               <div className="col-6">
                 <label className="form-label">Email:</label>
                 <input
-                  type="email"
+                  type="text"
                   className="form-control "
-                  id="manager-email"
                   value={info.email}
                   required
                   disabled
-                  name="email"
-                  onChange={(e) => handleChange(e)}
                 ></input>
               </div>
               <div className="col-6">
@@ -163,16 +164,13 @@ export default function ManagerInfo() {
                 <button
                   type="button"
                   className="btn mx-1 w-75 btn-primary edit-info"
-                  onClick={(e) => EditInfo("edit-info")}
+                  onClick={(e) => EditInfo("edit-info", e)}
                 >
                   Sửa thông tin
                 </button>
                 <button
-                  type="button"
+                  type="submit"
                   className="btn mx-1 w-75 btn-success update-info d-none"
-                  onClick={(e) => {
-                    EditInfo("update-info", e);
-                  }}
                 >
                   Cập nhật
                 </button>

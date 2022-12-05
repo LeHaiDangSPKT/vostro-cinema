@@ -150,7 +150,13 @@ export default function ManagerFilms() {
     }
   };
   const handleChange = (e) => {
-    setOneFilm({ ...oneFilm, [e.target.name]: e.target.value });
+    if (e.target.name === "name") {
+      if (listFilm.some((item) => item.name === e.target.value))
+        alert("Tên phim đã tồn tại");
+      else setOneFilm({ ...oneFilm, [e.target.name]: e.target.value });
+    } else {
+      setOneFilm({ ...oneFilm, [e.target.name]: e.target.value });
+    }
   };
   const EditInfo = (state) => {
     var input = $("input[id*='detail']");

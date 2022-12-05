@@ -319,7 +319,8 @@ export default function Header() {
                       </div>
                     </button>
                     <ul className="dropdown-menu w-100">
-                      {localStorage.getItem("googleAccount") ? (
+                      {localStorage.getItem("googleAccount") ||
+                      localStorage.getItem("facebookAccount") ? (
                         <>
                           <li>
                             <a className="dropdown-item" href="/me/history">
@@ -348,6 +349,8 @@ export default function Header() {
                             localStorage.removeItem("name");
                             localStorage.getItem("googleAccount") &&
                               localStorage.removeItem("googleAccount");
+                            localStorage.getItem("facebookAccount") &&
+                              localStorage.removeItem("facebookAccount");
                           }}
                         >
                           <a className="dropdown-item text-danger p-0" href="/">
@@ -451,7 +454,7 @@ export default function Header() {
                 </button>
                 <div hidden>
                   <FacebookLogin
-                    appId="755873242659502"
+                    appId={process.env.REACT_APP_FB_LOCAL}
                     autoLoad={true}
                     fields="name,email"
                     callback={loginWithFaceBook}

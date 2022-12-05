@@ -3,8 +3,9 @@ import Axios from "axios";
 import CurrencyFormat from "react-currency-format";
 import LoadingPage from "../../../utils/LoadingPage";
 import { CanvasJSChart } from "canvasjs-react-charts";
-
+import $ from "jquery";
 export default function ManagerDashboard() {
+  const [checked, setChecked] = React.useState(true);
   const [pageLoading, setPageLoading] = React.useState(true);
   const [optionsCircle, setOptionsCircle] = React.useState({});
   const [optionsLine, setOptionsLine] = React.useState({});
@@ -17,10 +18,19 @@ export default function ManagerDashboard() {
   React.useEffect(() => {
     Axios.get(process.env.REACT_APP_API + "/admin/getAllTheater").then(
       (responses) => {
+        const arrChart = $('[id*="canvasjs-react-chart-container"]');
+        var temp = false;
+        for (var i = 0; i < arrChart.length; i++) {
+          if (!arrChart[i].firstChild) {
+            window.location.reload();
+            temp = true;
+            break;
+          }
+        }
+        setPageLoading(temp);
         setListOfTheater(responses.data);
         Axios.get(process.env.REACT_APP_API + "/admin/getAllBillToChart").then(
           (response) => {
-            setPageLoading(false);
             setOptionsCircle({
               backgroundColor: "#f8f9fa",
               title: {
@@ -110,11 +120,14 @@ export default function ManagerDashboard() {
     );
     Axios.get(process.env.REACT_APP_API + "/admin/getAllYear").then(
       (response) => {
-        setPageLoading(false);
+        // setPageLoading(false);
         setDataYear(response.data);
       }
     );
   }, []);
+
+  const checkChart = () => {};
+
   const Submit = (e) => {
     e.preventDefault();
     // setPageLoading(true);
