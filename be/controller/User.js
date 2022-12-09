@@ -210,7 +210,6 @@ class User {
       (err, result) => {
         if (result) {
           res.json(result);
-          console.log(result);
         } else {
           res.json(err);
         }

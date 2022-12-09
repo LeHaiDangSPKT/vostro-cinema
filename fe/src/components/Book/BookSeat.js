@@ -28,7 +28,6 @@ export default function BookSeat(props) {
         roomName: currentRoom == "" ? roomName : currentRoom,
         film: props.data.film,
       }).then((response) => {
-        console.log(response.data);
         var list = [];
         if (response.data.length > 0) {
           for (var i = 0; i < response.data.length; i++) {

@@ -236,7 +236,6 @@ export default function Header() {
   };
 
   const clickFacebookBtn = () => {
-    console.log(document.querySelector(".kep-login-facebook"));
     document.querySelector(".kep-login-facebook").click();
   };
   return (
@@ -466,6 +465,7 @@ export default function Header() {
                     <button
                       type="button"
                       className="btn btn-outline-success"
+                      data-bs-dismiss="modal"
                       onClick={() => toggleModal("sign-in")}
                     >
                       {`<< Đăng ký`}
@@ -530,6 +530,7 @@ export default function Header() {
                               id="fullname"
                               name="name"
                               required
+                              value={newAccount.name}
                               onChange={(e) => handleChange(e)}
                             ></input>
                           </div>
@@ -542,6 +543,7 @@ export default function Header() {
                               className="form-control"
                               id="dob"
                               name="dateOfBirthday"
+                              value={newAccount.dateOfBirthday}
                               required
                               onChange={(e) => handleChange(e)}
                             ></input>
@@ -553,6 +555,7 @@ export default function Header() {
                               name="email"
                               className="form-control"
                               id="email"
+                              value={newAccount.email}
                               required
                               onChange={(e) => handleChange(e)}
                             ></input>
@@ -566,6 +569,7 @@ export default function Header() {
                               name="phoneNumber"
                               required
                               onChange={(e) => handleChange(e)}
+                              value={newAccount.phoneNumber}
                               minLength="10"
                             ></input>
                           </div>
@@ -576,6 +580,7 @@ export default function Header() {
                               name="username"
                               className="form-control"
                               id="username-signin"
+                              value={newAccount.username}
                               required
                               onChange={(e) => handleChange(e)}
                             ></input>
@@ -587,6 +592,7 @@ export default function Header() {
                               name="password"
                               className="form-control"
                               id="password-signin"
+                              value={newAccount.password}
                               required
                               onChange={(e) => handleChange(e)}
                             ></input>
