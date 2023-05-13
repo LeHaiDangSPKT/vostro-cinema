@@ -7,6 +7,7 @@ import { Invoice } from "./components/Me";
 
 import { ManagerInfo, History } from "./components/Me";
 import "./styles/index.scss";
+import Security from "./components/Security";
 
 import RemoveSpecialCharacters from "./utils/RemoveSpecialCharacters";
 
@@ -18,6 +19,7 @@ function AppUser() {
     ManagerInfo: { src: <ManagerInfo /> },
     History: { src: <History /> },
     Invoice: { src: <Invoice /> },
+    Security: { src: <Security /> },
   };
   const Element = () => {
     let params = useParams();
