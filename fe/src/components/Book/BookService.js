@@ -112,7 +112,7 @@ export default function BookService(props) {
                       value={menu.baprangbo}
                       displayType={"text"}
                       thousandSeparator={true}
-                      thousandSpacing={3}
+                      thousandSpacing={"3"}
                       suffix={" VND"}
                     />
                   </h6>
@@ -154,7 +154,7 @@ export default function BookService(props) {
                       value={menu.bapcaramel}
                       displayType={"text"}
                       thousandSeparator={true}
-                      thousandSpacing={3}
+                      thousandSpacing={"3"}
                       suffix={" VND"}
                     />
                   </h6>
@@ -196,7 +196,7 @@ export default function BookService(props) {
                       value={menu.bapphomai}
                       displayType={"text"}
                       thousandSeparator={true}
-                      thousandSpacing={3}
+                      thousandSpacing={"3"}
                       suffix={" VND"}
                     />
                   </h6>
@@ -247,7 +247,7 @@ export default function BookService(props) {
                       value={menu.monster}
                       displayType={"text"}
                       thousandSeparator={true}
-                      thousandSpacing={3}
+                      thousandSpacing={"3"}
                       suffix={" VND"}
                     />
                   </h6>
@@ -289,7 +289,7 @@ export default function BookService(props) {
                       value={menu.pepsi}
                       displayType={"text"}
                       thousandSeparator={true}
-                      thousandSpacing={3}
+                      thousandSpacing={"3"}
                       suffix={" VND"}
                     />
                   </h6>
@@ -329,7 +329,7 @@ export default function BookService(props) {
                       value={menu.redbull}
                       displayType={"text"}
                       thousandSeparator={true}
-                      thousandSpacing={3}
+                      thousandSpacing={"3"}
                       suffix={" VND"}
                     />
                   </h6>
@@ -370,7 +370,7 @@ export default function BookService(props) {
               value={totalPriceService + props.data.price}
               displayType={"text"}
               thousandSeparator={true}
-              thousandSpacing={3}
+              thousandSpacing={"3"}
               suffix={" VND"}
             />
           </span>

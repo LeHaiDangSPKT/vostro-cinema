@@ -53,10 +53,10 @@ export default function ManagerUser() {
               </h3>
               <button
                 onClick={handleExportExcel}
-                class="btn btn-success btn-rounded w-25 mx-auto mb-3"
+                className="btn btn-success btn-rounded w-25 mx-auto mb-3"
               >
                 {" "}
-                <i class="fa-solid fa-file-excel me-2"></i>
+                <i className="fa-solid fa-file-excel me-2"></i>
                 Xuất file Excel
               </button>
               <div className="d-flex mt-4">

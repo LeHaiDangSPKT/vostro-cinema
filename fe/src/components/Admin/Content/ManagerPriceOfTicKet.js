@@ -70,7 +70,7 @@ export default function ManagerPriceOfTicket() {
                       value={listService[0].chair[0].price}
                       displayType={"text"}
                       thousandSeparator={true}
-                      thousandSpacing={3}
+                      thousandSpacing={"3"}
                       suffix={" VND"}
                     />
                   </h3>
@@ -126,7 +126,7 @@ export default function ManagerPriceOfTicket() {
                       value={listService[0].chair[1].price}
                       displayType={"text"}
                       thousandSeparator={true}
-                      thousandSpacing={3}
+                      thousandSpacing={"3"}
                       suffix={" VND"}
                     />
                   </h3>

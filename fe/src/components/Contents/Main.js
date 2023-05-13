@@ -136,7 +136,7 @@ export default function Main() {
             <Slider {...settingsListBanner} className="">
               {[KM0, KM1, KM2, KM3, KM4, KM5].map((item) => {
                 return (
-                  <div className="carousel-item active">
+                  <div key={item} className="carousel-item active">
                     <img src={item} className="d-block w-100" alt="..."></img>
                   </div>
                 );
@@ -204,28 +204,31 @@ export default function Main() {
           {/* Modal Trailer */}
 
           <div
-            class="modal fade"
+            className="modal fade"
             id="trailerModal"
-            tabindex="-1"
+            tabIndex="-1"
             aria-labelledby="trailerModalLabel"
             aria-hidden="true"
             data-bs-backdrop="static"
             data-bs-keyboard="false"
           >
             <div
-              class="modal-dialog modal-dialog-centered"
+              className="modal-dialog modal-dialog-centered"
               style={{ maxWidth: "594px" }}
             >
-              <div class="modal-content">
-                <div class="modal-header" style={{ padding: `15px 20px 0px;` }}>
+              <div className="modal-content">
+                <div
+                  className="modal-header"
+                  style={{ padding: `15px 20px 0px` }}
+                >
                   <button
                     type="button"
-                    class="btn-close"
+                    className="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
                   ></button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                   <iframe
                     width="560"
                     height="330"

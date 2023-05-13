@@ -247,7 +247,7 @@ export default function Header() {
               <img src={Logo} alt="" width="150" height="80" />
             </Link>
             <button
-              class="navbar-toggler"
+              className="navbar-toggler"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapse"
@@ -255,7 +255,7 @@ export default function Header() {
               aria-label="Toggle navigation"
               onClick={HandeleToggleShowMobile}
             >
-              <span class="navbar-toggler-icon"></span>
+              <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="collapse">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0 text-center">
@@ -429,26 +429,26 @@ export default function Header() {
 
                 <button
                   onClick={loginWithGoogle}
-                  class="btn btn-danger btn-rounded w-50 mx-auto mb-3"
+                  className="btn btn-danger btn-rounded w-50 mx-auto mb-3"
                 >
                   {" "}
-                  <i class="fa-brands fa-google me-2"></i>
+                  <i className="fa-brands fa-google me-2"></i>
                   Continue with Google
                 </button>
                 <button
                   onClick={clickFacebookBtn}
-                  class="btn btn-primary btn-rounded w-50 mx-auto mb-3"
+                  className="btn btn-primary btn-rounded w-50 mx-auto mb-3"
                 >
                   {" "}
-                  <i class="fa-brands fa-facebook me-2"></i>
+                  <i className="fa-brands fa-facebook me-2"></i>
                   Continue with Facebook
                 </button>
                 <button
                   onClick={clickFacebookBtn}
-                  class="btn btn-dark btn-rounded w-50 mx-auto mb-3"
+                  className="btn btn-dark btn-rounded w-50 mx-auto mb-3"
                 >
                   {" "}
-                  <i class="fa-brands fa-github me-2"></i>
+                  <i className="fa-brands fa-github me-2"></i>
                   Continue with Github
                 </button>
                 <div hidden>

@@ -61,7 +61,7 @@ export default function History() {
                             value={item.price}
                             displayType={"text"}
                             thousandSeparator={true}
-                            thousandSpacing={3}
+                            thousandSpacing={"3"}
                           />
                         </td>
                         <td>{ReserveString(item.updatedAt.slice(0, 10))}</td>

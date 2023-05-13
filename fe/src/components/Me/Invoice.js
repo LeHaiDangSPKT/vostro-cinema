@@ -200,7 +200,7 @@ export default function Invoice() {
                                           }
                                           displayType={"text"}
                                           thousandSeparator={true}
-                                          thousandSpacing={3}
+                                          thousandSpacing={"3"}
                                         />
                                       </h4>
                                     </td>
@@ -239,7 +239,7 @@ export default function Invoice() {
                                           }
                                           displayType={"text"}
                                           thousandSeparator={true}
-                                          thousandSpacing={3}
+                                          thousandSpacing={"3"}
                                         />
                                       </h4>
                                     </td>
@@ -259,7 +259,7 @@ export default function Invoice() {
                                       value={invoiceLasted.price}
                                       displayType={"text"}
                                       thousandSeparator={true}
-                                      thousandSpacing={3}
+                                      thousandSpacing={"3"}
                                     />
                                   </h6>
                                 </div>
@@ -273,7 +273,7 @@ export default function Invoice() {
                                       value={priceDiscount}
                                       displayType={"text"}
                                       thousandSeparator={true}
-                                      thousandSpacing={3}
+                                      thousandSpacing={"3"}
                                     />
                                   </h6>
                                 </div>
@@ -288,7 +288,7 @@ export default function Invoice() {
                                       }
                                       displayType={"text"}
                                       thousandSeparator={true}
-                                      thousandSpacing={3}
+                                      thousandSpacing={"3"}
                                     />
                                   </h3>
                                 </div>

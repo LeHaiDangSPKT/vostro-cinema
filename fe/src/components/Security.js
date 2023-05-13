@@ -3,7 +3,7 @@ import React from "react";
 function Security() {
   const date = new Date();
   return (
-    <p className="bg-light w-75 rounded-2 p-3" style={{ margin: "0 auto" }}>
+    <p id="security">
       Contact: <br />
       &emsp;Email: 20110243@student.hcmute.edu.vn (Le Hai Dang)
       <br /> &emsp;Email: 20110215@student.hcmute.edu.vn (Le Dinh Truong)

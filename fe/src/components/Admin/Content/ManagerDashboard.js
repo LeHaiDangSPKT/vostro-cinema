@@ -213,7 +213,7 @@ export default function ManagerDashboard() {
                       value={revenue}
                       displayType={"text"}
                       thousandSeparator={true}
-                      thousandSpacing={3}
+                      thousandSpacing={"3"}
                       suffix={" VND"}
                     />
                   </h3>

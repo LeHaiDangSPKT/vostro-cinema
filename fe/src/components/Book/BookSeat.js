@@ -13,7 +13,7 @@ export default function BookSeat(props) {
     Axios.get(process.env.REACT_APP_API + "/admin/getChairService").then(
       (response) => {
         setListChairService(response.data);
-        setCurrentRoom(props.data.roomName[0]);
+        setCurrentRoom(props.data.roomName ? props.data.roomName[0] : "");
       }
     );
   }, []);
@@ -21,34 +21,36 @@ export default function BookSeat(props) {
   //Get bill
   React.useEffect(() => {
     try {
-      const roomName = props.data.roomName[0];
-      Axios.post(process.env.REACT_APP_API + "/user/findBill", {
-        theaterId: props.data.theaterId,
-        showtime: props.data.date + "-" + props.data.time,
-        roomName: currentRoom == "" ? roomName : currentRoom,
-        film: props.data.film,
-      }).then((response) => {
-        var list = [];
-        if (response.data.length > 0) {
-          for (var i = 0; i < response.data.length; i++) {
-            list.push(response.data[i].seat);
-          }
-        }
-        const li = $("li[class*='seat']");
-        if (list.length > 0) {
-          Object.values(li).map((item) => {
-            if (list.join().includes(item.outerText)) {
-              item.classList.add("custom-disabled");
-            } else {
-              item.classList.remove("custom-disabled");
+      if (props.data.roomName) {
+        const roomName = props.data.roomName[0];
+        Axios.post(process.env.REACT_APP_API + "/user/findBill", {
+          theaterId: props.data.theaterId,
+          showtime: props.data.date + "-" + props.data.time,
+          roomName: currentRoom == "" ? roomName : currentRoom,
+          film: props.data.film,
+        }).then((response) => {
+          var list = [];
+          if (response.data.length > 0) {
+            for (var i = 0; i < response.data.length; i++) {
+              list.push(response.data[i].seat);
             }
-          });
-        } else {
-          Object.values(li).map((item) => {
-            item.classList.remove("custom-disabled");
-          });
-        }
-      });
+          }
+          const li = $("li[class*='seat']");
+          if (list.length > 0) {
+            Object.values(li).map((item) => {
+              if (list.join().includes(item.outerText)) {
+                item.classList.add("custom-disabled");
+              } else {
+                item.classList.remove("custom-disabled");
+              }
+            });
+          } else {
+            Object.values(li).map((item) => {
+              item.classList.remove("custom-disabled");
+            });
+          }
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -204,7 +206,7 @@ export default function BookSeat(props) {
               value={price}
               displayType={"text"}
               thousandSeparator={true}
-              thousandSpacing={3}
+              thousandSpacing={"3"}
               suffix={" VND"}
             />
           </span>
