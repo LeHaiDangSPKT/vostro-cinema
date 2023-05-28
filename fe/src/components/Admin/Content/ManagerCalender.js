@@ -463,7 +463,7 @@ export default function ManagerCalender() {
                 <tbody>
                   {listFilmScheduled &&
                     listFilmScheduled.map((item) => {
-                      return item.movieTime.map((movieTime) => {
+                      return item.movieTime.map((movieTime, index) => {
                         if (movieTime.state == 2) {
                           return (
                             <tr key={item._id} className="table__row">

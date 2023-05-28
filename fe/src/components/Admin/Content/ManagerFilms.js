@@ -249,9 +249,13 @@ export default function ManagerFilms() {
         input[i].disabled = state;
       }
       setCheckAdd(!state);
-      $(`button[id*='add']`)[0].disabled = !state;
-      $(`button[id*='edit']`)[0].disabled = !state;
-      $(`button[id*='delete']`)[0].disabled = !state;
+      try {
+        $(`button[id*='add']`)[0].disabled = !state;
+        $(`button[id*='edit']`)[0].disabled = !state;
+        $(`button[id*='delete']`)[0].disabled = !state;
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   const Update = (e) => {

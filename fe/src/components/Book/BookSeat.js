@@ -39,14 +39,14 @@ export default function BookSeat(props) {
           if (list.length > 0) {
             Object.values(li).map((item) => {
               if (list.join().includes(item.outerText)) {
-                item.classList.add("custom-disabled");
+                item.classList?.add("custom-disabled");
               } else {
-                item.classList.remove("custom-disabled");
+                item.classList?.remove("custom-disabled");
               }
             });
           } else {
             Object.values(li).map((item) => {
-              item.classList.remove("custom-disabled");
+              item && item.classList?.remove("custom-disabled");
             });
           }
         });
