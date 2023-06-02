@@ -4,7 +4,16 @@ const FeedbackModel = require("../models/Feedback");
 const nodemailer = require("nodemailer");
 
 class User {
-  //[POST] /user/logInOrSingInWithGoogle
+  static CheckInput(str) {
+    return (
+      str.includes("$ne") ||
+      str.includes("$gt") ||
+      str.includes("$") ||
+      str == undefined ||
+      str == null
+    );
+  }
+  // [POST] /user/logInOrSingInWithGoogle
   logInOrSingInWithGoogle(req, res, next) {
     UserModel.findOne(
       {
@@ -21,30 +30,34 @@ class User {
   }
   // [POST] /user/signIn
   signIn(req, res, next) {
-    if (req.body.state) {
-      UserModel.findOne(
-        {
-          $or: [
-            { username: req.body.username },
-            { phoneNumber: req.body.phoneNumber },
-            { email: req.body.email },
-          ],
-        },
-        (err, result) => {
-          if (result) {
-            if (req.body.username == result.username) {
-              res.status(404).send("Tên tài khoản đã tồn tại");
-            } else if (req.body.phoneNumber == result.phoneNumber) {
-              res.status(404).send("Số điện thoại đã tồn tại");
+    if (
+      !User.CheckInput(req.body.username) &&
+      !User.CheckInput(req.body.password)
+    ) {
+      if (req.body.state) {
+        UserModel.findOne(
+          {
+            $or: [
+              { username: req.body.username },
+              { phoneNumber: req.body.phoneNumber },
+              { email: req.body.email },
+            ],
+          },
+          (err, result) => {
+            if (result) {
+              if (req.body.username == result.username) {
+                res.status(404).send("Tên tài khoản đã tồn tại");
+              } else if (req.body.phoneNumber == result.phoneNumber) {
+                res.status(404).send("Số điện thoại đã tồn tại");
+              } else {
+                res.status(404).send("Email đã tồn tại");
+              }
             } else {
-              res.status(404).send("Email đã tồn tại");
-            }
-          } else {
-            const options = {
-              from: `VOSTRO CINEMA <${process.env.USER}>`,
-              to: req.body.email,
-              subject: "Code Verify",
-              html: `
+              const options = {
+                from: `VOSTRO CINEMA <${process.env.USER}>`,
+                to: req.body.email,
+                subject: "Code Verify",
+                html: `
                   <div style="width: 100%; background-color: #f3f9ff; padding: 5rem 0">
                   <div style="max-width: 700px; background-color: white; margin: 0 auto">
                       <div style="width: 100%; background-color: #00efbc; padding: 20px 0; text-align: center;">
@@ -58,46 +71,45 @@ class User {
                       </div>
                   </div>
                       `,
-            };
-            let transpoter = nodemailer.createTransport({
-              host: "smtp.gmail.com",
-              port: 587,
-              secure: false, // true for 465, false for other ports
-              auth: {
-                user: process.env.USER, // email
-                pass: process.env.PASSWORD, //password
-              },
-            });
-            transpoter.sendMail(options).then((result) => res.json(result));
+              };
+              let transpoter = nodemailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 587,
+                secure: false, // true for 465, false for other ports
+                auth: {
+                  user: process.env.USER, // email
+                  pass: process.env.PASSWORD, //password
+                },
+              });
+              transpoter.sendMail(options).then((result) => res.json(result));
+            }
           }
-        }
-      );
+        );
+      } else {
+        UserModel.findOne({}, (err, result) => {
+          if (err) {
+            res.status(404).send("Lỗi hệ thống!!!");
+          } else {
+            const user = req.body;
+            const newUser = new UserModel(user);
+            newUser.save();
+            res.json(user);
+          }
+        });
+      }
     } else {
-      UserModel.findOne({}, (err, result) => {
-        if (err) {
-          res.status(404).send("Lỗi hệ thống!!!");
-        } else {
-          const user = req.body;
-          const newUser = new UserModel(user);
-          newUser.save();
-          res.json(user);
-        }
-      });
+      res
+        .status(404)
+        .send("Vui lòng không nhận các kí tự đặc biệt hoặc cụm $ne, $gt");
     }
-  }
-
-  static CheckInput(str) {
-    return (
-      str.includes("$ne") ||
-      str.includes("$gt") ||
-      str == undefined ||
-      str == null
-    );
   }
 
   // [POST] /user/logIn
   logIn(req, res, next) {
-    if (!CheckInput(req.body.username) && !CheckInput(req.body.password)) {
+    if (
+      !User.CheckInput(req.body.username) &&
+      !User.CheckInput(req.body.password)
+    ) {
       UserModel.findOne(
         {
           $and: [
@@ -115,6 +127,10 @@ class User {
           }
         }
       );
+    } else {
+      res
+        .status(404)
+        .send("Vui lòng không nhận các kí tự đặc biệt hoặc cụm $ne, $gt");
     }
   }
 
